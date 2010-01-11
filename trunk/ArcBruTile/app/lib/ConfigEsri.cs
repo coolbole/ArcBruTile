@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Tiling;
+using BruTile;
+using BruTile.Web;
+using BruTile.Cache;
 
 namespace BruTileArcGIS
 {
@@ -33,12 +34,12 @@ namespace BruTileArcGIS
 
         #region IConfig Members
 
-        public Tiling.ITileCache<byte[]> FileCache
+        public ITileCache<byte[]> FileCache
         {
             get { return null; }
         }
 
-        public Tiling.IRequestBuilder RequestBuilder
+        public IRequestBuilder RequestBuilder
         {
             get
             {
@@ -46,7 +47,7 @@ namespace BruTileArcGIS
             }
         }
 
-        public Tiling.ITileSchema TileSchema
+        public ITileSchema TileSchema
         {
             get
             {

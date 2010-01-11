@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using BrutileArcGIS;
 
 namespace BruTileArcGIS
 {
@@ -31,6 +31,10 @@ namespace BruTileArcGIS
             else if (enumBruTileLayer == EnumBruTileLayer.TMS)
             {
                 result = new ConfigTms();
+            }
+            else if (enumBruTileLayer == EnumBruTileLayer.GeoserverWms)
+            {
+                result = new ConfigGeodanGeoserver();
             }
             return result;
         }

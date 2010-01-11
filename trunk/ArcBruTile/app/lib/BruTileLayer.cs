@@ -6,6 +6,7 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.DataSourcesRaster;
 using System;
 using System.Windows.Forms;
+using Microsoft.SqlServer.MessageBox;
 
 namespace BruTileArcGIS
 {
@@ -65,11 +66,19 @@ namespace BruTileArcGIS
                 {
                     if (this.Visible)
                     {
-                        IActiveView activeView = map as IActiveView;
-                        envelope = activeView.Extent;
+                        try
+                        {
+                            IActiveView activeView = map as IActiveView;
+                            envelope = activeView.Extent;
 
-                        bruTileHelper = new BruTileHelper(cacheDir);
-                        bruTileHelper.Draw(activeView, enumBruTileLayer,trackCancel,layerSpatialReference);
+                            bruTileHelper = new BruTileHelper(cacheDir);
+                            bruTileHelper.Draw(activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
+                        }
+                        catch (Exception ex)
+                        {
+                            ExceptionMessageBox mbox = new ExceptionMessageBox(ex);
+                            mbox.Show(null);
+                        }
                     }
                 }
             }
@@ -219,7 +228,7 @@ namespace BruTileArcGIS
         private IEnvelope GetDefaultEnvelope()
         {
             IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
-            Tiling.Extent ext = config.TileSchema.Extent;
+            BruTile.Extent ext = config.TileSchema.Extent;
             IEnvelope envelope = new EnvelopeClass();
             envelope.XMin = ext.MinX;
             envelope.XMax = ext.MaxX;

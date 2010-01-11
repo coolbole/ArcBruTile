@@ -116,6 +116,10 @@ namespace BruTileArcGIS
             {
                 rdbTMS.Checked = true;
             }
+            else if (brutileType == EnumBruTileLayer.GeoserverWms)
+            {
+                rdbGeodan.Checked = true;
+            }
 
             SetPageDirty(false);
             return this.Handle.ToInt32();
@@ -161,6 +165,10 @@ namespace BruTileArcGIS
                 else if (rdbTMS.Checked)
                 {
                     bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.TMS;
+                }
+                else if (rdbGeodan.Checked)
+                {
+                    bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.GeoserverWms;
                 }
 
                 //Refresh display after changes are made
@@ -283,6 +291,11 @@ namespace BruTileArcGIS
         {
             SetPageDirty(true);
 
+        }
+
+        private void rdbGeodan_CheckedChanged(object sender, EventArgs e)
+        {
+            SetPageDirty(true);
         }
 
     }

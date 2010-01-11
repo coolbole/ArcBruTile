@@ -74,6 +74,7 @@ namespace BruTileArcGIS
             BeginGroup();
             AddItem("AddOsmLayerCommand");
             AddItem("AddBingLayerCommand");
+            AddItem("BrutileArcGIS.commands.AddGeoserverLayerCommand");
         }
 
         /// <summary>

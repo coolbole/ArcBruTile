@@ -16,7 +16,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
 using System;
-using Tiling;
+using BruTile;
+using BruTile.Web;
+using BruTile.Cache;
 using System.Collections.Generic;
 
 namespace BruTileArcGIS

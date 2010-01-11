@@ -16,7 +16,9 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
 
 using System;
-using Tiling;
+using BruTile.Cache;
+using BruTile.Web;
+using BruTile;
 
 namespace BruTileArcGIS
 {
@@ -36,7 +38,7 @@ namespace BruTileArcGIS
 
         #region IConfig Members
 
-        public Tiling.ITileCache<byte[]> FileCache
+        public ITileCache<byte[]> FileCache
         {
             get
             {
@@ -45,7 +47,7 @@ namespace BruTileArcGIS
             }
         }
 
-        public Tiling.IRequestBuilder RequestBuilder
+        public IRequestBuilder RequestBuilder
         {
             get
             {
@@ -56,7 +58,7 @@ namespace BruTileArcGIS
             }
         }
 
-        public Tiling.ITileSchema TileSchema
+        public ITileSchema TileSchema
         {
             get
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using ESRI.ArcGIS.Geometry;
 
@@ -32,6 +31,10 @@ namespace BruTileArcGIS
             if (code == 900913) code = 102113;
 
             if (code == 102113)
+            {
+                res = this.GetProjectedSpatialReference(code);
+            }
+            if (code == 28992)
             {
                 res = this.GetProjectedSpatialReference(code);
             }
@@ -70,6 +73,10 @@ namespace BruTileArcGIS
             return "GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137.0,298.257223563]],PRIMEM[&quot;Greenwich&quot;,0.0],UNIT[&quot;Degree&quot;,0.0174532925199433]]";
         }
 
+        public static string GetRDNew()
+        {
+            return "PROJCS[&quot;RD_New&quot;,GEOGCS[&quot;GCS_Amersfoort&quot;,DATUM[&quot;D_Amersfoort&quot;,SPHEROID[&quot;Bessel_1841&quot;,6377397.155,299.1528128]],PRIMEM[&quot;Greenwich&quot;,0.0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Double_Stereographic&quot;],PARAMETER[&quot;False_Easting&quot;,155000.0],PARAMETER[&quot;False_Northing&quot;,463000.0],PARAMETER[&quot;Central_Meridian&quot;,5.38763888888889],PARAMETER[&quot;Scale_Factor&quot;,0.9999079],PARAMETER[&quot;Latitude_Of_Origin&quot;,52.15616055555555],UNIT[&quot;Meter&quot;,1.0]]";
+        }
 
     }
 }

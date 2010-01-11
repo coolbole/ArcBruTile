@@ -35,12 +35,14 @@
             this.rdbOsm = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.rdbGeodan = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rdbGeodan);
             this.groupBox1.Controls.Add(this.rdbTMS);
             this.groupBox1.Controls.Add(this.rdbEsri);
             this.groupBox1.Controls.Add(this.rdbBing);
@@ -120,6 +122,18 @@
             this.button1.Text = "Clear BruTile cache";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // rdbGeodan
+            // 
+            this.rdbGeodan.AutoSize = true;
+            this.rdbGeodan.Location = new System.Drawing.Point(6, 124);
+            this.rdbGeodan.Name = "rdbGeodan";
+            this.rdbGeodan.Size = new System.Drawing.Size(84, 17);
+            this.rdbGeodan.TabIndex = 5;
+            this.rdbGeodan.TabStop = true;
+            this.rdbGeodan.Text = "GeodanTest";
+            this.rdbGeodan.UseVisualStyleBackColor = true;
+            this.rdbGeodan.CheckedChanged += new System.EventHandler(this.rdbGeodan_CheckedChanged);
+            // 
             // BruTilePropertyPageUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,6 +158,7 @@
         private System.Windows.Forms.RadioButton rdbOsm;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RadioButton rdbGeodan;
 
     }
 }

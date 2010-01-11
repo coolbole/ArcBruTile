@@ -1,4 +1,6 @@
-﻿using Tiling;
+﻿using BruTile.Cache;
+using BruTile;
+using BruTile.Web;
 
 namespace BruTileArcGIS
 {

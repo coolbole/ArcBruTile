@@ -5,12 +5,15 @@ using System.IO;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Display;
 using ESRI.ArcGIS.Geometry;
-using Tiling;
+using BruTile;
+using BruTile.Cache;
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.DataSourcesRaster;
 using ESRI.ArcGIS.Geodatabase;
 using System.Windows.Forms;
 using System.ComponentModel;
+using BruTile.Web;
+
 
 namespace BruTileArcGIS
 {
@@ -22,7 +25,7 @@ namespace BruTileArcGIS
         #region private members
         private string cacheDir;
         private IScreenDisplay screenDisplay; 
-        private BackgroundWorker backgroundWorker;
+        //private BackgroundWorker backgroundWorker;
         private bool needReproject;
         private ISpatialReference dataSpatialReference;
         private ISpatialReference layerSpatialReference;
@@ -67,23 +70,10 @@ namespace BruTileArcGIS
             PointF centerPoint = GetCenterPoint(env);
 
             Transform transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
-            tiles = Tile.GetTiles(schema, transform.Extent, transform.Resolution);
-
+            int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
+            tiles = schema.GetTilesInView(transform.Extent, level);
             needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
-
-            //backgroundWorker = new BackgroundWorker();
-            //backgroundWorker.DoWork+=new DoWorkEventHandler(LoadTiles);
-            //backgroundWorker.WorkerReportsProgress=true;
-            //backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker_ProgressChanged);
-            //backgroundWorker.RunWorkerAsync();
-            //LoadTiles(tiles,fileCache);
             LoadTiles();
-
-            //foreach (TileInfo tile in tiles)
-            //{
-            //    this.DrawLayer(fileCache.GetFileName(tile.Key));
-            //}
-
         }
 
         void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -125,7 +115,7 @@ namespace BruTileArcGIS
 
                 if (!fileCache.Exists(tile.Key))
                 {
-                    Uri url = requestBuilder.GetUrl(tile);
+                    Uri url = requestBuilder.GetUri(tile);
                     byte[] bytes = ImageRequest.GetImageFromServer(url);
 
                     fileCache.Add(tile.Key, bytes);
@@ -181,6 +171,10 @@ namespace BruTileArcGIS
             else if (spatialreference.FactoryCode == 102113)
             {
                 text = SpatialReferences.GetWebMercator();
+            }
+            else if (spatialreference.FactoryCode == 28992)
+            {
+                text = SpatialReferences.GetRDNew();
             }
             using (StreamWriter sw = new StreamWriter(auxfile))
             {
