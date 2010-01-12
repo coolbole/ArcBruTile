@@ -7,6 +7,7 @@ using ESRI.ArcGIS.DataSourcesRaster;
 using System;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
+using System.Drawing;
 
 namespace BruTileArcGIS
 {
@@ -71,11 +72,14 @@ namespace BruTileArcGIS
                             IActiveView activeView = map as IActiveView;
                             envelope = activeView.Extent;
 
+                            IScreenDisplay screenDisplay = activeView.ScreenDisplay;
+
                             bruTileHelper = new BruTileHelper(cacheDir);
                             bruTileHelper.Draw(activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
                             
-                            //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, this, null);
-                            activeView.Refresh();
+                            //activeView.
+                            //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, null);
+                            //activeView.Refresh();
                         }
                         catch (Exception ex)
                         {
@@ -269,3 +273,10 @@ namespace BruTileArcGIS
         #endregion
     }
 }
+
+
+                            //IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
+                            //Bitmap b= new Bitmap(@"c:\\aaa\\19.png");
+                            //Graphics g = Graphics.FromHdc(ipHwnd);
+                            //g.DrawImage(b, 100, 100);
+

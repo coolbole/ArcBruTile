@@ -41,6 +41,8 @@ namespace BruTileArcGIS
         private IList<TileInfo> tiles;
         private FileCache fileCache;
         private IActiveView activeView;
+        private Graphics g;
+        private Transform transform;
         //private ITileCache<Image> images = new MemoryCache<Image>(100, 200);
         //private BackgroundWorker bw;
 
@@ -73,6 +75,9 @@ namespace BruTileArcGIS
                 this.activeView = activeView;
                 screenDisplay = activeView.ScreenDisplay;
                 int handle = screenDisplay.hDC;
+                IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
+                g = Graphics.FromHdc(ipHwnd);
+
 
                 IEnvelope env = activeView.Extent;
                 this.config = ConfigHelper.GetConfig(enumBruTileLayer);
@@ -87,18 +92,18 @@ namespace BruTileArcGIS
                 float resolution = GetMapResolution(env, mapWidth);
                 PointF centerPoint = GetCenterPoint(env);
 
-                Transform transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
+                transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
                 int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
                 tiles = schema.GetTilesInView(transform.Extent, level);
                 needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
                 LoadTiles();
 
                 //Point p=new Point(
-                PointClass pc = new PointClass();
-                pc.X = activeView.Extent.XMin + 100;
-                pc.Y = activeView.Extent.YMin + 100;
-                screenDisplay.SetSymbol(new SimpleMarkerSymbolClass());
-                screenDisplay.DrawPoint(pc);
+                //ointClass pc = new PointClass();
+                //pc.X = activeView.Extent.XMin + 100;
+                //pc.Y = activeView.Extent.YMin + 100;
+                //screenDisplay.SetSymbol(new SimpleMarkerSymbolClass());
+                //screenDisplay.DrawPoint(pc);
             }
             catch (Exception ex)
             {
@@ -141,10 +146,17 @@ namespace BruTileArcGIS
         ///private void LoadTiles(object sender, DoWorkEventArgs e)
         private void LoadTiles()
         {
+            IRequestBuilder requestBuilder = config.RequestBuilder;
 
             foreach (TileInfo tile in tiles)
             {
-                string name = fileCache.GetFileName(tile.Key);
+                Uri url = requestBuilder.GetUri(tile);
+                byte[] bytes = ImageRequest.GetImageFromServer(url);
+                Bitmap bitmap = new Bitmap(new MemoryStream(bytes));
+                g.DrawImage(bitmap, transform.WorldToMap(tile.Extent.MinX, tile.Extent.MinY, tile.Extent.MaxX, tile.Extent.MaxY));
+
+
+                /**string name = fileCache.GetFileName(tile.Key);
 
                 // First draw the rasters that already exist....
                 if (!fileCache.Exists(tile.Key))
@@ -164,7 +176,7 @@ namespace BruTileArcGIS
                     envelope.YMax = tile.Extent.MaxY;
 
                     DrawRaster(name,envelope);
-                }
+                }*/
 
             }
         }
@@ -240,7 +252,9 @@ namespace BruTileArcGIS
             rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, new TrackCancel());
             //screenDisplay.Invalidate(
             env.Expand(100,100,true);
-            screenDisplay.Invalidate(env, true, 0);
+            
+            
+            //screenDisplay.Invalidate(env, true, 0);
 
             //activeView.PartialRefresh(esriViewDrawPhase.esriViewBackground,rl,env);
             //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, rl, env); 
