@@ -13,10 +13,17 @@ using ESRI.ArcGIS.Geodatabase;
 using System.Windows.Forms;
 using System.ComponentModel;
 using BruTile.Web;
+using Microsoft.SqlServer.MessageBox;
 
 
 namespace BruTileArcGIS
 {
+    public class BwWorkerArgs
+    {
+        public string Name;
+        public IEnvelope env;
+    }
+
     /// <summary>
     /// Helper class for BruTile
     /// </summary>
@@ -33,6 +40,10 @@ namespace BruTileArcGIS
         private IConfig config;
         private IList<TileInfo> tiles;
         private FileCache fileCache;
+        private IActiveView activeView;
+        //private ITileCache<Image> images = new MemoryCache<Image>(100, 200);
+        //private BackgroundWorker bw;
+
         #endregion
 
         #region constructors
@@ -48,6 +59,8 @@ namespace BruTileArcGIS
         #endregion
 
         #region public methods
+
+        
         /// <summary>
         /// Draws the specified active view.
         /// </summary>
@@ -55,33 +68,54 @@ namespace BruTileArcGIS
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
         public void Draw(IActiveView activeView, EnumBruTileLayer enumBruTileLayer,ITrackCancel trackCancel,ISpatialReference layerSpatialReference)
         {
-            screenDisplay = activeView.ScreenDisplay;
-            IEnvelope env = activeView.Extent;
-            this.config = ConfigHelper.GetConfig(enumBruTileLayer);
-            this.schema = config.TileSchema;
-            this.layerSpatialReference = layerSpatialReference;
-            string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, enumBruTileLayer);
-            fileCache = new FileCache(cacheDirType, schema.Format);
-            
-            env=this.ProjectEnvelope(env, schema.Srs);
-            int mapWidth = activeView.ExportFrame.right;
-            int mapHeight = activeView.ExportFrame.bottom;
-            float resolution = GetMapResolution(env, mapWidth);
-            PointF centerPoint = GetCenterPoint(env);
+            try
+            {
+                this.activeView = activeView;
+                screenDisplay = activeView.ScreenDisplay;
+                int handle = screenDisplay.hDC;
 
-            Transform transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
-            int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
-            tiles = schema.GetTilesInView(transform.Extent, level);
-            needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
-            LoadTiles();
+                IEnvelope env = activeView.Extent;
+                this.config = ConfigHelper.GetConfig(enumBruTileLayer);
+                this.schema = config.TileSchema;
+                this.layerSpatialReference = layerSpatialReference;
+                string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, enumBruTileLayer);
+                fileCache = new FileCache(cacheDirType, schema.Format);
+
+                env = this.ProjectEnvelope(env, schema.Srs);
+                int mapWidth = activeView.ExportFrame.right;
+                int mapHeight = activeView.ExportFrame.bottom;
+                float resolution = GetMapResolution(env, mapWidth);
+                PointF centerPoint = GetCenterPoint(env);
+
+                Transform transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
+                int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
+                tiles = schema.GetTilesInView(transform.Extent, level);
+                needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
+                LoadTiles();
+
+                //Point p=new Point(
+                PointClass pc = new PointClass();
+                pc.X = activeView.Extent.XMin + 100;
+                pc.Y = activeView.Extent.YMin + 100;
+                screenDisplay.SetSymbol(new SimpleMarkerSymbolClass());
+                screenDisplay.DrawPoint(pc);
+            }
+            catch (Exception ex)
+            {
+                ExceptionMessageBox mbox = new ExceptionMessageBox(ex);
+                mbox.Show(null);
+            }
         }
 
-        void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+
+
+        /**void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             // Draw the raster
             string file = (string)e.UserState;
-            DrawLayer(file);
+            DrawRaster(file);
         }
+         * */
 
 
         /// <summary>
@@ -107,36 +141,88 @@ namespace BruTileArcGIS
         ///private void LoadTiles(object sender, DoWorkEventArgs e)
         private void LoadTiles()
         {
-            IRequestBuilder requestBuilder = config.RequestBuilder;
 
             foreach (TileInfo tile in tiles)
             {
                 string name = fileCache.GetFileName(tile.Key);
 
+                // First draw the rasters that already exist....
                 if (!fileCache.Exists(tile.Key))
                 {
-                    Uri url = requestBuilder.GetUri(tile);
-                    byte[] bytes = ImageRequest.GetImageFromServer(url);
-
-                    fileCache.Add(tile.Key, bytes);
-                    FileInfo fi = new FileInfo(name);
-                    string tfwFile = name.Replace(fi.Extension, "." + this.GetWorldFile(schema.Format));
-                    this.WriteWorldFile(tfwFile, tile.Extent, schema);
-
-                    AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Key), dataSpatialReference);
-
+                    BackgroundWorker bw = new BackgroundWorker();
+                    bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+                    bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+                    bw.RunWorkerAsync(tile);
+                    //CreateRaster(tile, requestBuilder, name);
                 }
-                // Notify the UI that this raster is downloaded and can be drawn already...
-                //backgroundWorker.ReportProgress(0, name);
-                DrawLayer(name);
+                else
+                {
+                    IEnvelope envelope = new EnvelopeClass();
+                    envelope.XMin = tile.Extent.MinX;
+                    envelope.XMax = tile.Extent.MaxX;
+                    envelope.YMin = tile.Extent.MinY;
+                    envelope.YMax = tile.Extent.MaxY;
+
+                    DrawRaster(name,envelope);
+                }
+
             }
+        }
+
+        void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            TileInfo tile = (TileInfo)e.Argument;
+            IEnvelope envelope = new EnvelopeClass();
+            envelope.XMin = tile.Extent.MinX;
+            envelope.XMax = tile.Extent.MaxX;
+            envelope.YMin = tile.Extent.MinY;
+            envelope.YMax = tile.Extent.MaxY;
+
+            IRequestBuilder requestBuilder = config.RequestBuilder;
+            string name = fileCache.GetFileName(tile.Key);
+            CreateRaster(tile, requestBuilder, name);
+            BwWorkerArgs bwWorkerArgs = new BwWorkerArgs();
+            bwWorkerArgs.env = envelope;
+            bwWorkerArgs.Name = name;
+            e.Result = bwWorkerArgs;
+        }
+
+        void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // klaar...
+            // tekenenen deze nieuwe file
+            //TileInfo tile = (TileInfo)e.Result;
+            //string name = fileCache.GetFileName((string)e.Result);
+            BwWorkerArgs args=(BwWorkerArgs)e.Result;
+            DrawRaster(args.Name,args.env);
+        }
+
+
+        /// <summary>
+        /// Creates the raster.
+        /// </summary>
+        /// <param name="tile">The tile.</param>
+        /// <param name="requestBuilder">The request builder.</param>
+        /// <param name="name">The name.</param>
+        private void CreateRaster(TileInfo tile, IRequestBuilder requestBuilder,string name)
+        {
+            Uri url = requestBuilder.GetUri(tile);
+            byte[] bytes = ImageRequest.GetImageFromServer(url);
+
+            fileCache.Add(tile.Key, bytes);
+            FileInfo fi = new FileInfo(name);
+            string tfwFile = name.Replace(fi.Extension, "." + this.GetWorldFile(schema.Format));
+            this.WriteWorldFile(tfwFile, tile.Extent, schema);
+
+            AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Key), dataSpatialReference);
+
         }
 
         /// <summary>
         /// Draws the layer.
         /// </summary>
         /// <param name="file">The file.</param>
-        private void DrawLayer(string file)
+        private void DrawRaster(string file,IEnvelope env)
         {
             IRasterLayer rl = new RasterLayerClass();
             rl.CreateFromFilePath(file);
@@ -152,6 +238,13 @@ namespace BruTileArcGIS
             // Do not remove this line...
             rl.SpatialReference = layerSpatialReference;
             rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, new TrackCancel());
+            //screenDisplay.Invalidate(
+            env.Expand(100,100,true);
+            screenDisplay.Invalidate(env, true, 0);
+
+            //activeView.PartialRefresh(esriViewDrawPhase.esriViewBackground,rl,env);
+            //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, rl, env); 
+
         }
 
         /// <summary>

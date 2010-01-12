@@ -73,6 +73,9 @@ namespace BruTileArcGIS
 
                             bruTileHelper = new BruTileHelper(cacheDir);
                             bruTileHelper.Draw(activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
+                            
+                            //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, this, null);
+                            activeView.Refresh();
                         }
                         catch (Exception ex)
                         {
