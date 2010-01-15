@@ -62,7 +62,8 @@ namespace BruTileArcGIS
                 foreach (double resolution in ScalesOsm) schema.Resolutions.Add(resolution);
                 schema.Height = 256;
                 schema.Width = 256;
-                schema.Extent = new Extent(-20037508.342789, -20037508.342789, 20037508.342789, 20037508.342789);
+                //schema.Extent = new Extent(-20037508.342789, -20037508.342789, 20037508.342789, 20037508.342789);
+                schema.Extent = new Extent(-18037508.342789, -18037508.342789, 18037508.342789, 18037508.342789);
                 schema.OriginX = -20037508.342789;
                 schema.OriginY = 20037508.342789;
                 schema.Name = name;

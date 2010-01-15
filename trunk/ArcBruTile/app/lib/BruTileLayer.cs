@@ -47,7 +47,26 @@ namespace BruTileArcGIS
             this.map = map;
             this.enumBruTileLayer = enumBruTileLayer;
             this.cacheDir = cacheDir;
+            SpatialReferences spatialReferences = new SpatialReferences();
+            IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
+            this.dataSpatialReference=spatialReferences.GetSpatialReference(config.TileSchema.Srs);
             this.envelope = GetDefaultEnvelope();
+
+            if(map.SpatialReference==null)
+            {
+                // zet dan de spatial ref...
+                map.SpatialReference = dataSpatialReference;
+            }
+
+            // If there is only one layer in the TOC zoom to this layer...
+            if (map.LayerCount == 0)
+            {
+                //envelope.Expand(-0.1, -0.1, true);
+                envelope.Project(map.SpatialReference);
+                ((IActiveView)map).Extent = envelope;
+            }
+
+
         }
         #endregion
 

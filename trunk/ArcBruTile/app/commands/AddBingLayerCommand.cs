@@ -11,6 +11,9 @@ using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
 using System.Reflection;
 using System.Configuration;
+using BrutileArcGIS.commands;
+using ESRI.ArcGIS.DataSourcesGDB;
+using ESRI.ArcGIS.Geodatabase;
 
 namespace BruTileArcGIS
 {
@@ -94,8 +97,6 @@ namespace BruTileArcGIS
                 brutileLayer.Name = "Bing";
                 brutileLayer.Visible = true;
 
-                //IEnumLayer lyrs;
-                //((IMapLayers)map).AddLayers((ILayer)brutileLayer);
                 map.AddLayer((ILayer)brutileLayer);
                 Util.SetBruTilePropertyPage(application, brutileLayer);
             }

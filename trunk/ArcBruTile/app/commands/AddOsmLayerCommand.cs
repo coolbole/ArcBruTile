@@ -11,6 +11,7 @@ using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
 using System.Reflection;
 using System.Configuration;
+using ESRI.ArcGIS.Geometry;
 
 namespace BruTileArcGIS
 {
@@ -92,9 +93,12 @@ namespace BruTileArcGIS
                 map = mxdoc.FocusMap;
                 BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.OSM, cacheDir);
                 brutileLayer.Name = "OpenStreetMap";
+
                 brutileLayer.Visible = true;
                 map.AddLayer((ILayer)brutileLayer);
-                Util.SetBruTilePropertyPage(application,brutileLayer);
+                Util.SetBruTilePropertyPage(application, brutileLayer);
+
+
             }
             catch (Exception ex)
             {
