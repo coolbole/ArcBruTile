@@ -160,7 +160,9 @@ namespace BruTileArcGIS
                 {
                     byte[] bytes = ImageRequest.GetImageFromServer(url);
                     Bitmap bitmap = new Bitmap(new MemoryStream(bytes));
-                    g.DrawImage(bitmap, transform.WorldToMap(tile.Extent.MinX, tile.Extent.MinY, tile.Extent.MaxX, tile.Extent.MaxY));
+                    RectangleF rect = transform.WorldToMap(tile.Extent.MinX, tile.Extent.MinY, tile.Extent.MaxX, tile.Extent.MaxY);
+                    rect=RoundToPixel(rect);
+                    g.DrawImage(bitmap, rect);
 
                 }
                 else
@@ -201,6 +203,19 @@ namespace BruTileArcGIS
             bwWorkerArgs.Name = name;
             e.Result = bwWorkerArgs;
         }
+
+        private static RectangleF RoundToPixel(RectangleF dest)
+        {
+            // To get seamless aligning you need to round the locations
+            // not the width and height
+            dest = new RectangleF(
+                (float)Math.Round(dest.Left),
+                (float)Math.Round(dest.Top),
+                (float)(Math.Round(dest.Right) - Math.Round(dest.Left)),
+                (float)(Math.Round(dest.Bottom) - Math.Round(dest.Top)));
+            return dest;
+        }
+
 
         void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
