@@ -8,6 +8,7 @@ using System;
 using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace BruTileArcGIS
 {
@@ -88,6 +89,7 @@ namespace BruTileArcGIS
                     {
                         try
                         {
+                            Debug.WriteLine("Draw event");
                             IActiveView activeView = map as IActiveView;
                             envelope = activeView.Extent;
 
