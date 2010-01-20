@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrutileArcGIS.Properties;
@@ -7,11 +7,7 @@ using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
-using System.Reflection;
-using System.Configuration;
-using ESRI.ArcGIS.Geometry;
 
 namespace BruTileArcGIS
 {
@@ -88,10 +84,9 @@ namespace BruTileArcGIS
             try
             {
                 Configuration config = ConfigurationHelper.GetConfig();
-                string cacheDir = config.AppSettings.Settings["cacheDir"].Value; ;
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.OSM, cacheDir);
+                BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.OSM);
                 brutileLayer.Name = "OpenStreetMap";
 
                 brutileLayer.Visible = true;

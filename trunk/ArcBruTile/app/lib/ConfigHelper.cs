@@ -36,6 +36,11 @@ namespace BruTileArcGIS
             {
                 result = new ConfigGeodanGeoserver();
             }
+            else if (enumBruTileLayer == EnumBruTileLayer.Google)
+            {
+                result = new ConfigGoogle();
+            }
+
             return result;
         }
 

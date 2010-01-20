@@ -43,11 +43,11 @@ namespace BruTileArcGIS
         /// <param name="map">The map.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
         /// <param name="cacheDir">The cache dir.</param>
-        public BruTileLayer(IMap map,EnumBruTileLayer enumBruTileLayer,string cacheDir)
+        public BruTileLayer(IMap map,EnumBruTileLayer enumBruTileLayer)
         {
             this.map = map;
             this.enumBruTileLayer = enumBruTileLayer;
-            this.cacheDir = cacheDir;
+            this.cacheDir = CacheSettings.GetCacheFolder();
             SpatialReferences spatialReferences = new SpatialReferences();
             IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
             this.dataSpatialReference=spatialReferences.GetSpatialReference(config.TileSchema.Srs);

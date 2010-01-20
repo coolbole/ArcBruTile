@@ -141,6 +141,7 @@
     <Compile Include="commands\AboutBruTileCommand.cs" />
     <Compile Include="commands\AddBingLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
+    <Compile Include="commands\AddGoogleLayerCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
@@ -150,6 +151,8 @@
     <Compile Include="controls\BruTilePropertyPageUserControl.Designer.cs">
       <DependentUpon>BruTilePropertyPageUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\CacheSettings.cs" />
+    <Compile Include="lib\ConfigGoogle.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
     <Compile Include="lib\ConfigEsri.cs" />
@@ -208,6 +211,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
+    <None Include="Resources\Google.png" />
+    <None Include="Resources\google.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

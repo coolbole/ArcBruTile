@@ -122,10 +122,9 @@ namespace BrutileArcGIS.commands
             try
             {
                 Configuration config = ConfigurationHelper.GetConfig();
-                string cacheDir = config.AppSettings.Settings["cacheDir"].Value; ;
                 IMxDocument mxdoc = (IMxDocument)m_application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.GeoserverWms, cacheDir);
+                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.GeoserverWms);
                 brutileLayer.Name = "Geoserver";
                 brutileLayer.Visible = true;
 

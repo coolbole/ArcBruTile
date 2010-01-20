@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrutileArcGIS.Properties;
@@ -7,23 +7,16 @@ using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
-using System.Reflection;
-using System.Configuration;
-using BrutileArcGIS.commands;
-using ESRI.ArcGIS.DataSourcesGDB;
-using ESRI.ArcGIS.Geodatabase;
-
 namespace BruTileArcGIS
 {
     /// <summary>
     /// ArcGIS Command to show a BruTile.
     /// </summary>
-    [Guid("EBE7E2F8-506B-4D37-93D2-6123505CD9D7")]
+    [Guid("25814B13-2CC3-45C3-80A3-CD0BD4824273")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddBingLayerCommand")]
-    public sealed class AddBingLayerCommand : BaseCommand
+    [ProgId("AddGoogleLayerCommand")]
+    public sealed class AddGoogleLayerCommand : BaseCommand
     {
         #region private members
         private IMap map;
@@ -34,14 +27,14 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddBingLayerCommand()
+        public AddGoogleLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Bing";
-            base.m_message = "Add Bing Layer";
+            base.m_caption = "&Google";
+            base.m_message = "Add Google Layer";
             base.m_toolTip = base.m_message;
-            base.m_name = "AddBingLayer";
-            base.m_bitmap = Resources.bing;
+            base.m_name = "AddGoogleLayer";
+            base.m_bitmap = Resources.google;
         }
         #endregion
 
@@ -92,16 +85,18 @@ namespace BruTileArcGIS
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.ESRI);
-                brutileLayer.Name = "Bing";
-                brutileLayer.Visible = true;
+                BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.Google);
+                brutileLayer.Name = "Google Maps";
 
+                brutileLayer.Visible = true;
                 map.AddLayer((ILayer)brutileLayer);
                 Util.SetBruTilePropertyPage(application, brutileLayer);
+
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.ToString()+", "+ex.StackTrace);
             }
         }
 
