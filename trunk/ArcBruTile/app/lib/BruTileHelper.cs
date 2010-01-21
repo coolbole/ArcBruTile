@@ -42,7 +42,7 @@ namespace BruTileArcGIS
         private IList<TileInfo> tiles;
         private FileCache fileCache;
         private IActiveView activeView;
-        private Graphics g;
+        //private Graphics g;
         private Transform transform;
 
         #endregion
@@ -73,9 +73,9 @@ namespace BruTileArcGIS
             {
                 this.activeView = activeView;
                 screenDisplay = activeView.ScreenDisplay;
-                int handle = screenDisplay.hDC;
-                IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
-                g = Graphics.FromHdc(ipHwnd);
+                //int handle = screenDisplay.hDC;
+                //IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
+                //g = Graphics.FromHdc(ipHwnd);
 
                 IEnvelope env = activeView.Extent;
                 this.config = ConfigHelper.GetConfig(enumBruTileLayer);
@@ -137,6 +137,7 @@ namespace BruTileArcGIS
 
                 if (!fileCache.Exists(tile.Key))
                 {
+                    Debug.WriteLine("Retrieve tile: " + tile.Key);
                     AutoResetEvent waitHandle = new AutoResetEvent(false);
                     waitHandles.Add(waitHandle);
                     Thread t = new Thread(new ParameterizedThreadStart(GetTileOnThread));
@@ -145,6 +146,7 @@ namespace BruTileArcGIS
                 }
                 else
                 {
+                    Debug.WriteLine("Get tile from cache: " + tile.Key);
                     name = fileCache.GetFileName(tile.Key);
                     DrawRaster(name, envelope);
                 }
