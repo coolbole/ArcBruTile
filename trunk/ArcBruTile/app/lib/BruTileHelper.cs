@@ -42,7 +42,6 @@ namespace BruTileArcGIS
         private IList<TileInfo> tiles;
         private FileCache fileCache;
         private IActiveView activeView;
-        //private Graphics g;
         private Transform transform;
 
         #endregion
@@ -73,9 +72,6 @@ namespace BruTileArcGIS
             {
                 this.activeView = activeView;
                 screenDisplay = activeView.ScreenDisplay;
-                //int handle = screenDisplay.hDC;
-                //IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
-                //g = Graphics.FromHdc(ipHwnd);
 
                 IEnvelope env = activeView.Extent;
                 this.config = ConfigHelper.GetConfig(enumBruTileLayer);
@@ -121,80 +117,73 @@ namespace BruTileArcGIS
         /// </summary>
         /// <param name="tiles">The tiles.</param>
         /// <param name="fileCache">The file cache.</param>
-        ///private void LoadTiles(object sender, DoWorkEventArgs e)
         private void LoadTiles()
         {
-            MemoryCache<byte[]> bitmaps = new MemoryCache<byte[]>(10, 100);
             IList<WaitHandle> waitHandles = new List<WaitHandle>(); 
-            
+            IList<TileInfo> drawTiles=new List<TileInfo>();
             IRequestBuilder requestBuilder = config.RequestBuilder;
             string name;
-
-            
+           
             foreach (TileInfo tile in tiles)
             {
                 IEnvelope envelope = this.GetEnv(tile.Extent);
 
                 if (!fileCache.Exists(tile.Key))
                 {
+                    // Retrieve the tile from remote bevause it's not on disk
                     Debug.WriteLine("Retrieve tile: " + tile.Key);
+                    drawTiles.Add(tile);
                     AutoResetEvent waitHandle = new AutoResetEvent(false);
                     waitHandles.Add(waitHandle);
                     Thread t = new Thread(new ParameterizedThreadStart(GetTileOnThread));
-                    t.Start(new object[] { requestBuilder, tile, bitmaps, waitHandle });
-
+                    t.Start(new object[] { requestBuilder, tile, waitHandle });
                 }
                 else
                 {
+                    // Read tiles from disk
                     Debug.WriteLine("Get tile from cache: " + tile.Key);
                     name = fileCache.GetFileName(tile.Key);
                     DrawRaster(name, envelope);
                 }
             }
+
             if (waitHandles.Count > 0)
             {
+                // Wait for all handles
                 foreach (WaitHandle waitHandle in waitHandles)
                 {
                     WaitHandle.WaitAny(new WaitHandle[] { waitHandle });
                 }
 
-                foreach (TileInfo tile in tiles)
+                // the draw the tiles from the workers
+                foreach (TileInfo tile in drawTiles)
                 {
                     IEnvelope envelope = this.GetEnv(tile.Extent);
-                    if (!fileCache.Exists(tile.Key))
-                    {
-                        byte[] bytes = bitmaps.Find(tile.Key);
-
-                        if(bytes!=null)
-                        {
-                            fileCache.Add(tile.Key, bytes);
-                            name = fileCache.GetFileName(tile.Key);
-                            CreateRaster(tile, bytes, name);
-                            name = fileCache.GetFileName(tile.Key);
-                            DrawRaster(name, envelope);
-                        }
-                    }
+                    name = fileCache.GetFileName(tile.Key);
+                    DrawRaster(name, envelope);
                 }
             }
         }
 
-
         public void GetTileOnThread(object parameter)
         {
             object[] parameters = (object[])parameter;
-            if (parameters.Length != 4) throw new ArgumentException("Four parameters expected");
+            if (parameters.Length != 3) throw new ArgumentException("Four parameters expected");
             IRequestBuilder requestBuilder = (IRequestBuilder)parameters[0];
             TileInfo tileInfo = (TileInfo)parameters[1];
-            MemoryCache<byte[]> bitmaps = (MemoryCache<byte[]>)parameters[2];
-            AutoResetEvent autoResetEvent = (AutoResetEvent)parameters[3];
+            AutoResetEvent autoResetEvent = (AutoResetEvent)parameters[2];
 
             byte[] bytes;
             try
             {
                 Uri url = requestBuilder.GetUri(tileInfo);
                 Debug.WriteLine("url:" + url);
+                //requestBuilder.
                 bytes = this.GetBitmap(tileInfo, requestBuilder);
-                bitmaps.Add(tileInfo.Key, bytes);
+
+                string name = fileCache.GetFileName(tileInfo.Key);
+                fileCache.Add(tileInfo.Key, bytes);
+                CreateRaster(tileInfo, bytes, name);
             }
             catch(Exception ex)
             {
@@ -243,7 +232,12 @@ namespace BruTileArcGIS
         private byte[] GetBitmap(TileInfo tile, IRequestBuilder requestBuilder)
         {
             Uri url = requestBuilder.GetUri(tile);
-            byte[] bytes = ImageRequest.GetImageFromServer(url);
+
+            // arcmap is acting like a genuine browser
+            string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
+            string referer = "http://maps.google.com/maps";
+
+            byte[] bytes = ImageRequest.GetImageFromServer(url,userAgent,referer,false);
             return bytes;
         }
 
@@ -270,21 +264,29 @@ namespace BruTileArcGIS
         /// <param name="file">The file.</param>
         private void DrawRaster(string file, IEnvelope env)
         {
-            IRasterLayer rl = new RasterLayerClass();
-            rl.CreateFromFilePath(file);
-
-            if (needReproject)
+            try
             {
-                IRasterGeometryProc rasterGeometryProc = new RasterGeometryProcClass();
-                object Missing = Type.Missing;
-                rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
-            }
+                IRasterLayer rl = new RasterLayerClass();
+                rl.CreateFromFilePath(file);
 
-            // Now set the spatial reference to the dataframe spatial reference! 
-            // Do not remove this line...
-            rl.SpatialReference = layerSpatialReference;
-            rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, new TrackCancel());
-            activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+                if (needReproject)
+                {
+                    IRasterGeometryProc rasterGeometryProc = new RasterGeometryProcClass();
+                    object Missing = Type.Missing;
+                    rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
+                }
+
+                // Now set the spatial reference to the dataframe spatial reference! 
+                // Do not remove this line...
+                rl.SpatialReference = layerSpatialReference;
+                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, new TrackCancel());
+                activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+            }
+            catch
+            {
+                // what to do now...
+                // just try to load next tile...
+            }
         }
 
         /// <summary>
@@ -338,6 +340,7 @@ namespace BruTileArcGIS
                 sw.WriteLine((resY*=-1).ToString());
                 sw.WriteLine(extent.MinX.ToString());
                 sw.WriteLine(extent.MaxY.ToString());
+                sw.Close();
             }
         }
 
