@@ -12,7 +12,7 @@ using ESRI.ArcGIS.Framework;
 using System.Reflection;
 using System.Configuration;
 using BrutileArcGIS.commands;
-using ESRI.ArcGIS.DataSourcesGDB;
+//using ESRI.ArcGIS.DataSourcesGDB;
 using ESRI.ArcGIS.Geodatabase;
 
 namespace BruTileArcGIS

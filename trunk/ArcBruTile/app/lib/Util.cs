@@ -50,7 +50,6 @@ namespace BruTileArcGIS
             FeatureLayerDisplayPropertyPageClass displayPropertyPage = new FeatureLayerDisplayPropertyPageClass();
             propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
             propertySheet.AddPage(displayPropertyPage);
-
             
             //Pass in layer, active view and the application
             propertyObjects.Add(layer);
