@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.esriSystem;
+using System.Configuration;
 
 namespace BruTileArcGIS
 {
@@ -74,7 +75,6 @@ namespace BruTileArcGIS
             BeginGroup();
             AddItem("AddOsmLayerCommand");
             AddItem("AddBingLayerCommand");
-            AddItem("AddGoogleLayerCommand");
             AddItem("BrutileArcGIS.commands.AddGeoserverLayerCommand");
         }
 

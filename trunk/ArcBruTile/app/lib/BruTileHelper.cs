@@ -234,10 +234,10 @@ namespace BruTileArcGIS
             Uri url = requestBuilder.GetUri(tile);
 
             // arcmap is acting like a genuine browser
-            string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
-            string referer = "http://maps.google.com/maps";
-
-            byte[] bytes = ImageRequest.GetImageFromServer(url,userAgent,referer,false);
+            //string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
+            //string referer = "http://maps.google.com/maps";
+            //byte[] bytes = ImageRequest.GetImageFromServer(url,userAgent,referer,false);
+            byte[] bytes = ImageRequest.GetImageFromServer(url);
             return bytes;
         }
 
