@@ -74,9 +74,9 @@ namespace BruTileArcGIS
                 schema.Axis = AxisDirection.InvertedY;
                 
                 // Added BT
-                //schema.Srs = "EPSG:900913";
+                schema.Srs = "EPSG:900913";
                 //schema.Srs = "EPSG:1102113";
-                schema.Srs = "EPSG:102113";
+                //schema.Srs = "EPSG:102113";
                 return schema;
             }
         }
