@@ -43,6 +43,9 @@ namespace BruTileArcGIS
         private FileCache fileCache;
         private IActiveView activeView;
         private Transform transform;
+        //private AutoResetEvent m_autoEvent = new AutoResetEvent(false);
+
+        private object lockobject;
 
         #endregion
 
@@ -54,6 +57,7 @@ namespace BruTileArcGIS
         public BruTileHelper(string cacheDir)
         {
             this.cacheDir = cacheDir;
+            lockobject = new object();
         }
 
         #endregion
@@ -146,7 +150,6 @@ namespace BruTileArcGIS
                     DrawRaster(name, envelope);
                 }
             }
-
             if (waitHandles.Count > 0)
             {
                 // Wait for all handles
@@ -178,12 +181,16 @@ namespace BruTileArcGIS
             {
                 Uri url = requestBuilder.GetUri(tileInfo);
                 Debug.WriteLine("url:" + url);
-                //requestBuilder.
                 bytes = this.GetBitmap(tileInfo, requestBuilder);
 
                 string name = fileCache.GetFileName(tileInfo.Key);
                 fileCache.Add(tileInfo.Key, bytes);
                 CreateRaster(tileInfo, bytes, name);
+
+                IEnvelope envelope = this.GetEnv(tileInfo.Extent);
+                name = fileCache.GetFileName(tileInfo.Key);
+                DrawRaster(name, envelope);
+
             }
             catch(Exception ex)
             {
@@ -267,6 +274,7 @@ namespace BruTileArcGIS
             try
             {
                 IRasterLayer rl = new RasterLayerClass();
+                
                 rl.CreateFromFilePath(file);
 
                 if (needReproject)

@@ -57,53 +57,65 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\BruTile\BruTile.dll</HintPath>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.ADF, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.ADF, Version=9.2.6.1500, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.ADF.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.ADF.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.ArcMapUI, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.ArcMapUI, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.ArcMapUI.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.ArcMapUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.Carto, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.Carto, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.Carto.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.Carto.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.CartoUI, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.CartoUI, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.CartoUI.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.CartoUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.DataSourcesRaster, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.DataSourcesRaster, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.DataSourcesRaster.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.DataSourcesRaster.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.Display, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.Display, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.Display.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.Display.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.Framework, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.Framework, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.Framework.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.Framework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.Geodatabase, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.Geodatabase, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.Geodatabase.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.Geodatabase.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.Geometry, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.Geometry, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.Geometry.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.Geometry.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.Output, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.Output, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.Output.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.Output.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.System, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.System, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.System.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.System.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.SystemUI, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+    <Reference Include="ESRI.ArcGIS.SystemUI, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\ESRI.ArcGIS.SystemUI.dll</HintPath>
+      <HintPath>lib\ArcGIS\9.2\ESRI.ArcGIS.SystemUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.ExceptionMessageBox, Version=9.0.242.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,6 +128,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -175,9 +188,6 @@
     <Compile Include="lib\Util.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -196,7 +206,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Resources\brutilelogobig.png" />
   </ItemGroup>
   <ItemGroup>
@@ -227,9 +236,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Service References\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
