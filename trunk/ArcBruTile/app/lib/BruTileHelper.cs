@@ -16,6 +16,7 @@ using BruTile.Web;
 using Microsoft.SqlServer.MessageBox;
 using System.Diagnostics;
 using System.Threading;
+using log4net;
 
 
 namespace BruTileArcGIS
@@ -31,6 +32,8 @@ namespace BruTileArcGIS
     /// </summary>
     public class BruTileHelper
     {
+        private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
+
         #region private members
         private string cacheDir;
         private IScreenDisplay screenDisplay; 
@@ -127,7 +130,8 @@ namespace BruTileArcGIS
             IList<TileInfo> drawTiles=new List<TileInfo>();
             IRequestBuilder requestBuilder = config.RequestBuilder;
             string name;
-           
+            logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
+            logger.Debug("Tileschema: " + config.TileSchema.Name);
             foreach (TileInfo tile in tiles)
             {
                 IEnvelope envelope = this.GetEnv(tile.Extent);
@@ -135,7 +139,8 @@ namespace BruTileArcGIS
                 if (!fileCache.Exists(tile.Key))
                 {
                     // Retrieve the tile from remote bevause it's not on disk
-                    Debug.WriteLine("Retrieve tile: " + tile.Key);
+                    //Debug.WriteLine("Retrieve tile: " + tile.Key);
+                    logger.Debug("Start retrieve remote tile: " + Log(tile.Key));
                     drawTiles.Add(tile);
                     AutoResetEvent waitHandle = new AutoResetEvent(false);
                     waitHandles.Add(waitHandle);
@@ -145,27 +150,35 @@ namespace BruTileArcGIS
                 else
                 {
                     // Read tiles from disk
-                    Debug.WriteLine("Get tile from cache: " + tile.Key);
+                    //Debug.WriteLine("Get tile from cache: " + tile.Key);
+                    logger.Debug("Draw tile from local cache: " + Log(tile.Key));
                     name = fileCache.GetFileName(tile.Key);
                     DrawRaster(name, envelope);
                 }
             }
             if (waitHandles.Count > 0)
             {
+                logger.Debug("Start waiting for remote tiles");
+
                 // Wait for all handles
                 foreach (WaitHandle waitHandle in waitHandles)
                 {
                     WaitHandle.WaitAny(new WaitHandle[] { waitHandle });
                 }
 
+                logger.Debug("End waiting for remote tiles");
                 // the draw the tiles from the workers
                 foreach (TileInfo tile in drawTiles)
                 {
+                    logger.Debug("Start drawing remote tile: " + Log(tile.Key));
+
                     IEnvelope envelope = this.GetEnv(tile.Extent);
                     name = fileCache.GetFileName(tile.Key);
                     DrawRaster(name, envelope);
+                    logger.Debug("End drawing remote tile: " + Log(tile.Key));
                 }
             }
+            logger.Debug("End drawing tiles: " + tiles.Count.ToString());
         }
 
         public void GetTileOnThread(object parameter)
@@ -325,6 +338,12 @@ namespace BruTileArcGIS
             }
         }
 
+
+        private string Log(TileKey tileKey)
+        {
+            String s = String.Format("col: {0}, row: {1}, level {2}", tileKey.Col, tileKey.Row, tileKey.Level);
+            return s;
+        }
 
         #region private members
 
