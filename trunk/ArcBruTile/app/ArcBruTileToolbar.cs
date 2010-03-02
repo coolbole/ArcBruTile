@@ -4,6 +4,10 @@ using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.esriSystem;
 using System.Configuration;
+using log4net.Config;
+using System.IO;
+using System.Reflection;
+using log4net;
 
 namespace BruTileArcGIS
 {
@@ -15,6 +19,8 @@ namespace BruTileArcGIS
     [ProgId("ArcBruTileToolbar")]
     public sealed class ArcBruTileToolbar : BaseToolbar
     {
+        private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
+
         #region COM Registration Function(s)
         [ComRegisterFunction()]
         [ComVisible(false)]
@@ -68,6 +74,10 @@ namespace BruTileArcGIS
         /// </summary>
         public ArcBruTileToolbar()
         {
+            //init log4net
+            // Configure logfiles
+            XmlConfigurator.Configure(new FileInfo(Assembly.GetExecutingAssembly().Location + ".config"));
+            logger.Info("Startup ArcBruTile");
             //Menu sectie
             AddItem("BruTileArcGIS.BruTileMenuDef");
 
