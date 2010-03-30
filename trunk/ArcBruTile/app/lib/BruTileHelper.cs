@@ -146,14 +146,13 @@ namespace BruTileArcGIS
                     //Debug.WriteLine("Get tile from cache: " + tile.Key);
                     logger.Debug("Draw tile from local cache: " + Log(tile.Key));
                     name = fileCache.GetFileName(tile.Key);
-                    DrawRaster(name, envelope,trackCancel);
+                    DrawRaster(name, envelope, trackCancel);
                 }
             }
             if (waitHandles.Count > 0)
             {
                 logger.Debug("Start waiting for remote tiles");
 
-                // Wait for all handles
                 foreach (WaitHandle waitHandle in waitHandles)
                 {
                     WaitHandle.WaitAny(new WaitHandle[] { waitHandle });
@@ -192,11 +191,6 @@ namespace BruTileArcGIS
                 string name = fileCache.GetFileName(tileInfo.Key);
                 fileCache.Add(tileInfo.Key, bytes);
                 CreateRaster(tileInfo, bytes, name);
-
-                //IEnvelope envelope = this.GetEnv(tileInfo.Extent);
-                //name = fileCache.GetFileName(tileInfo.Key);
-                //DrawRaster(name, envelope);
-
             }
             catch (Exception ex)
             {
@@ -211,52 +205,6 @@ namespace BruTileArcGIS
 
 
         #endregion
-        /// <summary>
-        /// Loads the tiles met alles in een threadpool
-        /// </summary>
-        /// <param name="tiles">The tiles.</param>
-        /// <param name="fileCache">The file cache.</param>
-        ///private void LoadTiles(object sender, DoWorkEventArgs e)                
-
-        /// <summary>
-        /// Haal een tile op en teken deze
-        /// </summary>
-        /// <param name="requestBuilder"></param>
-        /// <param name="tileInfo"></param>
-        /// <returns></returns>
-        private bool GetTile(IRequestBuilder requestBuilder, TileInfo tileInfo)
-        {
-            bool result = false;
-            byte[] bytes;
-            try
-            {
-
-                string name = fileCache.GetFileName(tileInfo.Key);
-                if (!fileCache.Exists(tileInfo.Key))
-                {
-                    Uri url = requestBuilder.GetUri(tileInfo);
-                    logger.Debug("url:" + url);
-                    bytes = this.GetBitmap(tileInfo, requestBuilder);
-
-                    fileCache.Add(tileInfo.Key, bytes);
-                    CreateRaster(tileInfo, bytes, name);
-                }
-                //IEnvelope envelope = this.GetEnv(tileInfo.Extent);
-                //DrawRaster(name, envelope);
-                result = true;
-
-            }
-            catch (Exception ex)
-            {
-                result = false;
-                logger.Debug("Exception loading tile: " + ex.ToString());
-                //!!! do something !!!
-            }
-            return result;
-        }
-
-
-
 
         /// <summary>
         /// Gets the env.
@@ -266,10 +214,10 @@ namespace BruTileArcGIS
         private IEnvelope GetEnv(Extent extent)
         {
             IEnvelope envelope = new EnvelopeClass();
-            envelope.XMin = extent.MinX-100;
-            envelope.XMax = extent.MaxX+100;
-            envelope.YMin = extent.MinY-100;
-            envelope.YMax = extent.MaxY+100;
+            envelope.XMin = extent.MinX;
+            envelope.XMax = extent.MaxX;
+            envelope.YMin = extent.MinY;
+            envelope.YMax = extent.MaxY;
             return envelope;
         }
 
