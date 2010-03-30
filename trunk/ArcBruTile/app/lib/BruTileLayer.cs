@@ -81,16 +81,20 @@ namespace BruTileArcGIS
         /// <param name="TrackCancel">The track cancel.</param>
         public void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
         {
+
             if (drawPhase == esriDrawPhase.esriDPGeography)
             {
+           
                 if (this.Valid)
                 {
                     if (this.Visible)
                     {
                         try
                         {
+
                             Debug.WriteLine("Draw event");
                             IActiveView activeView = map as IActiveView;
+                            
                             envelope = activeView.Extent;
 
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
@@ -279,6 +283,7 @@ namespace BruTileArcGIS
 
             }
         }
+
         /**
         /// <summary>
         /// Gets the spatial reference.
@@ -296,8 +301,8 @@ namespace BruTileArcGIS
 }
 
 
-                            //IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
-                            //Bitmap b= new Bitmap(@"c:\\aaa\\19.png");
-                            //Graphics g = Graphics.FromHdc(ipHwnd);
-                            //g.DrawImage(b, 100, 100);
+//IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
+//Bitmap b= new Bitmap(@"c:\\aaa\\19.png");
+//Graphics g = Graphics.FromHdc(ipHwnd);
+//g.DrawImage(b, 100, 100);
 

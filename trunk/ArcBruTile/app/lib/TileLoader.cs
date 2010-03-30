@@ -28,7 +28,7 @@ namespace BruTileArcGIS
                 object[] parameters = (object[])threadContext;
                 int threadIndex = (int)parameters[0];
                 logger.Debug(string.Format("thread {0} started...", threadIndex));
-                bool result = brutileHelper.GetTileOnThreadPool(threadContext);
+                //bool result = brutileHelper.GetTileOnThreadPool(threadContext);
                 logger.Debug(string.Format("thread {0} result calculated...", threadIndex));
                 _doneEvent.Set();
             }

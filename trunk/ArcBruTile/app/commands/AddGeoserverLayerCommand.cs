@@ -124,6 +124,7 @@ namespace BrutileArcGIS.commands
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)m_application.Document;
                 map = mxdoc.FocusMap;
+                
                 BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.GeoserverWms);
                 brutileLayer.Name = "Geoserver";
                 brutileLayer.Visible = true;

@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.Display;
-using ESRI.ArcGIS.Geometry;
+using System.Threading;
 using BruTile;
 using BruTile.Cache;
-using ESRI.ArcGIS.esriSystem;
-using ESRI.ArcGIS.DataSourcesRaster;
-using ESRI.ArcGIS.Geodatabase;
-using System.Windows.Forms;
-using System.ComponentModel;
 using BruTile.Web;
-using Microsoft.SqlServer.MessageBox;
-using System.Diagnostics;
-using System.Threading;
+using ESRI.ArcGIS.Carto;
+using ESRI.ArcGIS.DataSourcesRaster;
+using ESRI.ArcGIS.Display;
+using ESRI.ArcGIS.esriSystem;
+using ESRI.ArcGIS.Geodatabase;
+using ESRI.ArcGIS.Geometry;
 using log4net;
+using Microsoft.SqlServer.MessageBox;
 
 
 namespace BruTileArcGIS
@@ -102,14 +100,8 @@ namespace BruTileArcGIS
                 {
                     needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
                 }
-                LoadTiles();
+                LoadTiles(trackCancel);
 
-                //Point p=new Point(
-                //ointClass pc = new PointClass();
-                //pc.X = activeView.Extent.XMin + 100;
-                //pc.Y = activeView.Extent.YMin + 100;
-                //screenDisplay.SetSymbol(new SimpleMarkerSymbolClass());
-                //screenDisplay.DrawPoint(pc);
             }
             catch (Exception ex)
             {
@@ -118,6 +110,105 @@ namespace BruTileArcGIS
             }
         }
 
+
+        /// <summary>
+        /// Loads the tiles.
+        /// </summary>
+        /// <param name="tiles">The tiles.</param>
+        /// <param name="fileCache">The file cache.</param>
+        private void LoadTiles(ITrackCancel trackCancel)
+        {
+            IList<WaitHandle> waitHandles = new List<WaitHandle>();
+            IList<TileInfo> drawTiles = new List<TileInfo>();
+            IRequestBuilder requestBuilder = config.RequestBuilder;
+            string name;
+            logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
+            logger.Debug("Tileschema: " + config.TileSchema.Name);
+            foreach (TileInfo tile in tiles)
+            {
+                IEnvelope envelope = this.GetEnv(tile.Extent);
+
+                if (!fileCache.Exists(tile.Key))
+                {
+                    // Retrieve the tile from remote bevause it's not on disk
+                    //Debug.WriteLine("Retrieve tile: " + tile.Key);
+                    logger.Debug("Start retrieve remote tile: " + Log(tile.Key));
+                    drawTiles.Add(tile);
+                    AutoResetEvent waitHandle = new AutoResetEvent(false);
+                    waitHandles.Add(waitHandle);
+                    Thread t = new Thread(new ParameterizedThreadStart(GetTileOnThread));
+                    t.Start(new object[] { requestBuilder, tile, waitHandle });
+                }
+                else
+                {
+                    // Read tiles from disk
+                    //Debug.WriteLine("Get tile from cache: " + tile.Key);
+                    logger.Debug("Draw tile from local cache: " + Log(tile.Key));
+                    name = fileCache.GetFileName(tile.Key);
+                    DrawRaster(name, envelope,trackCancel);
+                }
+            }
+            if (waitHandles.Count > 0)
+            {
+                logger.Debug("Start waiting for remote tiles");
+
+                // Wait for all handles
+                foreach (WaitHandle waitHandle in waitHandles)
+                {
+                    WaitHandle.WaitAny(new WaitHandle[] { waitHandle });
+                }
+
+                logger.Debug("End waiting for remote tiles");
+                // the draw the tiles from the workers
+                foreach (TileInfo tile in drawTiles)
+                {
+                    logger.Debug("Start drawing remote tile: " + Log(tile.Key));
+
+                    IEnvelope envelope = this.GetEnv(tile.Extent);
+                    name = fileCache.GetFileName(tile.Key);
+                    DrawRaster(name, envelope,trackCancel);
+                    logger.Debug("End drawing remote tile: " + Log(tile.Key));
+                }
+            }
+            logger.Debug("End drawing tiles: " + tiles.Count.ToString());
+        }
+
+        public void GetTileOnThread(object parameter)
+        {
+            object[] parameters = (object[])parameter;
+            if (parameters.Length != 3) throw new ArgumentException("Four parameters expected");
+            IRequestBuilder requestBuilder = (IRequestBuilder)parameters[0];
+            TileInfo tileInfo = (TileInfo)parameters[1];
+            AutoResetEvent autoResetEvent = (AutoResetEvent)parameters[2];
+
+            byte[] bytes;
+            try
+            {
+                Uri url = requestBuilder.GetUri(tileInfo);
+                Debug.WriteLine("url:" + url);
+                bytes = this.GetBitmap(tileInfo, requestBuilder);
+
+                string name = fileCache.GetFileName(tileInfo.Key);
+                fileCache.Add(tileInfo.Key, bytes);
+                CreateRaster(tileInfo, bytes, name);
+
+                //IEnvelope envelope = this.GetEnv(tileInfo.Extent);
+                //name = fileCache.GetFileName(tileInfo.Key);
+                //DrawRaster(name, envelope);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception laden: " + ex.ToString());
+                //!!! do something !!!
+            }
+            finally
+            {
+                autoResetEvent.Set();
+            }
+        }
+
+
         #endregion
         /// <summary>
         /// Loads the tiles met alles in een threadpool
@@ -125,67 +216,6 @@ namespace BruTileArcGIS
         /// <param name="tiles">The tiles.</param>
         /// <param name="fileCache">The file cache.</param>
         ///private void LoadTiles(object sender, DoWorkEventArgs e)                
-        private void LoadTiles()
-        {
-
-            IRequestBuilder requestBuilder = config.RequestBuilder;
-
-            int aantalTiles = tiles.Count;
-
-            // One event is used for each Tile object
-            ManualResetEvent[] doneEvents = new ManualResetEvent[aantalTiles];
-            TileLoader[] tlArray = new TileLoader[aantalTiles];
-
-
-            // Configure and launch threads using ThreadPool:
-            logger.Debug(string.Format("launching {0} tasks...", aantalTiles));
-            for (int i = 0; i < aantalTiles; i++)
-            {
-                try
-                {
-                    TileInfo tile = tiles[i];
-                    doneEvents[i] = new ManualResetEvent(false);
-                    TileLoader t = new TileLoader(this, doneEvents[i]);
-                    tlArray[i] = t;
-                    ThreadPool.QueueUserWorkItem(t.ThreadPoolCallback, new object[] { i, requestBuilder, tile });
-                }
-                catch (Exception ex)
-                {
-                    logger.Debug(string.Format("fout in maken pool {0} ", ex.Message));
-                }
-            }
-
-            // Wait for all threads in pool to calculation...
-            try
-            {
-                for (int i = 0; i < aantalTiles; i++)
-                {
-                    doneEvents[i].WaitOne();
-                }
-                //WaitHandle.WaitAll(doneEvents);     //Geeft sta foutmelding...aitAll for multiple handles on a STA thread is not supported           
-
-            }
-            catch (Exception ex)
-            {
-                logger.Debug("WaitOne: " + ex.Message);
-            }
-            logger.Debug("All calculations are complete.");
-        }
-        /// <summary>
-        /// Haal de tile op(cache of server) en teken deze
-        /// </summary>
-        /// <param name="parameter">requestnr, requestbuilder, tileinfo</param>
-        /// <returns></returns>
-        public bool GetTileOnThreadPool(object parameter)
-        {
-            bool result = false;
-            object[] parameters = (object[])parameter;
-            if (parameters.Length != 3) throw new ArgumentException("Four parameters expected");
-            IRequestBuilder requestBuilder = (IRequestBuilder)parameters[1];
-            TileInfo tileInfo = (TileInfo)parameters[2];
-            result = GetTile(requestBuilder, tileInfo);
-            return result;
-        }
 
         /// <summary>
         /// Haal een tile op en teken deze
@@ -210,8 +240,8 @@ namespace BruTileArcGIS
                     fileCache.Add(tileInfo.Key, bytes);
                     CreateRaster(tileInfo, bytes, name);
                 }
-                IEnvelope envelope = this.GetEnv(tileInfo.Extent);
-                DrawRaster(name, envelope);
+                //IEnvelope envelope = this.GetEnv(tileInfo.Extent);
+                //DrawRaster(name, envelope);
                 result = true;
 
             }
@@ -235,10 +265,10 @@ namespace BruTileArcGIS
         private IEnvelope GetEnv(Extent extent)
         {
             IEnvelope envelope = new EnvelopeClass();
-            envelope.XMin = extent.MinX;
-            envelope.XMax = extent.MaxX;
-            envelope.YMin = extent.MinY;
-            envelope.YMax = extent.MaxY;
+            envelope.XMin = extent.MinX-100;
+            envelope.XMax = extent.MaxX+100;
+            envelope.YMin = extent.MinY-100;
+            envelope.YMax = extent.MaxY+100;
             return envelope;
         }
 
@@ -293,7 +323,7 @@ namespace BruTileArcGIS
         /// Draws the layer.
         /// </summary>
         /// <param name="file">The file.</param>
-        private void DrawRaster(string file, IEnvelope env)
+        private void DrawRaster(string file, IEnvelope env,ITrackCancel trackCancel)
         {
             try
             {
@@ -311,8 +341,8 @@ namespace BruTileArcGIS
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
                 rl.SpatialReference = layerSpatialReference;
-                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, new TrackCancel());
-                activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, trackCancel);
+                //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
             }
             catch
             {
@@ -370,8 +400,6 @@ namespace BruTileArcGIS
             {
                 double resX = (extent.MaxX - extent.MinX) / schema.Width;
                 double resY = (extent.MaxY - extent.MinY) / schema.Height;
-
-
                 sw.WriteLine(resX.ToString());
                 sw.WriteLine("0");
                 sw.WriteLine("0");
@@ -381,6 +409,7 @@ namespace BruTileArcGIS
                 sw.Close();
             }
         }
+
 
         /// <summary>
         /// Gets the map resolution.
@@ -457,105 +486,3 @@ namespace BruTileArcGIS
 }
 
 
-
-
-/**
-Oud
-
- *         public void GetTileOnThread(object parameter)
-        {
-            object[] parameters = (object[])parameter;
-            if (parameters.Length != 3) throw new ArgumentException("Four parameters expected");
-            IRequestBuilder requestBuilder = (IRequestBuilder)parameters[0];
-            TileInfo tileInfo = (TileInfo)parameters[1];
-            AutoResetEvent autoResetEvent = (AutoResetEvent)parameters[2];
-
-            byte[] bytes;
-            try
-            {
-                Uri url = requestBuilder.GetUri(tileInfo);
-                Debug.WriteLine("url:" + url);
-                bytes = this.GetBitmap(tileInfo, requestBuilder);
-
-                string name = fileCache.GetFileName(tileInfo.Key);
-                fileCache.Add(tileInfo.Key, bytes);
-                CreateRaster(tileInfo, bytes, name);
-
-                IEnvelope envelope = this.GetEnv(tileInfo.Extent);
-                name = fileCache.GetFileName(tileInfo.Key);
-                DrawRaster(name, envelope);
-
-            }
-            catch(Exception ex)
-            {
-                Debug.WriteLine("Exception laden: " + ex.ToString());
-                //!!! do something !!!
-            }
-            finally
-            {
-                autoResetEvent.Set();
-            }
-        }
-        /// <summary>
-        /// Loads the tiles.
-        /// </summary>
-        /// <param name="tiles">The tiles.</param>
-        /// <param name="fileCache">The file cache.</param>
-        private void LoadTiles_bert()
-        {
-            IList<WaitHandle> waitHandles = new List<WaitHandle>(); 
-            IList<TileInfo> drawTiles=new List<TileInfo>();
-            IRequestBuilder requestBuilder = config.RequestBuilder;
-            string name;
-            logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
-            logger.Debug("Tileschema: " + config.TileSchema.Name);
-            foreach (TileInfo tile in tiles)
-            {
-                IEnvelope envelope = this.GetEnv(tile.Extent);
-
-                if (!fileCache.Exists(tile.Key))
-                {
-                    // Retrieve the tile from remote bevause it's not on disk
-                    //Debug.WriteLine("Retrieve tile: " + tile.Key);
-                    logger.Debug("Start retrieve remote tile: " + Log(tile.Key));
-                    drawTiles.Add(tile);
-                    AutoResetEvent waitHandle = new AutoResetEvent(false);
-                    waitHandles.Add(waitHandle);
-                    Thread t = new Thread(new ParameterizedThreadStart(GetTileOnThread));
-                    t.Start(new object[] { requestBuilder, tile, waitHandle });
-                }
-                else
-                {
-                    // Read tiles from disk
-                    //Debug.WriteLine("Get tile from cache: " + tile.Key);
-                    logger.Debug("Draw tile from local cache: " + Log(tile.Key));
-                    name = fileCache.GetFileName(tile.Key);
-                    DrawRaster(name, envelope);
-                }
-            }
-            if (waitHandles.Count > 0)
-            {
-                logger.Debug("Start waiting for remote tiles");
-
-                // Wait for all handles
-                foreach (WaitHandle waitHandle in waitHandles)
-                {
-                    WaitHandle.WaitAny(new WaitHandle[] { waitHandle });
-                }
-
-                logger.Debug("End waiting for remote tiles");
-                // the draw the tiles from the workers
-                foreach (TileInfo tile in drawTiles)
-                {
-                    logger.Debug("Start drawing remote tile: " + Log(tile.Key));
-
-                    IEnvelope envelope = this.GetEnv(tile.Extent);
-                    name = fileCache.GetFileName(tile.Key);
-                    DrawRaster(name, envelope);
-                    logger.Debug("End drawing remote tile: " + Log(tile.Key));
-                }
-            }
-            logger.Debug("End drawing tiles: " + tiles.Count.ToString());
-        }
-
-*/
