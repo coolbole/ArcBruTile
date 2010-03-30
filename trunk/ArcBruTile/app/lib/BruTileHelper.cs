@@ -30,6 +30,7 @@ namespace BruTileArcGIS
     /// </summary>
     public class BruTileHelper
     {
+
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
 
         #region private members
