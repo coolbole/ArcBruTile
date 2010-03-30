@@ -16,7 +16,7 @@ namespace BruTileArcGIS
             fileMap.ExeConfigFilename = configFileName;
             Configuration config= ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
 
-            string tileDir = config.AppSettings.Settings["tileDir"].Value;
+            string tileDir = config.AppSettings.Settings["cacheDir"].Value;
             if(tileDir.Contains("%"))
             {
                 tileDir = CacheSettings.ReplaceEnvironmentVar(tileDir);
