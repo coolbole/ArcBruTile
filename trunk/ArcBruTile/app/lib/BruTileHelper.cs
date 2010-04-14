@@ -287,6 +287,11 @@ namespace BruTileArcGIS
                     rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
                 }
 
+                // this is needed for ArcGIS 9.2 only
+                IRasterProps rasterProps = (IRasterProps)rl.Raster;
+                rasterProps.Height = schema.Height;
+                rasterProps.Width = schema.Width;
+
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
                 rl.SpatialReference = layerSpatialReference;
