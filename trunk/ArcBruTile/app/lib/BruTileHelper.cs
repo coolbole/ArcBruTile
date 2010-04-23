@@ -150,18 +150,10 @@ namespace BruTileArcGIS
             if (workitemResults.Count > 0)
             {
                 logger.Debug("Start waiting for remote tiles");
-                int nr = workitemResults.Count;
-                IWorkItemResult<TileInfo>[] wirs = new IWorkItemResult<TileInfo>[nr];
-                for (int i = 0; i < wirs.Length; i++)
-                {
-                    wirs[i] = workitemResults[i];
-                }
 
-                foreach (IWorkItemResult<TileInfo> res in workitemResults)
-                {
-                    SmartThreadPool.WaitAny(new IWorkItemResult<TileInfo> [] { res});
-                }
-
+                // use 3000 milliseconds???
+                smartThreadPool.WaitForIdle(3000);
+ 
                 foreach (IWorkItemResult<TileInfo> res in workitemResults)
                 {
                     TileInfo tile = (TileInfo)res.Result;
