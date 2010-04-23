@@ -84,6 +84,7 @@ namespace BruTileArcGIS
             //Status sectie
             BeginGroup();
             AddItem("AddOsmLayerCommand");
+            AddItem("AddGoogleLayerCommand");
             AddItem("AddBingLayerCommand");
             AddItem("BrutileArcGIS.commands.AddGeoserverLayerCommand");
         }

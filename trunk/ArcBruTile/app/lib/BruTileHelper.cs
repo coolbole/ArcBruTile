@@ -15,6 +15,7 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
+using Amib.Threading;
 
 
 namespace BruTileArcGIS
@@ -119,90 +120,78 @@ namespace BruTileArcGIS
         /// <param name="fileCache">The file cache.</param>
         private void LoadTiles(ITrackCancel trackCancel)
         {
-            IList<WaitHandle> waitHandles = new List<WaitHandle>();
+            IList<IWorkItemResult<TileInfo>> workitemResults = new List<IWorkItemResult<TileInfo>>();
             IList<TileInfo> drawTiles = new List<TileInfo>();
             IRequestBuilder requestBuilder = config.RequestBuilder;
             string name;
             logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
             logger.Debug("Tileschema: " + config.TileSchema.Name);
+
+            SmartThreadPool smartThreadPool = new SmartThreadPool();
             foreach (TileInfo tile in tiles)
             {
                 IEnvelope envelope = this.GetEnv(tile.Extent);
 
                 if (!fileCache.Exists(tile.Key))
                 {
-                    // Retrieve the tile from remote bevause it's not on disk
-                    //Debug.WriteLine("Retrieve tile: " + tile.Key);
-                    logger.Debug("Start retrieve remote tile: " + Log(tile.Key));
-                    drawTiles.Add(tile);
-                    AutoResetEvent waitHandle = new AutoResetEvent(false);
-                    waitHandles.Add(waitHandle);
-                    Thread t = new Thread(new ParameterizedThreadStart(GetTileOnThread));
-                    t.Start(new object[] { requestBuilder, tile, waitHandle });
+                    Uri uri = requestBuilder.GetUri(tile);
+                    object o=new object[] { requestBuilder, tile};
+                    IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
+                    workitemResults.Add(wir);
                 }
                 else
                 {
                     // Read tiles from disk
-                    //Debug.WriteLine("Get tile from cache: " + tile.Key);
                     logger.Debug("Draw tile from local cache: " + Log(tile.Key));
                     name = fileCache.GetFileName(tile.Key);
                     DrawRaster(name, envelope, trackCancel);
                 }
             }
-            if (waitHandles.Count > 0)
+            if (workitemResults.Count > 0)
             {
                 logger.Debug("Start waiting for remote tiles");
-
-                foreach (WaitHandle waitHandle in waitHandles)
+                int nr = workitemResults.Count;
+                IWorkItemResult<TileInfo>[] wirs = new IWorkItemResult<TileInfo>[nr];
+                for (int i = 0; i < wirs.Length; i++)
                 {
-                    WaitHandle.WaitAny(new WaitHandle[] { waitHandle });
+                    wirs[i] = workitemResults[i];
                 }
 
-                logger.Debug("End waiting for remote tiles");
-                // the draw the tiles from the workers
-                foreach (TileInfo tile in drawTiles)
+                foreach (IWorkItemResult<TileInfo> res in workitemResults)
                 {
+                    SmartThreadPool.WaitAny(new IWorkItemResult<TileInfo> [] { res});
+                }
+
+                foreach (IWorkItemResult<TileInfo> res in workitemResults)
+                {
+                    TileInfo tile = (TileInfo)res.Result;
                     logger.Debug("Start drawing remote tile: " + Log(tile.Key));
 
                     IEnvelope envelope = this.GetEnv(tile.Extent);
                     name = fileCache.GetFileName(tile.Key);
-                    DrawRaster(name, envelope,trackCancel);
+                    DrawRaster(name, envelope, trackCancel);
                     logger.Debug("End drawing remote tile: " + Log(tile.Key));
                 }
+                smartThreadPool.Shutdown();
+
             }
             logger.Debug("End drawing tiles: " + tiles.Count.ToString());
         }
 
-        public void GetTileOnThread(object parameter)
+        public TileInfo GetTile(object o)
         {
-            object[] parameters = (object[])parameter;
-            if (parameters.Length != 3) throw new ArgumentException("Four parameters expected");
+            object[] parameters = (object[])o;
+            if (parameters.Length != 2) throw new ArgumentException("Four parameters expected");
             IRequestBuilder requestBuilder = (IRequestBuilder)parameters[0];
             TileInfo tileInfo = (TileInfo)parameters[1];
-            AutoResetEvent autoResetEvent = (AutoResetEvent)parameters[2];
 
-            byte[] bytes;
-            try
-            {
-                Uri url = requestBuilder.GetUri(tileInfo);
-                Debug.WriteLine("url:" + url);
-                bytes = this.GetBitmap(tileInfo, requestBuilder);
-
-                string name = fileCache.GetFileName(tileInfo.Key);
-                fileCache.Add(tileInfo.Key, bytes);
-                CreateRaster(tileInfo, bytes, name);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Exception laden: " + ex.ToString());
-                //!!! do something !!!
-            }
-            finally
-            {
-                autoResetEvent.Set();
-            }
+            Uri url = requestBuilder.GetUri(tileInfo);
+            byte[] bytes = this.GetBitmap(url);
+            string name = fileCache.GetFileName(tileInfo.Key);
+            fileCache.Add(tileInfo.Key, bytes);
+            CreateRaster(tileInfo, bytes, name);
+            return tileInfo;
         }
-
 
         #endregion
 
@@ -239,15 +228,12 @@ namespace BruTileArcGIS
         }
 
 
-        private byte[] GetBitmap(TileInfo tile, IRequestBuilder requestBuilder)
+        public byte[] GetBitmap(Uri uri)
         {
-            Uri url = requestBuilder.GetUri(tile);
-
             // arcmap is acting like a genuine browser
-            //string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
-            //string referer = "http://maps.google.com/maps";
-            //byte[] bytes = ImageRequest.GetImageFromServer(url,userAgent,referer,false);
-            byte[] bytes = ImageRequest.GetImageFromServer(url);
+            string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
+            string referer = "http://maps.google.com/maps";
+            byte[] bytes = ImageRequest.GetImageFromServer(uri,userAgent,referer,false);
             return bytes;
         }
 
