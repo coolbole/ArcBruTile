@@ -136,26 +136,28 @@ namespace BruTileArcGIS
             SmartThreadPool smartThreadPool = new SmartThreadPool();
             foreach (TileInfo tile in tiles)
             {
-                if (tileSource is SpatialCloudTileSource)
-                {
-                    string hash=SpatialCloudAuthSign.GetMD5Hash(
-                        tile.Index.Level.ToString(),
-                        tile.Index.Col.ToString(),
-                        tile.Index.Row.ToString(),
-                        schema.Format,
-                        ((SpatialCloudTileSource)tileSource).LoginId,
-                        ((SpatialCloudTileSource)tileSource).Password);
-
-                    ((SpatialCloudTileSource)tileSource).AuthSign = hash;
-                }
 
                 IEnvelope envelope = this.GetEnv(tile.Extent);
                 
                 if (!fileCache.Exists(tile.Index))
                 {
                    
-                   //tileProvider.requestBuilder
-                    object o=new object[] { tileProvider.requestBuilder, tile};
+
+                    if (tileSource is SpatialCloudTileSource)
+                    {
+                        string hash = SpatialCloudAuthSign.GetMD5Hash(
+                            tile.Index.Level.ToString(),
+                            tile.Index.Col.ToString(),
+                            tile.Index.Row.ToString(),
+                            schema.Format,
+                            ((SpatialCloudTileSource)tileSource).LoginId,
+                            ((SpatialCloudTileSource)tileSource).Password);
+
+                        ((SpatialCloudTileSource)tileSource).AuthSign = hash;
+                    }
+
+                    object o = new object[] { tileProvider.requestBuilder, tile };
+                    
                     IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
                     workitemResults.Add(wir);
 
