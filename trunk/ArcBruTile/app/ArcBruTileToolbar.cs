@@ -86,7 +86,8 @@ namespace BruTileArcGIS
             AddItem("AddOsmLayerCommand");
             AddItem("AddGoogleLayerCommand");
             AddItem("AddBingLayerCommand");
-            AddItem("BrutileArcGIS.commands.AddGeoserverLayerCommand");
+            AddItem("AddSpatialCloudLayerCommand");
+            AddItem("AddGeoserverLayerCommand");
         }
 
         /// <summary>

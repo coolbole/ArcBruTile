@@ -8,15 +8,17 @@ using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
-namespace BruTileArcGIS
+using BruTileArcGIS;
+
+namespace BrutileArcGIS.commands
 {
     /// <summary>
     /// ArcGIS Command to show a BruTile.
     /// </summary>
-    [Guid("25814B13-2CC3-45C3-80A3-CD0BD4824273")]
+    [Guid("280195CB-E5C6-4AC9-B2D2-660A1FE90CD8")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddGoogleLayerCommand")]
-    public sealed class AddGoogleLayerCommand : BaseCommand
+    [ProgId("AddSpatialCloudLayerCommand")]
+    public sealed class AddSpatialCloudLayerCommand : BaseCommand
     {
         #region private members
         private IMap map;
@@ -27,14 +29,14 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddGoogleLayerCommand()
+        public AddSpatialCloudLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Google";
-            base.m_message = "Add Google Layer";
+            base.m_caption = "&SpatialCloud";
+            base.m_message = "Add SpatialCloud Layer";
             base.m_toolTip = base.m_message;
-            base.m_name = "AddGoogleLayer";
-            base.m_bitmap = Resources.google;
+            base.m_name = "AddSpatialCloudLayer";
+            base.m_bitmap = Resources.SpatialCloud;
         }
         #endregion
 
@@ -85,18 +87,17 @@ namespace BruTileArcGIS
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.Google);
-                brutileLayer.Name = "Google Maps";
+                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.SpatialCloud);
 
+                brutileLayer.Name = "SpatialCloud";
                 brutileLayer.Visible = true;
+
                 map.AddLayer((ILayer)brutileLayer);
                 Util.SetBruTilePropertyPage(application, brutileLayer);
-
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString()+", "+ex.StackTrace);
+                MessageBox.Show(ex.ToString());
             }
         }
 
@@ -153,4 +154,5 @@ namespace BruTileArcGIS
         #endregion
 
     }
+
 }

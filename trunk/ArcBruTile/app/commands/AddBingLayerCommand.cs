@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrutileArcGIS.Properties;
@@ -7,13 +7,7 @@ using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
-using System.Reflection;
-using System.Configuration;
-using BrutileArcGIS.commands;
-//using ESRI.ArcGIS.DataSourcesGDB;
-using ESRI.ArcGIS.Geodatabase;
 
 namespace BruTileArcGIS
 {

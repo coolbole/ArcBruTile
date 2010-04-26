@@ -162,6 +162,7 @@
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddGoogleLayerCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
+    <Compile Include="commands\AddSpatialCloudButton.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
     <Compile Include="controls\BruTilePropertyPageUserControl.cs">
@@ -234,6 +235,7 @@
   <ItemGroup>
     <Content Include="readme.txt" />
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
+    <Content Include="Resources\SpatialCloud.png" />
     <None Include="Resources\Google.png" />
     <None Include="Resources\google.ico" />
   </ItemGroup>

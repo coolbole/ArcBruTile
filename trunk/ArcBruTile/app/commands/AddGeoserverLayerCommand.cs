@@ -16,7 +16,7 @@ namespace BrutileArcGIS.commands
     /// </summary>
     [Guid("b1b6ff8e-0947-485f-9edd-ed38134814eb")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("BrutileArcGIS.commands.AddGeoserverLayerCommand")]
+    [ProgId("AddGeoserverLayerCommand")]
     public sealed class AddGeoserverLayerCommand : BaseCommand
     {
         #region COM Registration Function(s)
