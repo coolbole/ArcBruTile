@@ -69,11 +69,11 @@ namespace BruTileArcGIS
             }
         }
 
-        public IRequestBuilder RequestBuilder
+        public IRequest RequestBuilder
         {
             get
             {
-                return new RequestBasic("http://mt1.google.com/vt/lyrs=m@113&hl=nl&x={1}&y={2}&z={0}&s=");
+                return new BasicRequest("http://mt1.google.com/vt/lyrs=m@113&hl=nl&x={1}&y={2}&z={0}&s=");
             }
         }
 

@@ -7,6 +7,8 @@ using ESRI.ArcGIS.Framework;
 using System.Windows.Forms;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.esriSystem;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace BruTileArcGIS
 {

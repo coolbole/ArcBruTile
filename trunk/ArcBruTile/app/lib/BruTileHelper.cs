@@ -82,7 +82,7 @@ namespace BruTileArcGIS
 
                 IEnvelope env = activeView.Extent;
                 this.config = ConfigHelper.GetConfig(enumBruTileLayer);
-                this.schema = config.TileSchema;
+                this.schema=config.CreateTileSource().Schema;
                 this.layerSpatialReference = layerSpatialReference;
                 string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, enumBruTileLayer);
                 fileCache = new FileCache(cacheDirType, schema.Format);
@@ -122,28 +122,33 @@ namespace BruTileArcGIS
         {
             IList<IWorkItemResult<TileInfo>> workitemResults = new List<IWorkItemResult<TileInfo>>();
             IList<TileInfo> drawTiles = new List<TileInfo>();
-            IRequestBuilder requestBuilder = config.RequestBuilder;
+            WebTileProvider tileProvider=(WebTileProvider)config.CreateTileSource().Provider;
+            //tileProvider.GetTile(
+            //IRequestBuilder requestBuilder = config.RequestBuilder;
+            //config.CreateTileSource().Schema.
             string name;
             logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
-            logger.Debug("Tileschema: " + config.TileSchema.Name);
+            //logger.Debug("Tileschema: " + config.TileSchema.Name);
 
             SmartThreadPool smartThreadPool = new SmartThreadPool();
             foreach (TileInfo tile in tiles)
             {
                 IEnvelope envelope = this.GetEnv(tile.Extent);
 
-                if (!fileCache.Exists(tile.Key))
+                if (!fileCache.Exists(tile.Index))
                 {
-                    Uri uri = requestBuilder.GetUri(tile);
-                    object o=new object[] { requestBuilder, tile};
+                    
+                    //Uri uri = requestBuilder.GetUri(tile);
+                    //tileProvider.requestBuilder
+                    object o=new object[] { tileProvider.requestBuilder, tile};
                     IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
                     workitemResults.Add(wir);
                 }
                 else
                 {
                     // Read tiles from disk
-                    logger.Debug("Draw tile from local cache: " + Log(tile.Key));
-                    name = fileCache.GetFileName(tile.Key);
+                    logger.Debug("Draw tile from local cache: " + Log(tile.Index));
+                    name = fileCache.GetFileName(tile.Index);
                     DrawRaster(name, envelope, trackCancel);
                 }
             }
@@ -157,12 +162,12 @@ namespace BruTileArcGIS
                 foreach (IWorkItemResult<TileInfo> res in workitemResults)
                 {
                     TileInfo tile = (TileInfo)res.Result;
-                    logger.Debug("Start drawing remote tile: " + Log(tile.Key));
+                    logger.Debug("Start drawing remote tile: " + Log(tile.Index));
 
                     IEnvelope envelope = this.GetEnv(tile.Extent);
-                    name = fileCache.GetFileName(tile.Key);
+                    name = fileCache.GetFileName(tile.Index);
                     DrawRaster(name, envelope, trackCancel);
-                    logger.Debug("End drawing remote tile: " + Log(tile.Key));
+                    logger.Debug("End drawing remote tile: " + Log(tile.Index));
                 }
                 smartThreadPool.Shutdown();
 
@@ -174,13 +179,13 @@ namespace BruTileArcGIS
         {
             object[] parameters = (object[])o;
             if (parameters.Length != 2) throw new ArgumentException("Four parameters expected");
-            IRequestBuilder requestBuilder = (IRequestBuilder)parameters[0];
+            IRequest requestBuilder = (IRequest)parameters[0];
             TileInfo tileInfo = (TileInfo)parameters[1];
 
             Uri url = requestBuilder.GetUri(tileInfo);
             byte[] bytes = this.GetBitmap(url);
-            string name = fileCache.GetFileName(tileInfo.Key);
-            fileCache.Add(tileInfo.Key, bytes);
+            string name = fileCache.GetFileName(tileInfo.Index);
+            fileCache.Add(tileInfo.Index, bytes);
             CreateRaster(tileInfo, bytes, name);
             return tileInfo;
         }
@@ -225,7 +230,9 @@ namespace BruTileArcGIS
             // arcmap is acting like a genuine browser
             string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
             string referer = "http://maps.google.com/maps";
-            byte[] bytes = ImageRequest.GetImageFromServer(uri,userAgent,referer,false);
+
+            //byte[] bytes = ImageRequest.GetImageFromServer(uri,userAgent,referer,false);
+            byte[] bytes = RequestHelper.FetchImage(uri, userAgent, referer, false);
             return bytes;
         }
 
@@ -242,7 +249,7 @@ namespace BruTileArcGIS
             string tfwFile = name.Replace(fi.Extension, "." + this.GetWorldFile(schema.Format));
             this.WriteWorldFile(tfwFile, tile.Extent, schema);
 
-            AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Key), dataSpatialReference);
+            AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
 
         }
 
@@ -312,7 +319,7 @@ namespace BruTileArcGIS
         }
 
 
-        private string Log(TileKey tileKey)
+        private string Log(TileIndex tileKey)
         {
             String s = String.Format("col: {0}, row: {1}, level {2}", tileKey.Col, tileKey.Row, tileKey.Level);
             return s;

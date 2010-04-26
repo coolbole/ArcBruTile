@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.SqlServer.MessageBox;
 using System.Drawing;
 using System.Diagnostics;
+using BruTile;
 
 namespace BruTileArcGIS
 {
@@ -50,7 +51,8 @@ namespace BruTileArcGIS
             this.cacheDir = CacheSettings.GetCacheFolder();
             SpatialReferences spatialReferences = new SpatialReferences();
             IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
-            this.dataSpatialReference=spatialReferences.GetSpatialReference(config.TileSchema.Srs);
+            ITileSchema schema=config.CreateTileSource().Schema;
+            this.dataSpatialReference=spatialReferences.GetSpatialReference(schema.Srs);
             this.envelope = GetDefaultEnvelope();
 
             if(map.SpatialReference==null)
@@ -260,7 +262,7 @@ namespace BruTileArcGIS
         private IEnvelope GetDefaultEnvelope()
         {
             IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
-            BruTile.Extent ext = config.TileSchema.Extent;
+            BruTile.Extent ext = config.CreateTileSource().Schema.Extent;
             IEnvelope envelope = new EnvelopeClass();
             envelope.XMin = ext.MinX;
             envelope.XMax = ext.MaxX;

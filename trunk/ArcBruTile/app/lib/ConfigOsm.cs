@@ -19,11 +19,24 @@ using System;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
+using BruTile.PreDefined;
 
 namespace BruTileArcGIS
 {
     public class ConfigOsm : IConfig
     {
+        public ITileSource CreateTileSource()
+        {
+            //OsmTileSource osmTileSource = new OsmTileSource();
+            //osmTileSource.Schema.Srs="EPSG:900913";
+            return new OsmTileSource();
+        }
+    }
+}
+
+
+    /**(
+
         string format = "png";
         string name = "OpenStreetMap";
         string url = "http://b.tile.openstreetmap.org";
@@ -76,4 +89,4 @@ namespace BruTileArcGIS
 
         #endregion
     }
-}
+*/

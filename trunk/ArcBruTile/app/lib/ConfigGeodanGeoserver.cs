@@ -26,9 +26,6 @@ namespace BruTileArcGIS
 {
     public class ConfigGeodanGeoserver : IConfig
     {
-        string format = "jpg";
-        string name = "GeodanGeoserver";
-        string url = "http://geoserver.nl/tiles/tilecache.aspx?";
 
         private static double[] ScalesGeodan = new double[] { 
             3276,1092,364,122,40.5,13.5,4.5,1.5,0.5,0.1666666667
@@ -37,19 +34,27 @@ namespace BruTileArcGIS
 
         #region IConfig Members
 
-        public BruTile.Cache.ITileCache<byte[]> FileCache
+        public ITileSource CreateTileSource()
+        {
+            return new TileSource(Provider, Schema);
+        }
+
+        private static ITileProvider Provider
         {
             get
             {
-                string dir = String.Format("{0}\\{1}\\{2}", Util.DefaultCacheDir, Util.AppName, name);
-                return new FileCache(dir, format);
+                return new WebTileProvider(RequestBuilder);
             }
         }
 
-        public BruTile.Web.IRequestBuilder RequestBuilder
+
+        private static IRequest RequestBuilder
         {
             get
             {
+
+                string url = "http://geoserver.nl/tiles/tilecache.aspx?";
+
                 List<string> layers = new List<string>();
                 //layers.Add("geostreets_falk");//png
                 layers.Add("lufo2009");      //jpg
@@ -57,14 +62,17 @@ namespace BruTileArcGIS
                 //ORtho is nodig omdat anders de laag niet werkt
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("seriveparam", "ortho10");
-                return new RequestWmsC(new Uri(url), TileSchema, layers, new List<string>(), parameters);
+                return new  WmscRequest(new Uri(url), Schema, layers, new List<string>(), parameters);
             }
         }
 
-        public BruTile.ITileSchema TileSchema
+        public static BruTile.ITileSchema Schema
         {
             get
             {
+                string format = "jpg";
+                string name = "GeodanGeoserver";
+
                 TileSchema schema = new TileSchema();
                 foreach (double resolution in ScalesGeodan) schema.Resolutions.Add(resolution);
                 schema.Height = 256;
@@ -85,3 +93,15 @@ namespace BruTileArcGIS
 
     }
 }
+
+
+
+/**
+public BruTile.Cache.ITileCache<byte[]> FileCache
+{
+    get
+    {
+        string dir = String.Format("{0}\\{1}\\{2}", Util.DefaultCacheDir, Util.AppName, name);
+        return new FileCache(dir, format);
+    }
+}*/

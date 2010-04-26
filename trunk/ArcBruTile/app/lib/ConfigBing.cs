@@ -22,67 +22,12 @@ using BruTile;
 
 namespace BruTileArcGIS
 {
-    class ConfigBing : IConfig
+    public class ConfigBing : IConfig
     {
-        string format = "jpg";
-        string name = "VirtualEarth";
-        string url = "http://t1.staging.tiles.virtualearth.net/tiles/";
-        string token;
-
-        private static double[] ScalesVE = new double[] { 
-      78271.516950000, 39135.758475000, 19567.879237500, 
-      9783.939618750, 4891.969809375, 2445.984904688, 1222.992452344, 
-      611.496226172, 305.748113086, 152.874056543, 76.437028271, 
-      38.218514136, 19.109257068, 9.554628534, 4.777314267, 
-      2.388657133, 1.194328567, 0.597164283, 0.298582142};
-
-        #region IConfig Members
-
-        public ITileCache<byte[]> FileCache
+        public ITileSource CreateTileSource()
         {
-            get
-            {
-                string dir = String.Format("{0}\\{1}\\{2}", Util.DefaultCacheDir, Util.AppName, name);
-                return new FileCache(dir, format);
-            }
+            return new BingTileSource(
+                "http://t1.staging.tiles.virtualearth.net/tiles/","",MapType.Hybrid);
         }
-
-        public IRequestBuilder RequestBuilder
-        {
-            get
-            {
-                //retrieve your token through your own VE account, see
-                //http://msdn.microsoft.com/en-us/library/cc980844.aspx
-                token = "";
-                return new RequestVE(url, token);
-            }
-        }
-
-        public ITileSchema TileSchema
-        {
-            get
-            {
-                TileSchema schema = new TileSchema();
-                foreach (double resolution in ScalesVE) schema.Resolutions.Add(resolution);
-                schema.Height = 256;
-                schema.Width = 256;
-                schema.Extent = new Extent(-20037508.342789, -20037508.342789, 20037508.342789, 20037508.342789);
-                schema.OriginX = -20037508.342789;
-                schema.OriginY = 20037508.342789;
-                schema.Name = name;
-                schema.Format = format;
-                schema.Axis = AxisDirection.InvertedY;
-                
-                // Added BT
-                schema.Srs = "EPSG:900913";
-                //schema.Srs = "EPSG:1102113";
-                //schema.Srs = "EPSG:102113";
-                return schema;
-            }
-        }
-
-        #endregion
-
-
     }
 }

@@ -93,6 +93,7 @@ namespace BruTileArcGIS
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
                 BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.Bing);
+                
                 brutileLayer.Name = "Bing";
                 brutileLayer.Visible = true;
 
