@@ -129,9 +129,9 @@ namespace BrutileArcGIS.commands
                 brutileLayer.Name = "Geoserver";
                 brutileLayer.Visible = true;
 
-                //IEnumLayer lyrs;
-                //((IMapLayers)map).AddLayers((ILayer)brutileLayer);
                 map.AddLayer((ILayer)brutileLayer);
+                map.MoveLayer((ILayer)brutileLayer, map.LayerCount);
+
                 Util.SetBruTilePropertyPage(application, brutileLayer);
             }
             catch (Exception ex)
