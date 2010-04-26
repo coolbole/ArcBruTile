@@ -32,8 +32,15 @@ New code:
         public IRequest requestBuilder;
 Reason: We need to know the url's of the tiles to fetch tiles in a threadpool
 
+5] Method BruTile.Web.RequestHelper.FetchImage(Uri uri, string userAgent, string referer, bool keepAlive)
+Added:
+            webRequest.AllowAutoRedirect=true;
+Reason: The SpatialCloud service uses redirection to retrieve an image
+
 NB: I didn't use the Silverlight version of BruTile, because of errors with System.dll. Maybe this
 is because the ArcBruTile extension or ArcMap already uses 
+
+
 
 
 
