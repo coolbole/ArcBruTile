@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
-using ESRI.ArcGIS.esriSystem;
-using System.Configuration;
-using log4net.Config;
-using System.IO;
-using System.Reflection;
 using log4net;
+using log4net.Config;
 
 namespace BruTileArcGIS
 {
@@ -80,7 +79,6 @@ namespace BruTileArcGIS
             logger.Info("Startup ArcBruTile");
             //Menu sectie
             AddItem("BruTileArcGIS.BruTileMenuDef");
-
 
             Configuration config = ConfigurationHelper.GetConfig();
 
