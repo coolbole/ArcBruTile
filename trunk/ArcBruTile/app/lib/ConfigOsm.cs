@@ -27,8 +27,6 @@ namespace BruTileArcGIS
     {
         public ITileSource CreateTileSource()
         {
-            //OsmTileSource osmTileSource = new OsmTileSource();
-            //osmTileSource.Schema.Srs="EPSG:900913";
             return new OsmTileSource();
         }
     }

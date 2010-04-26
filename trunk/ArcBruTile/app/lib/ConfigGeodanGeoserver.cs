@@ -21,6 +21,7 @@ using BruTile;
 using System.Collections.Generic;
 using BruTile.Web;
 using BruTile.Cache;
+using System.Configuration;
 
 namespace BruTileArcGIS
 {
@@ -52,17 +53,19 @@ namespace BruTileArcGIS
         {
             get
             {
+                Configuration config = ConfigurationHelper.GetConfig();
+                string geoserverUrl = config.AppSettings.Settings["GeoserverUrl"].Value;
 
-                string url = "http://geoserver.nl/tiles/tilecache.aspx?";
+                //string url = "http://geoserver.nl/tiles/tilecache.aspx?";
 
                 List<string> layers = new List<string>();
                 //layers.Add("geostreets_falk");//png
-                layers.Add("lufo2009");      //jpg
-                //layers.Add("top10nl");   //png   
+                //layers.Add("lufo2009");      //jpg
+                layers.Add("top10nl");   //png   
                 //ORtho is nodig omdat anders de laag niet werkt
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("seriveparam", "ortho10");
-                return new  WmscRequest(new Uri(url), Schema, layers, new List<string>(), parameters);
+                return new WmscRequest(new Uri(geoserverUrl), Schema, layers, new List<string>(), parameters);
             }
         }
 
@@ -70,7 +73,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                string format = "jpg";
+                string format = "png";
                 string name = "GeodanGeoserver";
 
                 TileSchema schema = new TileSchema();
@@ -93,15 +96,3 @@ namespace BruTileArcGIS
 
     }
 }
-
-
-
-/**
-public BruTile.Cache.ITileCache<byte[]> FileCache
-{
-    get
-    {
-        string dir = String.Format("{0}\\{1}\\{2}", Util.DefaultCacheDir, Util.AppName, name);
-        return new FileCache(dir, format);
-    }
-}*/
