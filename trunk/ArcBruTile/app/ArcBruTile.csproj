@@ -172,6 +172,7 @@
     </Compile>
     <Compile Include="lib\CacheSettings.cs" />
     <Compile Include="lib\ConfigGoogle.cs" />
+    <Compile Include="lib\ConfigSpatialCloud.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
     <Compile Include="lib\ConfigEsri.cs" />
@@ -182,6 +183,8 @@
     <Compile Include="lib\ConfigurationHelper.cs" />
     <Compile Include="lib\EnumBruTileLayer.cs" />
     <Compile Include="lib\IConfig.cs" />
+    <Compile Include="lib\SpatialCloudSchema.cs" />
+    <Compile Include="lib\SpatialCloudTileSource.cs" />
     <Compile Include="lib\SpatialReferences.cs" />
     <Compile Include="lib\TileLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

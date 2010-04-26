@@ -40,6 +40,10 @@ namespace BruTileArcGIS
             {
                 result = new ConfigGoogle();
             }
+            else if (enumBruTileLayer == EnumBruTileLayer.SpatialCloud)
+            {
+                result = new ConfigSpatialCloud();
+            }
 
             return result;
         }

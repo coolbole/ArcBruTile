@@ -137,9 +137,8 @@ namespace BruTileArcGIS
 
                 if (!fileCache.Exists(tile.Index))
                 {
-                    
-                    //Uri uri = requestBuilder.GetUri(tile);
-                    //tileProvider.requestBuilder
+                   
+                   //tileProvider.requestBuilder
                     object o=new object[] { tileProvider.requestBuilder, tile};
                     IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
                     workitemResults.Add(wir);
@@ -162,12 +161,12 @@ namespace BruTileArcGIS
                 foreach (IWorkItemResult<TileInfo> res in workitemResults)
                 {
                     TileInfo tile = (TileInfo)res.Result;
-                    logger.Debug("Start drawing remote tile: " + Log(tile.Index));
+                    //logger.Debug("Start drawing remote tile: " + Log(tile.Index));
 
                     IEnvelope envelope = this.GetEnv(tile.Extent);
                     name = fileCache.GetFileName(tile.Index);
                     DrawRaster(name, envelope, trackCancel);
-                    logger.Debug("End drawing remote tile: " + Log(tile.Index));
+                    //logger.Debug("End drawing remote tile: " + Log(tile.Index));
                 }
                 smartThreadPool.Shutdown();
 
@@ -183,6 +182,8 @@ namespace BruTileArcGIS
             TileInfo tileInfo = (TileInfo)parameters[1];
 
             Uri url = requestBuilder.GetUri(tileInfo);
+            logger.Debug("Url: " + url.AbsoluteUri);
+
             byte[] bytes = this.GetBitmap(url);
             string name = fileCache.GetFileName(tileInfo.Index);
             fileCache.Add(tileInfo.Index, bytes);

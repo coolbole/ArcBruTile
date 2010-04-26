@@ -5,6 +5,6 @@
     /// </summary>
     public enum EnumBruTileLayer
     {
-        OSM, ESRI, Bing, TMS, GeoserverWms, Google
+        OSM, ESRI, Bing, TMS, GeoserverWms, Google, SpatialCloud
     }
 }
