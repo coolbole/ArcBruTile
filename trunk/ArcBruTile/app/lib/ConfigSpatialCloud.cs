@@ -12,13 +12,11 @@ namespace BrutileArcGIS
     {
         public ITileSource CreateTileSource()
         {
-            //string loginid = "20100317045633108";
             Configuration config = ConfigurationHelper.GetConfig();
 
             string spatialCloudUrl = config.AppSettings.Settings["SpatialCloudUrl"].Value;
             string spatialCloudUsername = config.AppSettings.Settings["SpatialCloudUsername"].Value;
             string spatialCloudPassword = config.AppSettings.Settings["SpatialCloudPassword"].Value;
-
 
             return new SpatialCloudTileSource(
                 new Uri(spatialCloudUrl),

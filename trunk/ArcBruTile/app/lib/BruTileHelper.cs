@@ -143,19 +143,6 @@ namespace BruTileArcGIS
                 {
                    
 
-                    if (tileSource is SpatialCloudTileSource)
-                    {
-                        string hash = SpatialCloudAuthSign.GetMD5Hash(
-                            tile.Index.Level.ToString(),
-                            tile.Index.Col.ToString(),
-                            tile.Index.Row.ToString(),
-                            schema.Format,
-                            ((SpatialCloudTileSource)tileSource).LoginId,
-                            ((SpatialCloudTileSource)tileSource).Password);
-
-                        ((SpatialCloudTileSource)tileSource).AuthSign = hash;
-                    }
-
                     object o = new object[] { tileProvider.requestBuilder, tile };
                     
                     IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
@@ -176,7 +163,7 @@ namespace BruTileArcGIS
                 logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString() + ")");
 
                 // use 300 milliseconds???
-                smartThreadPool.WaitForIdle(300);
+                //smartThreadPool.WaitForIdle(300);
                 //smartThreadPool.MaxThreads = 30;
  
                 foreach (IWorkItemResult<TileInfo> res in workitemResults)
@@ -203,9 +190,23 @@ namespace BruTileArcGIS
             TileInfo tileInfo = (TileInfo)parameters[1];
 
             Uri url = requestBuilder.GetUri(tileInfo);
+
+            if (tileSource is SpatialCloudTileSource)
+            {
+                string hash = SpatialCloudAuthSign.GetMD5Hash(
+                    tileInfo.Index.Level.ToString(),
+                    tileInfo.Index.Col.ToString(),
+                    tileInfo.Index.Row.ToString(),
+                    "jpg",
+                    ((SpatialCloudTileSource)tileSource).LoginId,
+                    ((SpatialCloudTileSource)tileSource).Password);
+
+                url=new Uri(url.AbsoluteUri+"&authSign="+hash);
+            }
+
+
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            //logger.Debug("Start retrieve Url: " + url.AbsoluteUri);
 
             byte[] bytes = this.GetBitmap(url);
             string name = fileCache.GetFileName(tileInfo.Index);

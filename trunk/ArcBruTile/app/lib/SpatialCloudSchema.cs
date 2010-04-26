@@ -5,14 +5,13 @@ using BruTile.PreDefined;
 
 namespace BrutileArcGIS
 {
-    public class SpatialCloudSchema : SphericalMercatorInvertedWorldSchema
+    public class SpatialCloudSchema : SphericalMercatorWorldSchema
     {
         public SpatialCloudSchema()
             : base()
         {
             this.Format = "jpg";
             this.Name = "SpatialCloud";
-            //this.Resolutions.RemoveAt(0); //Bing does not have the single tile top level.
         }
     }
 }
