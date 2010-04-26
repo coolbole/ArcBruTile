@@ -48,9 +48,6 @@ namespace BruTileArcGIS
         private IActiveView activeView;
         private IApplication application;
         private Transform transform;
-        //private AutoResetEvent m_autoEvent = new AutoResetEvent(false);
-
-        private object lockobject;
 
         #endregion
 
@@ -62,7 +59,6 @@ namespace BruTileArcGIS
         public BruTileHelper(string cacheDir)
         {
             this.cacheDir = cacheDir;
-            lockobject = new object();
         }
 
         #endregion
@@ -158,19 +154,18 @@ namespace BruTileArcGIS
             {
                 logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString() + ")");
 
-                // use 3000 milliseconds???
-                smartThreadPool.WaitForIdle(3000);
+                // use 300 milliseconds???
+                smartThreadPool.WaitForIdle(300);
+                //smartThreadPool.MaxThreads = 30;
  
                 foreach (IWorkItemResult<TileInfo> res in workitemResults)
                 {
                     TileInfo tile = (TileInfo)res.Result;
-                    //logger.Debug("Start drawing remote tile: " + Log(tile.Index));
 
                     IEnvelope envelope = this.GetEnv(tile.Extent);
                     name = fileCache.GetFileName(tile.Index);
                     DrawRaster(name, envelope, trackCancel);
                     application.StatusBar.StepProgressBar();
-                    //logger.Debug("End drawing remote tile: " + Log(tile.Index));
                 }
                 smartThreadPool.Shutdown();
 
