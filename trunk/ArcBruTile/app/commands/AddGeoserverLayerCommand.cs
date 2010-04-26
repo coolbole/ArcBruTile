@@ -69,7 +69,7 @@ namespace BrutileArcGIS.commands
         #endregion
         #endregion
         private IMap map;
-        private IApplication m_application;
+        private IApplication application;
         public AddGeoserverLayerCommand()
         {
             base.m_category = "BruTile";
@@ -103,7 +103,7 @@ namespace BrutileArcGIS.commands
             if (hook == null)
                 return;
 
-            m_application = hook as IApplication;
+            application = hook as IApplication;
 
             //Disable if it is not ArcMap
             if (hook is IMxApplication)
@@ -122,17 +122,17 @@ namespace BrutileArcGIS.commands
             try
             {
                 Configuration config = ConfigurationHelper.GetConfig();
-                IMxDocument mxdoc = (IMxDocument)m_application.Document;
+                IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
                 
-                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.GeoserverWms);
+                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.GeoserverWms);
                 brutileLayer.Name = "Geoserver";
                 brutileLayer.Visible = true;
 
                 //IEnumLayer lyrs;
                 //((IMapLayers)map).AddLayers((ILayer)brutileLayer);
                 map.AddLayer((ILayer)brutileLayer);
-                Util.SetBruTilePropertyPage(m_application, brutileLayer);
+                Util.SetBruTilePropertyPage(application, brutileLayer);
             }
             catch (Exception ex)
             {

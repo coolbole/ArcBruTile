@@ -16,6 +16,7 @@ using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
 using Amib.Threading;
+using ESRI.ArcGIS.Framework;
 
 
 namespace BruTileArcGIS
@@ -45,6 +46,7 @@ namespace BruTileArcGIS
         private IList<TileInfo> tiles;
         private FileCache fileCache;
         private IActiveView activeView;
+        private IApplication application;
         private Transform transform;
         //private AutoResetEvent m_autoEvent = new AutoResetEvent(false);
 
@@ -73,10 +75,11 @@ namespace BruTileArcGIS
         /// </summary>
         /// <param name="activeView">The active view.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        public void Draw(IActiveView activeView, EnumBruTileLayer enumBruTileLayer,ITrackCancel trackCancel,ISpatialReference layerSpatialReference)
+        public void Draw(IApplication application,IActiveView activeView, EnumBruTileLayer enumBruTileLayer,ITrackCancel trackCancel,ISpatialReference layerSpatialReference)
         {
             try
             {
+                this.application = application;
                 this.activeView = activeView;
                 screenDisplay = activeView.ScreenDisplay;
 
@@ -153,7 +156,8 @@ namespace BruTileArcGIS
             }
             if (workitemResults.Count > 0)
             {
-                logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString()+")");
+                application.StatusBar.ShowProgressBar("Loading... ", 0, workitemResults.Count, 1, true);
+                logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString() + ")");
 
                 // use 3000 milliseconds???
                 smartThreadPool.WaitForIdle(3000);
@@ -166,11 +170,13 @@ namespace BruTileArcGIS
                     IEnvelope envelope = this.GetEnv(tile.Extent);
                     name = fileCache.GetFileName(tile.Index);
                     DrawRaster(name, envelope, trackCancel);
+                    application.StatusBar.StepProgressBar();
                     //logger.Debug("End drawing remote tile: " + Log(tile.Index));
                 }
                 smartThreadPool.Shutdown();
 
             }
+            application.StatusBar.HideProgressBar();
             logger.Debug("End drawing tiles: " + tiles.Count.ToString());
         }
 

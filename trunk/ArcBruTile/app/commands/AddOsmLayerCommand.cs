@@ -86,7 +86,7 @@ namespace BruTileArcGIS
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.OSM);
+                BruTileLayer brutileLayer = new BruTileLayer(application,EnumBruTileLayer.OSM);
                 brutileLayer.Name = "OpenStreetMap";
 
                 brutileLayer.Visible = true;

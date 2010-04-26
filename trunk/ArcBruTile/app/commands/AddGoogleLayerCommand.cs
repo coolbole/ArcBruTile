@@ -85,7 +85,7 @@ namespace BruTileArcGIS
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map,EnumBruTileLayer.Google);
+                BruTileLayer brutileLayer = new BruTileLayer(application,EnumBruTileLayer.Google);
                 brutileLayer.Name = "Google Maps";
 
                 brutileLayer.Visible = true;

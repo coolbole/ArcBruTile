@@ -10,6 +10,8 @@ using Microsoft.SqlServer.MessageBox;
 using System.Drawing;
 using System.Diagnostics;
 using BruTile;
+using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.ArcMapUI;
 
 namespace BruTileArcGIS
 {
@@ -20,6 +22,7 @@ namespace BruTileArcGIS
     public class BruTileLayer : ILayer
     {
         #region private members
+        private IApplication application;
         private IEnvelope envelope;
         private bool cached=false;
         private double maximumScale;
@@ -44,9 +47,11 @@ namespace BruTileArcGIS
         /// <param name="map">The map.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
         /// <param name="cacheDir">The cache dir.</param>
-        public BruTileLayer(IMap map,EnumBruTileLayer enumBruTileLayer)
+        public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
-            this.map = map;
+            this.application = application;
+            IMxDocument mxdoc = (IMxDocument)application.Document;
+            this.map = mxdoc.FocusMap;
             this.enumBruTileLayer = enumBruTileLayer;
             this.cacheDir = CacheSettings.GetCacheFolder();
             SpatialReferences spatialReferences = new SpatialReferences();
@@ -68,7 +73,6 @@ namespace BruTileArcGIS
                 envelope.Project(map.SpatialReference);
                 ((IActiveView)map).Extent = envelope;
             }
-
 
         }
         #endregion
@@ -102,11 +106,8 @@ namespace BruTileArcGIS
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
                             bruTileHelper = new BruTileHelper(cacheDir);
-                            bruTileHelper.Draw(activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
+                            bruTileHelper.Draw(application,activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
                             
-                            //activeView.
-                            //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, null);
-                            //activeView.Refresh();
                         }
                         catch (Exception ex)
                         {

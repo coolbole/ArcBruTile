@@ -87,7 +87,7 @@ namespace BrutileArcGIS.commands
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.SpatialCloud);
+                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.SpatialCloud);
 
                 brutileLayer.Name = "SpatialCloud";
                 brutileLayer.Visible = true;

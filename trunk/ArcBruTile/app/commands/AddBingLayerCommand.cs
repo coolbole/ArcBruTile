@@ -20,7 +20,6 @@ namespace BruTileArcGIS
     public sealed class AddBingLayerCommand : BaseCommand
     {
         #region private members
-        private IMap map;
         private IApplication application;
         #endregion
 
@@ -83,10 +82,11 @@ namespace BruTileArcGIS
         {
             try
             {
-                Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
-                map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(map, EnumBruTileLayer.Bing);
+                IMap map = mxdoc.FocusMap;
+
+                Configuration config = ConfigurationHelper.GetConfig();
+                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.Bing);
                 
                 brutileLayer.Name = "Bing";
                 brutileLayer.Visible = true;
