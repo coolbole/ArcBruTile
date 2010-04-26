@@ -126,12 +126,10 @@ namespace BruTileArcGIS
             IList<IWorkItemResult<TileInfo>> workitemResults = new List<IWorkItemResult<TileInfo>>();
             IList<TileInfo> drawTiles = new List<TileInfo>();
             WebTileProvider tileProvider=(WebTileProvider)config.CreateTileSource().Provider;
-            //tileProvider.GetTile(
-            //IRequestBuilder requestBuilder = config.RequestBuilder;
-            //config.CreateTileSource().Schema.
             string name;
             logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
-            //logger.Debug("Tileschema: " + config.TileSchema.Name);
+            application.StatusBar.ShowProgressBar("Loading... ", 0, tiles.Count, 1, true);
+            application.StatusBar.StepProgressBar();
 
             SmartThreadPool smartThreadPool = new SmartThreadPool();
             foreach (TileInfo tile in tiles)
@@ -145,6 +143,7 @@ namespace BruTileArcGIS
                     object o=new object[] { tileProvider.requestBuilder, tile};
                     IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
                     workitemResults.Add(wir);
+
                 }
                 else
                 {
@@ -152,11 +151,11 @@ namespace BruTileArcGIS
                     logger.Debug("Draw tile from local cache: " + Log(tile.Index));
                     name = fileCache.GetFileName(tile.Index);
                     DrawRaster(name, envelope, trackCancel);
+                    application.StatusBar.StepProgressBar();
                 }
             }
             if (workitemResults.Count > 0)
             {
-                application.StatusBar.ShowProgressBar("Loading... ", 0, workitemResults.Count, 1, true);
                 logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString() + ")");
 
                 // use 3000 milliseconds???
