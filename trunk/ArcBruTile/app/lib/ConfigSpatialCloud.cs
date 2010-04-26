@@ -12,16 +12,19 @@ namespace BrutileArcGIS
     {
         public ITileSource CreateTileSource()
         {
-            string loginid="20100316060244637";
-            string hashcode = "771155bdd2aceb2e26dea3498ad37948";
-
+            //string loginid = "20100317045633108";
             Configuration config = ConfigurationHelper.GetConfig();
+
             string spatialCloudUrl = config.AppSettings.Settings["SpatialCloudUrl"].Value;
+            string spatialCloudUsername = config.AppSettings.Settings["SpatialCloudUsername"].Value;
+            string spatialCloudPassword = config.AppSettings.Settings["SpatialCloudPassword"].Value;
+
 
             return new SpatialCloudTileSource(
-                new Uri(spatialCloudUrl), 
-                loginid,
-                hashcode);
+                new Uri(spatialCloudUrl),
+                spatialCloudUsername,
+                spatialCloudPassword
+                );
         }
     }
 }

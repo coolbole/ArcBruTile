@@ -10,13 +10,17 @@ namespace BrutileArcGIS
     {
         TileSchema tileSchema;
         WebTileProvider tileProvider;
+        Dictionary<String, String> customParams;
+        string loginid;
+        string password;
 
-        public SpatialCloudTileSource(Uri url, string loginid, string authSign)
+        public SpatialCloudTileSource(Uri url, string loginid, string password)
         {
+            this.loginid = loginid;
+            this.password = password;
             tileSchema = new SpatialCloudSchema();
-            Dictionary<String, String> customParams = new Dictionary<string, string>();
+            customParams = new Dictionary<string, string>();
             customParams.Add("loginid", loginid);
-            customParams.Add("authSign", authSign);
             customParams.Add("viewer", "viewer");
 
             TmsRequest tmsRequest = new TmsRequest(url,tileSchema.Format, customParams);
@@ -24,6 +28,29 @@ namespace BrutileArcGIS
         }
 
         #region ITileSource Members
+
+        public string LoginId
+        {
+            get { return loginid; }
+        }
+
+        public string Password
+        {
+            get { return password; }
+        }
+
+
+        public string AuthSign
+        {
+            set
+            {
+                if(customParams.ContainsKey("authSign"))
+                {
+                    customParams.Remove("authSign");
+                }
+                customParams.Add("authSign",value);
+            }
+        }
 
         public ITileProvider Provider
         {

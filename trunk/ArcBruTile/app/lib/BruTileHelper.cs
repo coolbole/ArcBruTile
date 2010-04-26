@@ -17,6 +17,7 @@ using log4net;
 using Microsoft.SqlServer.MessageBox;
 using Amib.Threading;
 using ESRI.ArcGIS.Framework;
+using BrutileArcGIS;
 
 
 namespace BruTileArcGIS
@@ -48,6 +49,8 @@ namespace BruTileArcGIS
         private IActiveView activeView;
         private IApplication application;
         private Transform transform;
+        private EnumBruTileLayer enumBruTileLayer;
+        private ITileSource tileSource;
 
         #endregion
 
@@ -77,11 +80,14 @@ namespace BruTileArcGIS
             {
                 this.application = application;
                 this.activeView = activeView;
+                this.enumBruTileLayer = enumBruTileLayer;
                 screenDisplay = activeView.ScreenDisplay;
 
                 IEnvelope env = activeView.Extent;
                 this.config = ConfigHelper.GetConfig(enumBruTileLayer);
-                this.schema=config.CreateTileSource().Schema;
+                this.tileSource=config.CreateTileSource();
+                this.schema=tileSource.Schema;
+                
                 this.layerSpatialReference = layerSpatialReference;
                 string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, enumBruTileLayer);
                 fileCache = new FileCache(cacheDirType, schema.Format);
@@ -121,7 +127,7 @@ namespace BruTileArcGIS
         {
             IList<IWorkItemResult<TileInfo>> workitemResults = new List<IWorkItemResult<TileInfo>>();
             IList<TileInfo> drawTiles = new List<TileInfo>();
-            WebTileProvider tileProvider=(WebTileProvider)config.CreateTileSource().Provider;
+            WebTileProvider tileProvider=(WebTileProvider)tileSource.Provider;
             string name;
             logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
             application.StatusBar.ShowProgressBar("Loading... ", 0, tiles.Count, 1, true);
@@ -130,8 +136,21 @@ namespace BruTileArcGIS
             SmartThreadPool smartThreadPool = new SmartThreadPool();
             foreach (TileInfo tile in tiles)
             {
-                IEnvelope envelope = this.GetEnv(tile.Extent);
+                if (tileSource is SpatialCloudTileSource)
+                {
+                    string hash=SpatialCloudAuthSign.GetMD5Hash(
+                        tile.Index.Level.ToString(),
+                        tile.Index.Col.ToString(),
+                        tile.Index.Row.ToString(),
+                        schema.Format,
+                        ((SpatialCloudTileSource)tileSource).LoginId,
+                        ((SpatialCloudTileSource)tileSource).Password);
 
+                    ((SpatialCloudTileSource)tileSource).AuthSign = hash;
+                }
+
+                IEnvelope envelope = this.GetEnv(tile.Extent);
+                
                 if (!fileCache.Exists(tile.Index))
                 {
                    

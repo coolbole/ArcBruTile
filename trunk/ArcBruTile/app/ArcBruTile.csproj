@@ -184,6 +184,7 @@
     <Compile Include="lib\ConfigurationHelper.cs" />
     <Compile Include="lib\EnumBruTileLayer.cs" />
     <Compile Include="lib\IConfig.cs" />
+    <Compile Include="lib\SpatialCloudAuthSign.cs" />
     <Compile Include="lib\SpatialCloudSchema.cs" />
     <Compile Include="lib\SpatialCloudTileSource.cs" />
     <Compile Include="lib\SpatialReferences.cs" />
