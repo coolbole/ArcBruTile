@@ -28,7 +28,7 @@ namespace BruTileArcGIS
             }
             catch
             {
-                string msg = string.Format("Can nout found ({0})", configFileName);
+                string msg = string.Format("Can not find ({0})", configFileName);
                 throw new ApplicationException(msg);
             }
 

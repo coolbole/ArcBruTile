@@ -81,13 +81,16 @@ namespace BruTileArcGIS
             //Menu sectie
             AddItem("BruTileArcGIS.BruTileMenuDef");
 
+
+            Configuration config = ConfigurationHelper.GetConfig();
+
             //Status sectie
             BeginGroup();
-            AddItem("AddOsmLayerCommand");
-            AddItem("AddGoogleLayerCommand");
-            AddItem("AddBingLayerCommand");
-            AddItem("AddSpatialCloudLayerCommand");
-            AddItem("AddGeoserverLayerCommand");
+            if(Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
+            if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value)) AddItem("AddGoogleLayerCommand");
+            if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value)) AddItem("AddBingLayerCommand");
+            if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
+            if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
         }
 
         /// <summary>

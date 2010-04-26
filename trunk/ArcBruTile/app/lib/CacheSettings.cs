@@ -11,11 +11,7 @@ namespace BruTileArcGIS
     {
         public static string GetCacheFolder()
         {
-            string configFileName = Assembly.GetExecutingAssembly().Location + ".config";
-            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap();
-            fileMap.ExeConfigFilename = configFileName;
-            Configuration config= ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
-
+            Configuration config=ConfigurationHelper.GetConfig();
             string tileDir = config.AppSettings.Settings["tileDir"].Value;
             if(tileDir.Contains("%"))
             {
@@ -23,10 +19,6 @@ namespace BruTileArcGIS
             }
 
             return tileDir;
-
-
-
-            //return(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + "ArcBruTile" + Path.DirectorySeparatorChar);
         }
 
 
@@ -37,7 +29,6 @@ namespace BruTileArcGIS
         /// <returns></returns>
         private static string ReplaceEnvironmentVar(string path)
         {
-            // TODO: needs code improve here!
             int firstIndex = path.IndexOf("%");
             int lastIndex = path.LastIndexOf("%");
             string envVar = path.Substring(firstIndex+1, lastIndex - firstIndex-1);

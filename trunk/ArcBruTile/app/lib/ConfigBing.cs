@@ -19,6 +19,7 @@ using System;
 using BruTile.Cache;
 using BruTile.Web;
 using BruTile;
+using System.Configuration;
 
 namespace BruTileArcGIS
 {
@@ -26,8 +27,15 @@ namespace BruTileArcGIS
     {
         public ITileSource CreateTileSource()
         {
+            Configuration config = ConfigurationHelper.GetConfig();
+
+            string bingToken=config.AppSettings.Settings["BingToken"].Value;
+            string bingUrl = config.AppSettings.Settings["BingUrl"].Value;
+            string bingMapType = config.AppSettings.Settings["BingMapType"].Value;
+            MapType mapType = (MapType)Enum.Parse(typeof(MapType), bingMapType,false);
+
             return new BingTileSource(
-                "http://t1.staging.tiles.virtualearth.net/tiles/","",MapType.Hybrid);
+                bingUrl,bingToken,mapType);
         }
     }
 }
