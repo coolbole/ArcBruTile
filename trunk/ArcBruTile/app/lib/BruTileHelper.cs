@@ -153,7 +153,7 @@ namespace BruTileArcGIS
             }
             if (workitemResults.Count > 0)
             {
-                logger.Debug("Start waiting for remote tiles");
+                logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString()+")");
 
                 // use 3000 milliseconds???
                 smartThreadPool.WaitForIdle(3000);
@@ -182,12 +182,16 @@ namespace BruTileArcGIS
             TileInfo tileInfo = (TileInfo)parameters[1];
 
             Uri url = requestBuilder.GetUri(tileInfo);
-            logger.Debug("Url: " + url.AbsoluteUri);
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            //logger.Debug("Start retrieve Url: " + url.AbsoluteUri);
 
             byte[] bytes = this.GetBitmap(url);
             string name = fileCache.GetFileName(tileInfo.Index);
             fileCache.Add(tileInfo.Index, bytes);
             CreateRaster(tileInfo, bytes, name);
+            stopWatch.Stop();
+            logger.Debug("Url: " + url.AbsoluteUri +" ("+ stopWatch.ElapsedMilliseconds +"ms)");
             return tileInfo;
         }
 
