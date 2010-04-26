@@ -291,7 +291,7 @@ namespace BruTileArcGIS
                 // Do not remove this line...
                 rl.SpatialReference = layerSpatialReference;
                 rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, trackCancel);
-                //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+                activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
             }
             catch
             {

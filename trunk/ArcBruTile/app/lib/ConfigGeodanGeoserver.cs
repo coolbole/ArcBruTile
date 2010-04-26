@@ -60,8 +60,8 @@ namespace BruTileArcGIS
 
                 List<string> layers = new List<string>();
                 //layers.Add("geostreets_falk");//png
-                //layers.Add("lufo2009");      //jpg
-                layers.Add("top10nl");   //png   
+                layers.Add("lufo2009");      //jpg
+                //layers.Add("top10nl");   //png   
                 //ORtho is nodig omdat anders de laag niet werkt
                 Dictionary<string, string> parameters = new Dictionary<string, string>();
                 parameters.Add("seriveparam", "ortho10");
@@ -73,7 +73,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                string format = "png";
+                string format = "jpg";
                 string name = "GeodanGeoserver";
 
                 TileSchema schema = new TileSchema();
