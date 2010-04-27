@@ -55,7 +55,7 @@
   <ItemGroup>
     <Reference Include="BruTile, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Mapsui-43374\trunk\BruTile\bin\Debug\BruTile.dll</HintPath>
+      <HintPath>lib\BruTile\BruTile.dll</HintPath>
     </Reference>
     <Reference Include="ESRI.ArcGIS.ADF, Version=9.3.0.1770, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
