@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Threading;
+using Amib.Threading;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
+using BrutileArcGIS;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.DataSourcesRaster;
 using ESRI.ArcGIS.Display;
 using ESRI.ArcGIS.esriSystem;
+using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
-using Amib.Threading;
-using ESRI.ArcGIS.Framework;
-using BrutileArcGIS;
 
 
 namespace BruTileArcGIS
@@ -152,8 +151,8 @@ namespace BruTileArcGIS
                 else
                 {
                     // Read tiles from disk
-                    logger.Debug("Draw tile from local cache: " + Log(tile.Index));
                     name = fileCache.GetFileName(tile.Index);
+                    logger.Debug("Draw tile from local cache: " + name);
                     DrawRaster(name, envelope, trackCancel);
                     application.StatusBar.StepProgressBar();
                 }
@@ -170,9 +169,13 @@ namespace BruTileArcGIS
                 {
                     TileInfo tile = (TileInfo)res.Result;
 
-                    IEnvelope envelope = this.GetEnv(tile.Extent);
-                    name = fileCache.GetFileName(tile.Index);
-                    DrawRaster(name, envelope, trackCancel);
+                    if (tile != null)
+                    {
+                        IEnvelope envelope = this.GetEnv(tile.Extent);
+                        name = fileCache.GetFileName(tile.Index);
+                        DrawRaster(name, envelope, trackCancel);
+                    }
+
                     application.StatusBar.StepProgressBar();
                 }
                 smartThreadPool.Shutdown();
@@ -209,11 +212,20 @@ namespace BruTileArcGIS
             stopWatch.Start();
 
             byte[] bytes = this.GetBitmap(url);
-            string name = fileCache.GetFileName(tileInfo.Index);
-            fileCache.Add(tileInfo.Index, bytes);
-            CreateRaster(tileInfo, bytes, name);
-            stopWatch.Stop();
-            logger.Debug("Url: " + url.AbsoluteUri +" ("+ stopWatch.ElapsedMilliseconds +"ms)");
+
+            if (bytes != null)
+            {
+                string name = fileCache.GetFileName(tileInfo.Index);
+                fileCache.Add(tileInfo.Index, bytes);
+                bool result=CreateRaster(tileInfo, bytes, name);
+                if (result == false) tileInfo = null;
+                stopWatch.Stop();
+                logger.Debug("Url: " + url.AbsoluteUri + " (" + stopWatch.ElapsedMilliseconds + "ms)");
+            }
+            else
+            {
+                tileInfo = null;
+            }
             return tileInfo;
         }
 
@@ -254,12 +266,23 @@ namespace BruTileArcGIS
 
         public byte[] GetBitmap(Uri uri)
         {
+            byte[] bytes=null;
             // arcmap is acting like a genuine browser
             string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
             string referer = "http://maps.google.com/maps";
 
             //byte[] bytes = ImageRequest.GetImageFromServer(uri,userAgent,referer,false);
-            byte[] bytes = RequestHelper.FetchImage(uri, userAgent, referer, false);
+            try
+            {
+                bytes = RequestHelper.FetchImage(uri, userAgent, referer, false);
+            }
+            catch (System.Net.WebException webException)
+            {
+                // there is an error loading the tile
+                // like tile doesn't exist on server (404)
+                // just log a message and go on
+                logger.Error("Error loading tile webException: " + webException.Message + ". url: " + uri.AbsoluteUri);
+            }
             return bytes;
         }
 
@@ -270,13 +293,14 @@ namespace BruTileArcGIS
         /// <param name="tile">The tile.</param>
         /// <param name="requestBuilder">The request builder.</param>
         /// <param name="name">The name.</param>
-        private void CreateRaster(TileInfo tile, byte[] bytes,string name)
+        private bool CreateRaster(TileInfo tile, byte[] bytes,string name)
         {
             FileInfo fi = new FileInfo(name);
             string tfwFile = name.Replace(fi.Extension, "." + this.GetWorldFile(schema.Format));
             this.WriteWorldFile(tfwFile, tile.Extent, schema);
 
-            AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
+            bool result=AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
+            return result;
 
         }
 
@@ -394,19 +418,37 @@ namespace BruTileArcGIS
         /// Adds the spatial reference using a schema edit (not used because of more expensive)
         /// </summary>
         /// <param name="file">The file.</param>
-        private void AddSpatialReferenceSchemaEdit(String file,ISpatialReference spatialReference)
+        private bool AddSpatialReferenceSchemaEdit(String file,ISpatialReference spatialReference)
         {
+            bool result = false;
             FileInfo fi = new FileInfo(file);
             IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
             IRasterWorkspace rasterWorkSpace = (IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(fi.DirectoryName, 0);
-            IRasterDataset rasterDataset = rasterWorkSpace.OpenRasterDataset(fi.Name);
 
-            IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
-
-            if (geoDatasetSchemaEdit.CanAlterSpatialReference)
+            try
             {
-                geoDatasetSchemaEdit.AlterSpatialReference(spatialReference);
+                IRasterDataset rasterDataset = rasterWorkSpace.OpenRasterDataset(fi.Name);
+
+                IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
+
+                if (geoDatasetSchemaEdit.CanAlterSpatialReference)
+                {
+                    geoDatasetSchemaEdit.AlterSpatialReference(spatialReference);
+                }
+                result = true;
             }
+            catch (System.Runtime.InteropServices.COMException comException)
+            {
+                // there is something wrong with loading the result
+                // like Failed to open raster dataset
+                // just log a message and go on
+                logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName+"\\"+ fi.Name);
+
+                //try to delete this file...
+                //rasterWorkSpace.Dl
+
+            }
+            return result;
         }
 
 

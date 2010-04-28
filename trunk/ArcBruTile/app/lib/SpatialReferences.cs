@@ -28,16 +28,22 @@ namespace BruTileArcGIS
 
             int code = int.Parse(epsgCode.Substring(start, end-start));
 
+            // Google sperical webmercator
             if (code == 900913) code = 102113;
 
+            // Bing
             if (code == 102113)
             {
                 res = this.GetProjectedSpatialReference(code);
             }
+
+            // RD (Dutch)
             if (code == 28992)
             {
                 res = this.GetProjectedSpatialReference(code);
             }
+
+            // Wgs84
             if (code == 4326)
             {
                 res = this.GetGeographicSpatialReference(code);
