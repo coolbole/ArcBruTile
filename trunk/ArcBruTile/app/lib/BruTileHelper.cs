@@ -17,6 +17,7 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
+using ESRI.ArcGIS.DataSourcesGDB;
 
 
 namespace BruTileArcGIS
@@ -106,13 +107,27 @@ namespace BruTileArcGIS
                 {
                     needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
                 }
+
                 LoadTiles(trackCancel);
+                //DrawTilesInMemory(trackCancel);
 
             }
             catch (Exception ex)
             {
                 ExceptionMessageBox mbox = new ExceptionMessageBox(ex);
                 mbox.Show(null);
+            }
+        }
+
+        private void DrawTilesInMemory(ITrackCancel trackCancel)
+        {
+            IList<TileInfo> drawTiles = new List<TileInfo>();
+            WebTileProvider tileProvider = (WebTileProvider)tileSource.Provider;
+            foreach (TileInfo tile in tiles)
+            {
+                IEnvelope envelope = this.GetEnv(tile.Extent);
+                Uri uri = tileProvider.requestBuilder.GetUri(tile);
+                this.drawTileInMemory(uri,trackCancel,envelope);
             }
         }
 
@@ -228,6 +243,7 @@ namespace BruTileArcGIS
             }
             return tileInfo;
         }
+
 
         #endregion
 
@@ -490,6 +506,58 @@ namespace BruTileArcGIS
 
         }
         #endregion
+
+
+            /// <summary>
+        /// This is a test to draw tiles in memory
+        /// At the moment this code results in Attempt to read or write 
+        /// protected memory error.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="trackCancel"></param>
+        /// <param name="env"></param>
+        private void drawTileInMemory(Uri url, ITrackCancel trackCancel, IEnvelope env)
+        {
+            // note: IRasterExporter.ExportToBytes gives an byte[]
+            Uri uri = new Uri("http://b.tile.openstreetmap.org//8/127/86.png");
+            byte[] bytes = this.GetBitmap(uri);
+            RasterWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
+            IRasterWorkspace3 rasterWorkspace = (IRasterWorkspace3)rasterWorkspaceFactory.OpenFromFile(@"c:\temp",0);
+            IRasterDataset rasterDataset = rasterWorkspace.OpenRasterDatasetFromBytes(ref bytes, true);
+            IRasterLayer rl = new RasterLayerClass();
+
+            // error: Attempted to read or write protected memory. 
+            // This is often an indication that other memory is corrupt. (ESRI.ArcGIS.DataSourcesRaster)
+            rl.CreateFromDataset(rasterDataset);
+            
+            IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
+            if (geoDatasetSchemaEdit.CanAlterSpatialReference)
+            {
+                geoDatasetSchemaEdit.AlterSpatialReference(dataSpatialReference);
+            }
+
+            // error: Attempted to read or write protected memory. 
+            // This is often an indication that other memory is corrupt. (ESRI.ArcGIS.DataSourcesRaster)
+            rl.CreateFromDataset(rasterDataset);
+            
+            if (needReproject)
+            {
+                IRasterGeometryProc rasterGeometryProc = new RasterGeometryProcClass();
+                object Missing = Type.Missing;
+                rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
+            }
+
+            // this is needed for ArcGIS 9.2 only
+            IRasterProps rasterProps = (IRasterProps)rl.Raster;
+            rasterProps.Height = schema.Height;
+            rasterProps.Width = schema.Width;
+
+            // Now set the spatial reference to the dataframe spatial reference! 
+            // Do not remove this line...
+            rl.SpatialReference = layerSpatialReference;
+            rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, trackCancel);
+            activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+        }
     }
 }
 
