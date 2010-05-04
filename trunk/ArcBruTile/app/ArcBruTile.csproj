@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="BruTileMenuDef.cs" />
     <Compile Include="commands\AboutBruTileCommand.cs" />
+    <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddGoogleLayerCommand.cs" />
@@ -177,6 +178,7 @@
       <DependentUpon>BruTilePropertyPageUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="lib\CacheSettings.cs" />
+    <Compile Include="lib\ConfigBingHybrid.cs" />
     <Compile Include="lib\ConfigGoogle.cs" />
     <Compile Include="lib\ConfigSpatialCloud.cs" />
     <Compile Include="lib\Projector.cs" />
