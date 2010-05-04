@@ -31,8 +31,9 @@ namespace BruTileArcGIS
 
             string bingToken=config.AppSettings.Settings["BingToken"].Value;
             string bingUrl = config.AppSettings.Settings["BingUrl"].Value;
-            string bingMapType = config.AppSettings.Settings["BingMapType"].Value;
-            MapType mapType = (MapType)Enum.Parse(typeof(MapType), bingMapType,false);
+            MapType mapType = MapType.Roads;
+            //string bingMapType = config.AppSettings.Settings["BingMapType"].Value;
+            //MapType mapType = (MapType)Enum.Parse(typeof(MapType), bingMapType,false);
 
             return new BingTileSource(
                 bingUrl,bingToken,mapType);

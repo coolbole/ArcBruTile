@@ -1,17 +1,13 @@
-﻿using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.Display;
-using ESRI.ArcGIS.esriSystem;
-using ESRI.ArcGIS.Geometry;
-using ESRI.ArcGIS.Geodatabase;
-using ESRI.ArcGIS.DataSourcesRaster;
-using System;
-using System.Windows.Forms;
-using Microsoft.SqlServer.MessageBox;
-using System.Drawing;
+﻿using System;
 using System.Diagnostics;
 using BruTile;
-using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.ArcMapUI;
+using ESRI.ArcGIS.Carto;
+using ESRI.ArcGIS.Display;
+using ESRI.ArcGIS.esriSystem;
+using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.Geometry;
+using Microsoft.SqlServer.MessageBox;
 
 namespace BruTileArcGIS
 {

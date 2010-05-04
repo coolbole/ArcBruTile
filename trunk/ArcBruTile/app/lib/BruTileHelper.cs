@@ -338,7 +338,7 @@ namespace BruTileArcGIS
                     object Missing = Type.Missing;
                     rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
                 }
-
+                
                 // this is needed for ArcGIS 9.2 only
                 IRasterProps rasterProps = (IRasterProps)rl.Raster;
                 rasterProps.Height = schema.Height;
@@ -356,35 +356,6 @@ namespace BruTileArcGIS
                 // just try to load next tile...
             }
         }
-
-        /// <summary>
-        /// Just write a .aux.xml file with PAMDATASET entry with projection
-        /// </summary>
-        /// <param name="file"></param>
-        private void AddSpatialReference(String file, ISpatialReference spatialreference)
-        {
-            FileInfo fi = new FileInfo(file);
-            string auxfile=fi.FullName + ".aux.xml";
-
-            string text=String.Empty;
-            if (spatialreference.FactoryCode == 4326)
-            {
-                text = SpatialReferences.GetWGS84();
-            }
-            else if (spatialreference.FactoryCode == 102113)
-            {
-                text = SpatialReferences.GetWebMercator();
-            }
-            else if (spatialreference.FactoryCode == 28992)
-            {
-                text = SpatialReferences.GetRDNew();
-            }
-            using (StreamWriter sw = new StreamWriter(auxfile))
-            {
-                sw.WriteLine(text);
-            }
-        }
-
 
         private string Log(TileIndex tileKey)
         {
@@ -560,5 +531,36 @@ namespace BruTileArcGIS
         }
     }
 }
+
+
+/**
+/// <summary>
+/// Just write a .aux.xml file with PAMDATASET entry with projection
+/// </summary>
+/// <param name="file"></param>
+private void AddSpatialReference(String file, ISpatialReference spatialreference)
+{
+    FileInfo fi = new FileInfo(file);
+    string auxfile=fi.FullName + ".aux.xml";
+
+    string text=String.Empty;
+    if (spatialreference.FactoryCode == 4326)
+    {
+        text = SpatialReferences.GetWGS84();
+    }
+    else if (spatialreference.FactoryCode == 102113)
+    {
+        text = SpatialReferences.GetWebMercator();
+    }
+    else if (spatialreference.FactoryCode == 28992)
+    {
+        text = SpatialReferences.GetRDNew();
+    }
+    using (StreamWriter sw = new StreamWriter(auxfile))
+    {
+        sw.WriteLine(text);
+    }
+}
+*/
 
 

@@ -24,6 +24,10 @@ namespace BruTileArcGIS
             {
                 result = new ConfigBing();
             }
+            else if (enumBruTileLayer == EnumBruTileLayer.BingHybrid)
+            {
+                result = new ConfigBingHybrid();
+            }
             else if (enumBruTileLayer == EnumBruTileLayer.ESRI)
             {
                 result = new ConfigEsri();

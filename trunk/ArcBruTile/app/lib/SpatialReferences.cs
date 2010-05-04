@@ -20,6 +20,7 @@ namespace BruTileArcGIS
 
         public ISpatialReference GetSpatialReference(string epsgCode)
         {
+            //ESRI.ArcGIS.ProductCode.
             ISpatialReference res=null;
 
             // first get the code
