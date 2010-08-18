@@ -34,6 +34,7 @@ namespace BruTileArcGIS
         private BruTileHelper bruTileHelper;
         private EnumBruTileLayer enumBruTileLayer;
         private string cacheDir;
+        private int tileTimeOut;
         #endregion
 
         #region constructors
@@ -50,6 +51,8 @@ namespace BruTileArcGIS
             this.map = mxdoc.FocusMap;
             this.enumBruTileLayer = enumBruTileLayer;
             this.cacheDir = CacheSettings.GetCacheFolder();
+            this.tileTimeOut = CacheSettings.GetTileTimeOut();
+
             SpatialReferences spatialReferences = new SpatialReferences();
             IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
             ITileSchema schema=config.CreateTileSource().Schema;
@@ -101,7 +104,7 @@ namespace BruTileArcGIS
 
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
-                            bruTileHelper = new BruTileHelper(cacheDir);
+                            bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
                             bruTileHelper.Draw(application,activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
                             
                         }

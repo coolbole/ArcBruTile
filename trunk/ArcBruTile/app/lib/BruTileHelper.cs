@@ -51,6 +51,7 @@ namespace BruTileArcGIS
         private Transform transform;
         private EnumBruTileLayer enumBruTileLayer;
         private ITileSource tileSource;
+        private int tileTimeOut;
 
         #endregion
 
@@ -59,9 +60,10 @@ namespace BruTileArcGIS
         /// Initializes a new instance of the <see cref="BruTileHelper"/> class.
         /// </summary>
         /// <param name="cacheDir">The cache dir.</param>
-        public BruTileHelper(string cacheDir)
+        public BruTileHelper(string cacheDir, int tileTimeOut)
         {
             this.cacheDir = cacheDir;
+            this.tileTimeOut = tileTimeOut;
         }
 
         #endregion
@@ -150,26 +152,38 @@ namespace BruTileArcGIS
             SmartThreadPool smartThreadPool = new SmartThreadPool();
             foreach (TileInfo tile in tiles)
             {
-
                 IEnvelope envelope = this.GetEnv(tile.Extent);
-                
-                if (!fileCache.Exists(tile.Index))
+                bool needsLoad = false;
+                if (fileCache.Exists(tile.Index))
                 {
-                   
 
-                    object o = new object[] { tileProvider.requestBuilder, tile };
+                    // Read tiles from disk
+                    name = fileCache.GetFileName(tile.Index);
                     
-                    IWorkItemResult<TileInfo> wir=smartThreadPool.QueueWorkItem(new Func<object,TileInfo>(GetTile),o);
-                    workitemResults.Add(wir);
-
+                    // Determine age of tile...
+                    FileInfo fi = new FileInfo(name);
+                    if ((DateTime.Now - fi.LastWriteTime).Days > tileTimeOut)
+                    {
+                        File.Delete(name);
+                        needsLoad = true;
+                    }
+                    else
+                    {
+                        logger.Debug("Draw tile from local cache: " + name);
+                        DrawRaster(name, envelope, trackCancel);
+                        application.StatusBar.StepProgressBar();
+                    }
                 }
                 else
                 {
-                    // Read tiles from disk
-                    name = fileCache.GetFileName(tile.Index);
-                    logger.Debug("Draw tile from local cache: " + name);
-                    DrawRaster(name, envelope, trackCancel);
-                    application.StatusBar.StepProgressBar();
+                    needsLoad=true;
+                }
+
+                if(needsLoad)
+                {
+                    object o = new object[] { tileProvider.requestBuilder, tile };
+                    IWorkItemResult<TileInfo> wir = smartThreadPool.QueueWorkItem(new Func<object, TileInfo>(GetTile), o);
+                    workitemResults.Add(wir);
                 }
             }
             if (workitemResults.Count > 0)

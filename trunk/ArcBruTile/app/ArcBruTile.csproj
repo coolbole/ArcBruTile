@@ -168,7 +168,7 @@
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddGoogleLayerCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
-    <Compile Include="commands\AddSpatialCloudButton.cs" />
+    <Compile Include="commands\AddSpatialCloudLayerCommand.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
     <Compile Include="controls\BruTilePropertyPageUserControl.cs">

@@ -76,24 +76,30 @@ namespace BruTileArcGIS
             //init log4net
             // Configure logfiles
             XmlConfigurator.Configure(new FileInfo(Assembly.GetExecutingAssembly().Location + ".config"));
-            logger.Info("Startup ArcBruTile");
-            //Menu sectie
-            AddItem("BruTileArcGIS.BruTileMenuDef");
 
-            Configuration config = ConfigurationHelper.GetConfig();
-
-            //Status sectie
-            BeginGroup();
-            if(Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
-            if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value)) AddItem("AddGoogleLayerCommand");
-            if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
+            try
             {
-                AddItem("AddBingLayerCommand");
-                AddItem("AddBingHybridLayerCommand");
+                logger.Info("Startup ArcBruTile");
+                //Menu sectie
+                AddItem("BruTileArcGIS.BruTileMenuDef");
+
+                Configuration config = ConfigurationHelper.GetConfig();
+
+                //Status sectie
+                BeginGroup();
+                if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value)) AddItem("AddGoogleLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value)) AddItem("AddBingLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
             }
-            if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
-            if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+            }
         }
+
 
         /// <summary>
         /// Caption of the MPL toolbar

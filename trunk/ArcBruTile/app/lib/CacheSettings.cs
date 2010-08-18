@@ -21,6 +21,14 @@ namespace BruTileArcGIS
             return tileDir;
         }
 
+        public static int GetTileTimeOut()
+        {
+            Configuration config = ConfigurationHelper.GetConfig();
+            int tileTimeOut = Int32.Parse(config.AppSettings.Settings["tileTimeout"].Value);
+            return tileTimeOut;
+
+        }
+
 
         /// <summary>
         /// Replaces an environment variable to a string
