@@ -15,7 +15,7 @@ namespace BruTileArcGIS
     /// Represents a custom BruTile Layer
     /// todo: implement IPersistStream?
     /// </summary>
-    public class BruTileLayer : ILayer
+    public class BruTileLayer : ILayer, ILayerPosition
     {
         #region private members
         private IApplication application;
@@ -35,6 +35,8 @@ namespace BruTileArcGIS
         private EnumBruTileLayer enumBruTileLayer;
         private string cacheDir;
         private int tileTimeOut;
+        private double layerWeight=101;
+        
         #endregion
 
         #region constructors
@@ -298,6 +300,22 @@ namespace BruTileArcGIS
                 return dataSpatialReference;
             }
         }*/
+        #endregion
+
+        #region ILayerPosition Members
+
+        public double LayerWeight
+        {
+            get
+            {
+                return layerWeight;
+            }
+            set
+            {
+                layerWeight = value;
+            }
+        }
+
         #endregion
     }
 }
