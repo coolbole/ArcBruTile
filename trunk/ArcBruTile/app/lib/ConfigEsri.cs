@@ -40,7 +40,7 @@ namespace BruTileArcGIS
                     0.0000214576721191407,
                     0.0000107288360595703 };
 
-                string format = "jpeg";
+                string format = "jpg";
 
                 TileSchema schema = new TileSchema();
                 foreach (double resolution in resoltions) schema.Resolutions.Add(resolution);
