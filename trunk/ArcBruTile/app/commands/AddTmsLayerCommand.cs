@@ -86,19 +86,18 @@ namespace BruTileArcGIS
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
 
-                String url = "http://labs.metacarta.com/wms-c/Basic.py/1.0.0/boston";
+                AddTmsForm addTmsForm = new AddTmsForm();
+                DialogResult result=addTmsForm.ShowDialog();
 
-                BruTileLayer brutileLayer = new BruTileLayer(application, url, "Boston");
-
-                brutileLayer.Name = "TMS Boston";
-                brutileLayer.Visible = true;
-
-                map.AddLayer((ILayer)brutileLayer);
-
-
-
-                //int a = 1;
-                //tileSource.
+                if (result == DialogResult.OK)
+                {
+                    //String url = "http://labs.metacarta.com/wms-c/Basic.py/1.0.0/boston";
+                    addTmsForm.SelectedTileMap.Href=addTmsForm.SelectedTileMap.Href.Replace(@"1.0.0/1.0.0", @"1.0.0");
+                    BruTileLayer brutileLayer = new BruTileLayer(application, addTmsForm.SelectedTileMap.Href, addTmsForm.SelectedTileMap.Title);
+                    brutileLayer.Name = addTmsForm.SelectedTileMap.Href;
+                    brutileLayer.Visible = true;
+                    map.AddLayer((ILayer)brutileLayer);
+                }
             }
             catch (Exception ex)
             {
