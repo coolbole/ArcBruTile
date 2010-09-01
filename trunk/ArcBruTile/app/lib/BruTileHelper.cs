@@ -17,7 +17,7 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
-using ESRI.ArcGIS.DataSourcesGDB;
+//using ESRI.ArcGIS.DataSourcesGDB;
 
 
 namespace BruTileArcGIS
