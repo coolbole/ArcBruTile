@@ -32,14 +32,24 @@ namespace BruTileArcGIS
         private bool visible=false;
         private IMap map;
         private BruTileHelper bruTileHelper;
-        private EnumBruTileLayer enumBruTileLayer;
+        //private EnumBruTileLayer enumBruTileLayer;
         private string cacheDir;
         private int tileTimeOut;
         private double layerWeight=101;
+        private IConfig config;
+        private String providerName;
         
         #endregion
 
         #region constructors
+        public BruTileLayer(IApplication app, string TmsUrl, string ProviderName)
+        {
+            config = ConfigHelper.GetTmsConfig(TmsUrl);
+            this.application = app;
+            this.providerName = ProviderName;
+            InitializeLayer();
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BruTileLayer"/> class.
         /// </summary>
@@ -48,20 +58,25 @@ namespace BruTileArcGIS
         /// <param name="cacheDir">The cache dir.</param>
         public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
+            config = ConfigHelper.GetConfig(enumBruTileLayer); ;
             this.application = application;
+            this.providerName = enumBruTileLayer.ToString();
+            InitializeLayer();
+        }
+
+        private void InitializeLayer()
+        {
             IMxDocument mxdoc = (IMxDocument)application.Document;
             this.map = mxdoc.FocusMap;
-            this.enumBruTileLayer = enumBruTileLayer;
             this.cacheDir = CacheSettings.GetCacheFolder();
             this.tileTimeOut = CacheSettings.GetTileTimeOut();
 
             SpatialReferences spatialReferences = new SpatialReferences();
-            IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
-            ITileSchema schema=config.CreateTileSource().Schema;
-            this.dataSpatialReference=spatialReferences.GetSpatialReference(schema.Srs);
-            this.envelope = GetDefaultEnvelope();
+            ITileSchema schema = config.CreateTileSource().Schema;
+            this.dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
+            this.envelope = GetDefaultEnvelope(config);
 
-            if(map.SpatialReference==null)
+            if (map.SpatialReference == null)
             {
                 // zet dan de spatial ref...
                 map.SpatialReference = dataSpatialReference;
@@ -74,8 +89,9 @@ namespace BruTileArcGIS
                 envelope.Project(map.SpatialReference);
                 ((IActiveView)map).Extent = envelope;
             }
-
         }
+
+
         #endregion
 
         #region public methods
@@ -107,7 +123,7 @@ namespace BruTileArcGIS
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
                             bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            bruTileHelper.Draw(application,activeView, enumBruTileLayer, trackCancel, layerSpatialReference);
+                            bruTileHelper.Draw(application,activeView, config, trackCancel, layerSpatialReference, providerName);
                             
                         }
                         catch (Exception ex)
@@ -135,15 +151,6 @@ namespace BruTileArcGIS
         #endregion
 
         #region properties
-        /// <summary>
-        /// Gets or sets the EnumBruTile.
-        /// </summary>
-        /// <value>The enum bru tile layer.</value>
-        public EnumBruTileLayer EnumBruTileLayer
-        {
-            get { return enumBruTileLayer; }
-            set { enumBruTileLayer = value; }
-        }
 
         /// <summary>
         /// Gets or sets the area of interest.
@@ -261,9 +268,8 @@ namespace BruTileArcGIS
 
        #endregion
 
-        private IEnvelope GetDefaultEnvelope()
+        private IEnvelope GetDefaultEnvelope(IConfig config)
         {
-            IConfig config = ConfigHelper.GetConfig(enumBruTileLayer);
             BruTile.Extent ext = config.CreateTileSource().Schema.Extent;
             IEnvelope envelope = new EnvelopeClass();
             envelope.XMin = ext.MinX;
@@ -288,18 +294,6 @@ namespace BruTileArcGIS
             }
         }
 
-        /**
-        /// <summary>
-        /// Gets the spatial reference.
-        /// </summary>
-        /// <value>The spatial reference.</value>
-        ISpatialReference IGeoDataset.SpatialReference
-        {
-            get
-            {
-                return dataSpatialReference;
-            }
-        }*/
         #endregion
 
         #region ILayerPosition Members
@@ -319,10 +313,3 @@ namespace BruTileArcGIS
         #endregion
     }
 }
-
-
-//IntPtr ipHwnd = new IntPtr(screenDisplay.hDC);
-//Bitmap b= new Bitmap(@"c:\\aaa\\19.png");
-//Graphics g = Graphics.FromHdc(ipHwnd);
-//g.DrawImage(b, 100, 100);
-

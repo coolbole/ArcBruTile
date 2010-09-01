@@ -91,7 +91,7 @@ namespace BruTileArcGIS
 
                 brutileLayer.Visible = true;
                 map.AddLayer((ILayer)brutileLayer);
-                map.MoveLayer((ILayer)brutileLayer, map.LayerCount);
+                //map.MoveLayer((ILayer)brutileLayer, map.LayerCount);
                 Util.SetBruTilePropertyPage(application, brutileLayer);
             }
             catch (Exception ex)

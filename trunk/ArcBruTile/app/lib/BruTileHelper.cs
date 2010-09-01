@@ -49,7 +49,6 @@ namespace BruTileArcGIS
         private IActiveView activeView;
         private IApplication application;
         private Transform transform;
-        private EnumBruTileLayer enumBruTileLayer;
         private ITileSource tileSource;
         private int tileTimeOut;
 
@@ -76,22 +75,22 @@ namespace BruTileArcGIS
         /// </summary>
         /// <param name="activeView">The active view.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        public void Draw(IApplication application,IActiveView activeView, EnumBruTileLayer enumBruTileLayer,ITrackCancel trackCancel,ISpatialReference layerSpatialReference)
+        public void Draw(IApplication application,IActiveView activeView, IConfig config,ITrackCancel trackCancel,ISpatialReference layerSpatialReference, String ProviderName)
         {
             try
             {
                 this.application = application;
                 this.activeView = activeView;
-                this.enumBruTileLayer = enumBruTileLayer;
+                //this.enumBruTileLayer = enumBruTileLayer;
                 screenDisplay = activeView.ScreenDisplay;
 
                 IEnvelope env = activeView.Extent;
-                this.config = ConfigHelper.GetConfig(enumBruTileLayer);
+                this.config = config;
                 this.tileSource=config.CreateTileSource();
                 this.schema=tileSource.Schema;
                 
                 this.layerSpatialReference = layerSpatialReference;
-                string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, enumBruTileLayer);
+                string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, ProviderName);
                 fileCache = new FileCache(cacheDirType, schema.Format);
 
                 env = Projector.ProjectEnvelope(env, schema.Srs);

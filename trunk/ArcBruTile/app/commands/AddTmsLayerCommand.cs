@@ -1,24 +1,25 @@
 ﻿using System;
-using System.Configuration;
+using System.Collections.Generic;
+using System.Text;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
-using ESRI.ArcGIS.ArcMapUI;
+using System.Configuration;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
-using BruTileArcGIS;
+using ESRI.ArcGIS.ArcMapUI;
+using System.Windows.Forms;
+using BrutileArcGIS.Properties;
+using BruTile.Web;
+using System.Net;
+using System.IO;
 
-namespace BrutileArcGIS.commands
+namespace BruTileArcGIS
 {
-    /// <summary>
-    /// ArcGIS Command to show a BruTile.
-    /// </summary>
-    [Guid("280195CB-E5C6-4AC9-B2D2-660A1FE90CD8")]
+    [Guid("6DC13D1D-BBC8-4942-9F0B-8A5A4288A440")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddSpatialCloudLayerCommand")]
-    public sealed class AddSpatialCloudLayerCommand : BaseCommand
+    [ProgId("AddTmsLayerCommand")]
+    public sealed class AddTmsLayerCommand: BaseCommand
     {
         #region private members
         private IMap map;
@@ -29,14 +30,14 @@ namespace BrutileArcGIS.commands
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddSpatialCloudLayerCommand()
+        public AddTmsLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&SpatialCloud";
-            base.m_message = "Add SpatialCloud Layer";
+            base.m_caption = "&Tms";
+            base.m_message = "Add TMS Layer";
             base.m_toolTip = base.m_message;
-            base.m_name = "AddSpatialCloudLayer";
-            base.m_bitmap = Resources.SpatialCloud;
+            base.m_name = "AddTmsLayer";
+            base.m_bitmap = Resources.tms;
         }
         #endregion
 
@@ -74,9 +75,6 @@ namespace BrutileArcGIS.commands
             }
         }
 
-
-
-
         /// <summary>
         /// Occurs when this command is clicked
         /// </summary>
@@ -87,15 +85,20 @@ namespace BrutileArcGIS.commands
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.SpatialCloud);
 
-                brutileLayer.Name = "SpatialCloud";
+                String url = "http://labs.metacarta.com/wms-c/Basic.py/1.0.0/boston";
+
+                BruTileLayer brutileLayer = new BruTileLayer(application, url, "Boston");
+
+                brutileLayer.Name = "TMS Boston";
                 brutileLayer.Visible = true;
 
                 map.AddLayer((ILayer)brutileLayer);
-                //map.MoveLayer((ILayer)brutileLayer, map.LayerCount);
 
-                Util.SetBruTilePropertyPage(application, brutileLayer);
+
+
+                //int a = 1;
+                //tileSource.
             }
             catch (Exception ex)
             {
@@ -155,6 +158,6 @@ namespace BrutileArcGIS.commands
 
         #endregion
 
-    }
 
+    }
 }

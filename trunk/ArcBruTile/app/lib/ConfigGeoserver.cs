@@ -23,7 +23,7 @@ using BruTile.PreDefined;
 
 namespace BruTileArcGIS
 {
-    public class ConfigTms : IConfig
+    public class ConfigGeoserver : IConfig
     {
         public ITileSource CreateTileSource()
         {

@@ -164,6 +164,7 @@
     <Compile Include="commands\AddGoogleLayerCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="commands\AddSpatialCloudLayerCommand.cs" />
+    <Compile Include="commands\AddTmsLayerCommand.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
     <Compile Include="controls\BruTilePropertyPageUserControl.cs">
@@ -176,13 +177,14 @@
     <Compile Include="lib\ConfigBingHybrid.cs" />
     <Compile Include="lib\ConfigGoogle.cs" />
     <Compile Include="lib\ConfigSpatialCloud.cs" />
+    <Compile Include="lib\ConfigTms.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
     <Compile Include="lib\ConfigEsri.cs" />
     <Compile Include="lib\ConfigGeodanGeoserver.cs" />
     <Compile Include="lib\ConfigHelper.cs" />
     <Compile Include="lib\ConfigOsm.cs" />
-    <Compile Include="lib\ConfigTms.cs" />
+    <Compile Include="lib\ConfigGeoserver.cs" />
     <Compile Include="lib\ConfigurationHelper.cs" />
     <Compile Include="lib\EnumBruTileLayer.cs" />
     <Compile Include="lib\IConfig.cs" />
@@ -239,6 +241,7 @@
     <Content Include="readme.txt" />
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
     <Content Include="Resources\SpatialCloud.png" />
+    <Content Include="Resources\tms.jpg" />
     <None Include="Resources\Google.png" />
     <None Include="Resources\google.ico" />
   </ItemGroup>

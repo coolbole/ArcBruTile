@@ -7,6 +7,11 @@ namespace BruTileArcGIS
 {
     public class ConfigHelper
     {
+        public static IConfig GetTmsConfig(string url)
+        {
+            return new ConfigTms(url);
+        }
+
         /// <summary>
         /// Gets the config.
         /// </summary>
@@ -34,7 +39,7 @@ namespace BruTileArcGIS
             }
             else if (enumBruTileLayer == EnumBruTileLayer.TMS)
             {
-                result = new ConfigTms();
+                result = new ConfigGeoserver();
             }
             else if (enumBruTileLayer == EnumBruTileLayer.GeoserverWms)
             {

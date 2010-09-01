@@ -97,31 +97,6 @@ namespace BruTileArcGIS
 
         public int Activate()
         {
-
-            EnumBruTileLayer brutileType = bruTileLayer.EnumBruTileLayer;
-
-            if (brutileType == EnumBruTileLayer.OSM)
-            {
-                rdbOsm.Checked=true;
-            }
-            else if (brutileType == EnumBruTileLayer.Bing)
-            {
-                rdbBing.Checked = true; 
-            }
-            else if (brutileType == EnumBruTileLayer.ESRI)
-            {
-                rdbEsri.Checked = true;
-            }
-            else if (brutileType == EnumBruTileLayer.TMS)
-            {
-                rdbTMS.Checked = true;
-            }
-            else if (brutileType == EnumBruTileLayer.GeoserverWms)
-            {
-                rdbGeodan.Checked = true;
-            }
-
-            SetPageDirty(false);
             return this.Handle.ToInt32();
         }
 
@@ -148,38 +123,6 @@ namespace BruTileArcGIS
 
         public void Apply()
         {
-            if (isPageDirty)
-            {
-                if (rdbOsm.Checked)
-                {
-                    bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.OSM;
-                }
-                else if (rdbBing.Checked)
-                {
-                    bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.Bing;
-                }
-                else if (rdbEsri.Checked)
-                {
-                    bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.ESRI;
-                }
-                else if (rdbTMS.Checked)
-                {
-                    bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.TMS;
-                }
-                else if (rdbGeodan.Checked)
-                {
-                    bruTileLayer.EnumBruTileLayer = EnumBruTileLayer.GeoserverWms;
-                }
-
-                //Refresh display after changes are made
-                if (m_activeView != null)
-                {
-                    m_activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, null);
-                    m_activeView.ContentsChanged(); //notify clients listening to active view events, e.g. Source tab in the TOC
-                }
-
-                SetPageDirty(false);
-            }
         }
 
         public void Cancel()
