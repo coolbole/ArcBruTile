@@ -241,5 +241,10 @@ namespace BruTileArcGIS
             SetPageDirty(true);
         }
 
+        private void BruTilePropertyPageUserControl_Load(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

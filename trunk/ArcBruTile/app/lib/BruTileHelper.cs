@@ -76,35 +76,42 @@ namespace BruTileArcGIS
                 this.activeView = activeView;
                 //this.enumBruTileLayer = enumBruTileLayer;
                 screenDisplay = activeView.ScreenDisplay;
-
                 IEnvelope env = activeView.Extent;
-                this.config = config;
-                this.tileSource=config.CreateTileSource();
-                this.schema=tileSource.Schema;
-                
-                this.layerSpatialReference = layerSpatialReference;
-                string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, ProviderName);
-                fileCache = new FileCache(cacheDirType, schema.Format);
 
-                env = Projector.ProjectEnvelope(env, schema.Srs);
-                SpatialReferences spatialReferences = new SpatialReferences();
-                dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
-                int mapWidth = activeView.ExportFrame.right;
-                int mapHeight = activeView.ExportFrame.bottom;
-                float resolution = GetMapResolution(env, mapWidth);
-                PointF centerPoint = GetCenterPoint(env);
-
-                transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
-                int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
-                tiles = schema.GetTilesInView(transform.Extent, level);
-                if (layerSpatialReference != null)
+                if (!env.IsEmpty)
                 {
-                    needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
+
+                    this.config = config;
+                    this.tileSource = config.CreateTileSource();
+                    this.schema = tileSource.Schema;
+
+                    this.layerSpatialReference = layerSpatialReference;
+                    string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, ProviderName);
+                    fileCache = new FileCache(cacheDirType, schema.Format);
+
+                    env = Projector.ProjectEnvelope(env, schema.Srs);
+                    if (!env.IsEmpty)
+                    {
+                        SpatialReferences spatialReferences = new SpatialReferences();
+                        dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
+                        int mapWidth = activeView.ExportFrame.right;
+                        int mapHeight = activeView.ExportFrame.bottom;
+                        float resolution = GetMapResolution(env, mapWidth);
+                        PointF centerPoint = GetCenterPoint(env);
+
+                        transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
+                        int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
+                        tiles = schema.GetTilesInView(transform.Extent, level);
+                        if (layerSpatialReference != null)
+                        {
+                            needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
+                        }
+
+                        LoadTiles(trackCancel);
+                        //DrawTilesInMemory(trackCancel);
+                    }
+                    
                 }
-
-                LoadTiles(trackCancel);
-                //DrawTilesInMemory(trackCancel);
-
             }
             catch (Exception ex)
             {

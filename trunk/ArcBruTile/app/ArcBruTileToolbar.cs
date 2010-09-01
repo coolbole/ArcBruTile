@@ -87,13 +87,14 @@ namespace BruTileArcGIS
 
                 //Status sectie
                 BeginGroup();
+                if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
+                BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value)) AddItem("AddGoogleLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value)) AddItem("AddBingLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
-                if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
             }
             catch (Exception ex)
             {

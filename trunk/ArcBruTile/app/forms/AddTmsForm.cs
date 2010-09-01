@@ -28,8 +28,9 @@ namespace BruTileArcGIS
 
         private void btnRetrieve_Click(object sender, EventArgs e)
         {
+            string url = tbTmsUrl.Text + @"/" + cbbVersion.Text;
             WebClient client = new WebClient();
-            byte[] theBytes = client.DownloadData(tbTmsUrl.Text);
+            byte[] theBytes = client.DownloadData(url);
             string test = Encoding.UTF8.GetString(theBytes);
             client.Dispose();
             XmlDocument doc = new XmlDocument();
@@ -69,6 +70,7 @@ namespace BruTileArcGIS
             if (lbServices.SelectedItem != null)
             {
                 selectedTileMap = (TileMap)lbServices.SelectedItem;
+                btnOk.Enabled = true;
             }
         }
     }
