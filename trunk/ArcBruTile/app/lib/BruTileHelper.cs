@@ -422,6 +422,12 @@ namespace BruTileArcGIS
         {
             bool result = false;
             FileInfo fi = new FileInfo(file);
+            fi.IsReadOnly = false;
+            if (fi.Extension == "jpeg")
+            {
+                string newname = fi.Name.Replace("jpeg", "jpg");
+                fi = new FileInfo(newname);
+            }
             IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
             IRasterWorkspace rasterWorkSpace = (IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(fi.DirectoryName, 0);
 
@@ -478,6 +484,10 @@ namespace BruTileArcGIS
             {
                 res = "jgw";
             }
+            if (format == "jpeg")
+            {
+                res = "jgw";
+            }
             else if (format == "png")
             {
                 res = "pgw";
@@ -486,6 +496,7 @@ namespace BruTileArcGIS
             {
                 res = "tfw";
             }
+
             return res;
 
         }

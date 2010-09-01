@@ -23,7 +23,7 @@ namespace BruTileArcGIS
             //request.ContentType = "application/x-www-form-urlencoded";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream stream= response.GetResponseStream();
-            TmsTileSource tileSource = new TmsTileSource(stream);
+            TmsTileSource tileSource = new TmsTileSource(stream, url);
             return tileSource;
         }
     }
