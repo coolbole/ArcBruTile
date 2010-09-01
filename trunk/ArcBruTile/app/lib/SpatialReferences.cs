@@ -12,15 +12,8 @@ namespace BruTileArcGIS
 
         }
 
-
-        // same?
-        //int prjType = 900913;
-        //int prjType = 102113;
-        //int prjType = 3785;
-
         public ISpatialReference GetSpatialReference(string epsgCode)
         {
-            //ESRI.ArcGIS.ProductCode.
             ISpatialReference res=null;
 
             // first get the code
@@ -29,29 +22,53 @@ namespace BruTileArcGIS
 
             int code = int.Parse(epsgCode.Substring(start, end-start));
 
-            // Google sperical webmercator
-            if (code == 900913) code = 102113;
+            // Handle non official EPSG codes...
+            if (code == 900913 | code==41001 ) code = 102113;
 
-            // Bing
-            if (code == 102113)
+            if(this.isProjectedSpatialReference(code))
             {
                 res = this.GetProjectedSpatialReference(code);
             }
-
-            // RD (Dutch)
-            if (code == 28992)
-            {
-                res = this.GetProjectedSpatialReference(code);
-            }
-
-            // Wgs84
-            if (code == 4326)
+            else if(this.isGeographicSpatialReference(code))
             {
                 res = this.GetGeographicSpatialReference(code);
             }
 
             return res;
         }
+
+
+        private bool isGeographicSpatialReference(int gcsType)
+        {
+            try
+            {
+                ISpatialReferenceFactory pSRF = new SpatialReferenceEnvironmentClass();
+                IGeographicCoordinateSystem geographicCoordinateSystem = pSRF.CreateGeographicCoordinateSystem(gcsType);
+                ISpatialReference spatialReference = (ISpatialReference)geographicCoordinateSystem;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        private bool isProjectedSpatialReference(int pcsType)
+        {
+            try
+            {
+                ISpatialReferenceFactory pSRF = new SpatialReferenceEnvironmentClass();
+                IProjectedCoordinateSystem m_ProjectedCoordinateSystem = pSRF.CreateProjectedCoordinateSystem(pcsType);
+                ISpatialReference spatialReference = (ISpatialReference)m_ProjectedCoordinateSystem;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         private ISpatialReference GetGeographicSpatialReference(int gcsType)
         {

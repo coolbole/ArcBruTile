@@ -91,10 +91,11 @@ namespace BruTileArcGIS
 
                 if (result == DialogResult.OK)
                 {
-                    //String url = "http://labs.metacarta.com/wms-c/Basic.py/1.0.0/boston";
+                    // Fix the service labs.metacarta.com bug: it doubles the version :-(
                     addTmsForm.SelectedTileMap.Href=addTmsForm.SelectedTileMap.Href.Replace(@"1.0.0/1.0.0", @"1.0.0");
+
                     BruTileLayer brutileLayer = new BruTileLayer(application, addTmsForm.SelectedTileMap.Href, addTmsForm.SelectedTileMap.Title);
-                    brutileLayer.Name = addTmsForm.SelectedTileMap.Href;
+                    brutileLayer.Name = addTmsForm.SelectedTileMap.Title;
                     brutileLayer.Visible = true;
                     map.AddLayer((ILayer)brutileLayer);
                 }

@@ -28,9 +28,6 @@ namespace BruTileArcGIS
 
         private void btnRetrieve_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("Effe selecteren Arie");
-           // XmlDocument doc = new XmlDocument();
-            //doc.LoadXml(tbTmsUrl.Text);
             WebClient client = new WebClient();
             byte[] theBytes = client.DownloadData(tbTmsUrl.Text);
             string test = Encoding.UTF8.GetString(theBytes);

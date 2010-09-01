@@ -17,17 +17,10 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
-//using ESRI.ArcGIS.DataSourcesGDB;
 
 
 namespace BruTileArcGIS
 {
-    public class BwWorkerArgs
-    {
-        public string Name;
-        public IEnvelope env;
-    }
-
     /// <summary>
     /// Helper class for BruTile
     /// </summary>
@@ -189,10 +182,6 @@ namespace BruTileArcGIS
             {
                 logger.Debug("Start waiting for remote tiles (" + workitemResults.Count.ToString() + ")");
 
-                // use 300 milliseconds???
-                //smartThreadPool.WaitForIdle(300);
-                //smartThreadPool.MaxThreads = 30;
- 
                 foreach (IWorkItemResult<TileInfo> res in workitemResults)
                 {
                     TileInfo tile = (TileInfo)res.Result;
@@ -307,7 +296,7 @@ namespace BruTileArcGIS
             }
             catch (System.Net.WebException webException)
             {
-                // there is an error loading the tile
+                // if there is an error loading the tile
                 // like tile doesn't exist on server (404)
                 // just log a message and go on
                 logger.Error("Error loading tile webException: " + webException.Message + ". url: " + uri.AbsoluteUri);
@@ -445,14 +434,10 @@ namespace BruTileArcGIS
             }
             catch (System.Runtime.InteropServices.COMException comException)
             {
-                // there is something wrong with loading the result
+                // if there is something wrong with loading the result
                 // like Failed to open raster dataset
                 // just log a message and go on
                 logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName+"\\"+ fi.Name);
-
-                //try to delete this file...
-                //rasterWorkSpace.Dl
-
             }
             return result;
         }
