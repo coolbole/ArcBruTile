@@ -22,7 +22,7 @@ namespace BruTileArcGIS
         /// <value>The caption.</value>
         public string Caption
         {
-            get { return "&BruTile"; }
+            get { return "&ArcBruTile"; }
         }
 
         /// <summary>
@@ -35,14 +35,6 @@ namespace BruTileArcGIS
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddOsmLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 1:
-                    itemDef.ID = "AddBingLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 2:
                     itemDef.ID = "AboutBruTileCommand";
                     itemDef.Group = true;
                     break;
@@ -58,7 +50,7 @@ namespace BruTileArcGIS
         /// <value>The item count.</value>
         public int ItemCount
         {
-            get { return 3; }
+            get { return 1; }
         }
 
         /// <summary>

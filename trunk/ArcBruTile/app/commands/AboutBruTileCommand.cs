@@ -78,7 +78,7 @@ namespace BruTileArcGIS
         public AboutBruTileCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&About BruTile...";
+            base.m_caption = "&About ArcBruTile...";
             base.m_message = "About BruTile...";
             base.m_toolTip = base.m_caption;
             base.m_name = "AboutBruTileCommand";

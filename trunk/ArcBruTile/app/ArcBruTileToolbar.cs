@@ -110,7 +110,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                return "BruTile";
+                return "ArcBruTile";
             }
         }
 
@@ -121,7 +121,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                return "BruTile toolbar";
+                return "ArcBruTile toolbar";
             }
         }
     }
