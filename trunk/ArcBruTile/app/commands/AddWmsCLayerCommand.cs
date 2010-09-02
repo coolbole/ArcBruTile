@@ -13,13 +13,14 @@ using BrutileArcGIS.Properties;
 using BruTile.Web;
 using System.Net;
 using System.IO;
+using BruTile;
 
 namespace BruTileArcGIS
 {
-    [Guid("6DC13D1D-BBC8-4942-9F0B-8A5A4288A440")]
+    [Guid("EF0A28AE-946B-46B8-BB5F-1BA116076E78")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddTmsLayerCommand")]
-    public sealed class AddTmsLayerCommand: BaseCommand
+    [ProgId("AddWmsCLayerCommand")]
+    public sealed class AddWmsCLayerCommand : BaseCommand
     {
         #region private members
         private IMap map;
@@ -30,14 +31,14 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddTmsLayerCommand()
+        public AddWmsCLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Tms";
-            base.m_message = "Add TMS Layer";
+            base.m_caption = "&WmsC";
+            base.m_message = "Add WMSC Layer";
             base.m_toolTip = base.m_message;
-            base.m_name = "AddTmsLayer";
-            base.m_bitmap = Resources.tms;
+            base.m_name = "AddWmsCLayer";
+            //base.m_bitmap = Resources.tms;
         }
         #endregion
 
@@ -87,23 +88,15 @@ namespace BruTileArcGIS
                 map = mxdoc.FocusMap;
 
 
-                //string url = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilities&service=wms-c";
-                //var tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
-                //var tileSource = tileSources.Find(source => source.Schema.Name == "osm-map");
-                //InitializeTransform(tileSource.Schema);
-                //AddLayer(new TileLayer(tileSource));
-
-
-                AddTmsForm addTmsForm = new AddTmsForm();
-                DialogResult result=addTmsForm.ShowDialog();
+                AddWmsCForm addWmsCForm = new AddWmsCForm();
+                DialogResult result = addWmsCForm.ShowDialog();
 
                 if (result == DialogResult.OK)
                 {
-                    // Fix the service labs.metacarta.com bug: it doubles the version :-(
-                    addTmsForm.SelectedTileMap.Href=addTmsForm.SelectedTileMap.Href.Replace(@"1.0.0/1.0.0", @"1.0.0");
-
-                    BruTileLayer brutileLayer = new BruTileLayer(application, addTmsForm.SelectedTileMap.Href, addTmsForm.SelectedTileMap.Title);
-                    brutileLayer.Name = addTmsForm.SelectedTileMap.Title;
+                    ITileSource tileSource = addWmsCForm.SelectedTileSource;
+                    IConfig configWmsC = new ConfigWmsC(tileSource);
+                    BruTileLayer brutileLayer = new BruTileLayer(application,configWmsC);
+                    brutileLayer.Name=configWmsC.CreateTileSource().Schema.Name;
                     brutileLayer.Visible = true;
                     map.AddLayer((ILayer)brutileLayer);
                 }

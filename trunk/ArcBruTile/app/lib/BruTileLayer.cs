@@ -45,6 +45,7 @@ namespace BruTileArcGIS
         public BruTileLayer(IApplication app, string TmsUrl, string ProviderName)
         {
             config = ConfigHelper.GetTmsConfig(TmsUrl);
+
             this.application = app;
             this.providerName = ProviderName;
             InitializeLayer();
@@ -61,6 +62,14 @@ namespace BruTileArcGIS
             config = ConfigHelper.GetConfig(enumBruTileLayer); ;
             this.application = application;
             this.providerName = enumBruTileLayer.ToString();
+            InitializeLayer();
+        }
+
+        public BruTileLayer(IApplication application, IConfig config)
+        {
+            this.application = application;
+            this.config = config;
+            this.providerName = config.CreateTileSource().Schema.Name;
             InitializeLayer();
         }
 

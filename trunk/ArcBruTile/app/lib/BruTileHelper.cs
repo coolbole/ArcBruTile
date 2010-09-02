@@ -181,7 +181,9 @@ namespace BruTileArcGIS
                 if(needsLoad)
                 {
                     object o = new object[] { tileProvider.requestBuilder, tile };
-                    IWorkItemResult<TileInfo> wir = smartThreadPool.QueueWorkItem(new Func<object, TileInfo>(GetTile), o);
+                    //IWorkItemResult<TileInfo> wir = smartThreadPool.QueueWorkItem(new Func<object, TileInfo>(GetTile), o);
+                    IWorkItemResult<TileInfo> wir = smartThreadPool.QueueWorkItem(new Amib.Threading.Func<object, TileInfo>(GetTile), o);
+
                     workitemResults.Add(wir);
                 }
             }

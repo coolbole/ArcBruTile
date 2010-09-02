@@ -88,6 +88,8 @@ namespace BruTileArcGIS
                 //Status sectie
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
+                //if (Convert.ToBoolean(config.AppSettings.Settings["useWmsC"].Value)) AddItem("AddWmsCLayerCommand");
+
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value)) AddItem("AddGoogleLayerCommand");
