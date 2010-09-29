@@ -30,6 +30,8 @@ namespace BruTileArcGIS
         {
             string url = tbTmsUrl.Text + @"/" + cbbVersion.Text;
             WebClient client = new WebClient();
+            // add useragent to request
+            client.Headers.Add("user-agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14");
             byte[] theBytes = client.DownloadData(url);
             string test = Encoding.UTF8.GetString(theBytes);
             client.Dispose();

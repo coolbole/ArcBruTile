@@ -18,7 +18,7 @@ namespace BruTileArcGIS
         public ITileSource CreateTileSource()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-            //request.ContentType = "application/x-www-form-urlencoded";
+            request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream stream= response.GetResponseStream();
             TmsTileSource tileSource = new TmsTileSource(stream, Url);
