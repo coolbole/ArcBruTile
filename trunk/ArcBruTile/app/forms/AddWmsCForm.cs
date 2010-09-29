@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using BruTile.Web;
 using BruTile;
-using System.Linq;
+//using System.Linq;
 
 namespace BruTileArcGIS
 {
@@ -45,7 +45,7 @@ namespace BruTileArcGIS
             if (lbServices.SelectedItem != null)
             {
                 string name = (String)lbServices.SelectedItem;
-                SelectedTileSource = tileSources.First(source => source.Schema.Name == name);
+                //SelectedTileSource = tileSources.First(source => source.Schema.Name == name);
                 btnOk.Enabled = true;
             }
 
