@@ -8,6 +8,7 @@ using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geometry;
 using Microsoft.SqlServer.MessageBox;
+using ESRI.ArcGIS.Geodatabase;
 
 namespace BruTileArcGIS
 {
@@ -15,7 +16,7 @@ namespace BruTileArcGIS
     /// Represents a custom BruTile Layer
     /// todo: implement IPersistStream?
     /// </summary>
-    public class BruTileLayer : ILayer, ILayerPosition
+    public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset
     {
         #region private members
         private IApplication application;
@@ -237,6 +238,7 @@ namespace BruTileArcGIS
         public ESRI.ArcGIS.Geometry.ISpatialReference SpatialReference
         {
             set { layerSpatialReference=value; }
+            get { return layerSpatialReference; }
         }
 
         /// <summary>
@@ -275,7 +277,26 @@ namespace BruTileArcGIS
             }
         }
 
+
+
+
        #endregion
+        /// <summary>
+        /// Gets the extent.
+        /// </summary>
+        /// <value>The extent.</value>
+        private IEnvelope GetDefaultEnvelope()
+        {
+            BruTile.Extent ext = config.CreateTileSource().Schema.Extent;
+            IEnvelope envelope = new EnvelopeClass();
+            envelope.XMin = ext.MinX;
+            envelope.XMax = ext.MaxX;
+            envelope.YMin = ext.MinY;
+            envelope.YMax = ext.MaxY;
+            envelope.SpatialReference = dataSpatialReference;
+            return envelope;
+        }
+
 
         private IEnvelope GetDefaultEnvelope(IConfig config)
         {
@@ -297,9 +318,7 @@ namespace BruTileArcGIS
         {
             get 
             {
-
-                return envelope;
-
+                return GetDefaultEnvelope();
             }
         }
 
