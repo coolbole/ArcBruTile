@@ -102,7 +102,7 @@ namespace BruTileArcGIS
                     // Fix the service labs.metacarta.com bug: it doubles the version :-(
                     addTmsForm.SelectedTileMap.Href=addTmsForm.SelectedTileMap.Href.Replace(@"1.0.0/1.0.0", @"1.0.0");
 
-                    BruTileLayer brutileLayer = new BruTileLayer(application, addTmsForm.SelectedTileMap.Href, addTmsForm.SelectedTileMap.Title);
+                    BruTileLayer brutileLayer = new BruTileLayer(application, addTmsForm.SelectedTileMap.Href);
                     brutileLayer.Name = addTmsForm.SelectedTileMap.Title;
                     brutileLayer.Visible = true;
                     map.AddLayer((ILayer)brutileLayer);

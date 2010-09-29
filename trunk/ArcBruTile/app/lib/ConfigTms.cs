@@ -10,21 +10,21 @@ namespace BruTileArcGIS
 {
     public class ConfigTms: IConfig
     {
-        private string url;
-
         public ConfigTms(String url)
         {
-            this.url = url;
+            this.Url = url;
         }
 
         public ITileSource CreateTileSource()
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             //request.ContentType = "application/x-www-form-urlencoded";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream stream= response.GetResponseStream();
-            TmsTileSource tileSource = new TmsTileSource(stream, url);
+            TmsTileSource tileSource = new TmsTileSource(stream, Url);
             return tileSource;
         }
+
+        public string Url { get; set; }
     }
 }

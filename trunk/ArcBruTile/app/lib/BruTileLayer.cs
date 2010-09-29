@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using BruTile;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
@@ -16,7 +17,10 @@ namespace BruTileArcGIS
     /// Represents a custom BruTile Layer
     /// todo: implement IPersistStream?
     /// </summary>
-    public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset
+    [Guid("1EF3586D-8B42-4921-9958-A73F4833A6FA")]
+    [ClassInterface(ClassInterfaceType.None)]
+    [ProgId("BruTileArcGIS.BruTileLayer")]
+    public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant
     {
         #region private members
         private IApplication application;
@@ -33,22 +37,21 @@ namespace BruTileArcGIS
         private bool visible=false;
         private IMap map;
         private BruTileHelper bruTileHelper;
-        //private EnumBruTileLayer enumBruTileLayer;
+        private EnumBruTileLayer enumBruTileLayer;
         private string cacheDir;
         private int tileTimeOut;
         private double layerWeight=101;
         private IConfig config;
-        private String providerName;
-        
+        public const string GUID = "1EF3586D-8B42-4921-9958-A73F4833A6FA";
         #endregion
 
         #region constructors
-        public BruTileLayer(IApplication app, string TmsUrl, string ProviderName)
+        public BruTileLayer(IApplication app, string TmsUrl)
         {
             config = ConfigHelper.GetTmsConfig(TmsUrl);
 
             this.application = app;
-            this.providerName = ProviderName;
+            this.enumBruTileLayer = EnumBruTileLayer.TMS;
             InitializeLayer();
         }
 
@@ -62,15 +65,28 @@ namespace BruTileArcGIS
         {
             config = ConfigHelper.GetConfig(enumBruTileLayer); ;
             this.application = application;
-            this.providerName = enumBruTileLayer.ToString();
+            this.enumBruTileLayer = enumBruTileLayer;
             InitializeLayer();
         }
 
+        public BruTileLayer()
+        {
+            // likely this contructor is only called when loading a mxd file so
+            // we should be able to leave it half contructed at this point and let
+            // load handle the rest.
+            Type t = Type.GetTypeFromProgID("esriFramework.AppRef");
+            System.Object obj = Activator.CreateInstance(t);
+            IApplication pApp = obj as ESRI.ArcGIS.Framework.IApplication;
+            this.application = pApp;
+        }
+
+
+        // used for WmsC???
         public BruTileLayer(IApplication application, IConfig config)
         {
             this.application = application;
             this.config = config;
-            this.providerName = config.CreateTileSource().Schema.Name;
+            //this.providerName = config.CreateTileSource().Schema.Name;
             InitializeLayer();
         }
 
@@ -114,36 +130,40 @@ namespace BruTileArcGIS
         /// <param name="TrackCancel">The track cancel.</param>
         public void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
         {
-
             if (drawPhase == esriDrawPhase.esriDPGeography)
             {
-           
                 if (this.Valid)
                 {
                     if (this.Visible)
                     {
                         try
                         {
+                            // when loading from a file the active map doesn't exist yet 
+                            // so just deal with it here.
+                            if (map == null)
+                            {
+                                IMxDocument mxdoc = (IMxDocument)application.Document;
+                                this.map = mxdoc.FocusMap;
+                            }
 
                             Debug.WriteLine("Draw event");
                             IActiveView activeView = map as IActiveView;
-                            
+
                             envelope = activeView.Extent;
 
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
                             bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            bruTileHelper.Draw(application,activeView, config, trackCancel, layerSpatialReference, providerName);
-                            
+                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer.ToString());                                  
                         }
                         catch (Exception ex)
                         {
                             ExceptionMessageBox mbox = new ExceptionMessageBox(ex);
                             mbox.Show(null);
                         }
-                    }
-                }
-            }
+                    } // isVisible
+                }  // isValid
+            }  //drawphase
         }
 
         /// <summary>
@@ -339,5 +359,62 @@ namespace BruTileArcGIS
         }
 
         #endregion
+
+        #region "IPersistVariant Implementations"
+        public UID ID
+        {
+            get
+            {
+                UID uid = new UIDClass();
+                uid.Value = "{" + BruTileLayer.GUID + "}";
+                return uid;
+            }
+        }
+
+        public void Load(IVariantStream Stream)
+        {
+            name = (string)Stream.Read();
+            visible = (bool)Stream.Read();
+            enumBruTileLayer = (EnumBruTileLayer)Stream.Read();
+
+            switch (enumBruTileLayer)
+            {
+                case EnumBruTileLayer.TMS:
+                    string url = (string)Stream.Read();
+                    config = ConfigHelper.GetTmsConfig(url);
+                    break;
+                default:
+                    config = ConfigHelper.GetConfig(enumBruTileLayer);
+                    break;
+            }
+
+            InitializeLayer();
+            // get the active map later when 
+            map = null;
+            Util.SetBruTilePropertyPage(application, this);
+        }
+
+        public void Save(IVariantStream Stream)
+        {
+            Stream.Write(name);
+            Stream.Write(visible);
+            Stream.Write(this.enumBruTileLayer);
+            //Stream.Write(config);
+
+            switch (enumBruTileLayer)
+            {
+                case EnumBruTileLayer.TMS:
+                    ConfigTms tms = config as ConfigTms;
+                    Stream.Write(tms.Url);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+
+        #endregion
+
     }
 }
