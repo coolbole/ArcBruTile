@@ -94,6 +94,7 @@ namespace BruTileArcGIS
                 if (result == DialogResult.OK)
                 {
                     ITileSource tileSource = addWmsCForm.SelectedTileSource;
+                    
                     IConfig configWmsC = new ConfigWmsC(tileSource);
                     BruTileLayer brutileLayer = new BruTileLayer(application,configWmsC);
                     brutileLayer.Name=configWmsC.CreateTileSource().Schema.Name;

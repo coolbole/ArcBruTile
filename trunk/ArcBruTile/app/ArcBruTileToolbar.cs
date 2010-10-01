@@ -88,7 +88,7 @@ namespace BruTileArcGIS
                 //Status sectie
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
-                //if (Convert.ToBoolean(config.AppSettings.Settings["useWmsC"].Value)) AddItem("AddWmsCLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useWmsC"].Value)) AddItem("AddWmsCLayerCommand");
 
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
@@ -96,7 +96,7 @@ namespace BruTileArcGIS
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value)) AddItem("AddBingLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
-                if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
+                //if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
             }
             catch (Exception ex)
             {

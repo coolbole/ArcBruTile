@@ -44,6 +44,7 @@ namespace BruTileArcGIS
         private Transform transform;
         private ITileSource tileSource;
         private int tileTimeOut;
+        private EnumBruTileLayer enumBruTileLayer;
 
         #endregion
 
@@ -68,13 +69,13 @@ namespace BruTileArcGIS
         /// </summary>
         /// <param name="activeView">The active view.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        public void Draw(IApplication application,IActiveView activeView, IConfig config,ITrackCancel trackCancel,ISpatialReference layerSpatialReference, String ProviderName)
+        public void Draw(IApplication application,IActiveView activeView, IConfig config,ITrackCancel trackCancel,ISpatialReference layerSpatialReference, EnumBruTileLayer enumBruTileLayer)
         {
             try
             {
                 this.application = application;
                 this.activeView = activeView;
-                //this.enumBruTileLayer = enumBruTileLayer;
+                this.enumBruTileLayer = enumBruTileLayer;
                 screenDisplay = activeView.ScreenDisplay;
                 IEnvelope env = activeView.Extent;
 
@@ -86,8 +87,17 @@ namespace BruTileArcGIS
                     this.schema = tileSource.Schema;
 
                     this.layerSpatialReference = layerSpatialReference;
-                    string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, ProviderName);
-                    fileCache = new FileCache(cacheDirType, schema.Format);
+
+                    string cacheDirType = this.GetCacheDirectory(config, enumBruTileLayer);
+
+                    if (!schema.Format.Contains(@"image/"))
+                    {
+                        fileCache = new FileCache(cacheDirType, schema.Format);
+                    }
+                    else
+                    {
+                        fileCache = new FileCache(cacheDirType, schema.Format.Substring(6, schema.Format.Length - 6));
+                    }
 
                     env = Projector.ProjectEnvelope(env, schema.Srs);
                     if (!env.IsEmpty)
@@ -132,6 +142,26 @@ namespace BruTileArcGIS
             }
         }
 
+
+        private string GetCacheDirectory(IConfig config, EnumBruTileLayer layerType)
+        {
+            string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString());
+
+            if (enumBruTileLayer == EnumBruTileLayer.TMS)
+            {
+                ConfigTms configTms = (ConfigTms)config;
+                string url = configTms.Url;
+                string service = url.Substring(7, url.Length - 7);
+                service = service.Replace(@"/", "-");
+                if (service.EndsWith("-"))
+                {
+                    service = service.Substring(0, service.Length - 1);
+                }
+                cacheDirType = String.Format("{0}{1}{2}{3}{4}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString(), System.IO.Path.DirectorySeparatorChar, service);
+            }
+            return cacheDirType;
+
+        }
 
         /// <summary>
         /// Loads the tiles.
@@ -473,6 +503,8 @@ namespace BruTileArcGIS
         private string GetWorldFile(string format)
         {
             string res = String.Empty;
+
+            format=(format.Contains(@"image/")?format.Substring(6, format.Length - 6):format);
 
             if (format == "jpg")
             {

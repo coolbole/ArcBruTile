@@ -46,6 +46,22 @@ namespace BruTileArcGIS
         #endregion
 
         #region constructors
+
+        /// <summary>
+        /// Empty constructor. 
+        /// likely this contructor is only called when loading a mxd file so
+        /// we should be able to leave it half contructed at this point and let
+        /// load handle the rest.
+        /// </summary>
+        public BruTileLayer()
+        {
+            Type t = Type.GetTypeFromProgID("esriFramework.AppRef");
+            System.Object obj = Activator.CreateInstance(t);
+            IApplication pApp = obj as ESRI.ArcGIS.Framework.IApplication;
+            this.application = pApp;
+        }
+
+        
         public BruTileLayer(IApplication app, string TmsUrl)
         {
             config = ConfigHelper.GetTmsConfig(TmsUrl);
@@ -69,24 +85,12 @@ namespace BruTileArcGIS
             InitializeLayer();
         }
 
-        public BruTileLayer()
-        {
-            // likely this contructor is only called when loading a mxd file so
-            // we should be able to leave it half contructed at this point and let
-            // load handle the rest.
-            Type t = Type.GetTypeFromProgID("esriFramework.AppRef");
-            System.Object obj = Activator.CreateInstance(t);
-            IApplication pApp = obj as ESRI.ArcGIS.Framework.IApplication;
-            this.application = pApp;
-        }
-
-
         // used for WmsC???
         public BruTileLayer(IApplication application, IConfig config)
         {
             this.application = application;
             this.config = config;
-            //this.providerName = config.CreateTileSource().Schema.Name;
+            this.enumBruTileLayer = EnumBruTileLayer.WMSC;
             InitializeLayer();
         }
 
@@ -154,7 +158,7 @@ namespace BruTileArcGIS
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
                             bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer.ToString());                                  
+                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer);                                  
                         }
                         catch (Exception ex)
                         {

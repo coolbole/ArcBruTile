@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0E128F1607BB1DD813DA3F1C4CB71290"
+        "OwnerKey" = "8:_6CA1C89321A14AC19BC50977592983B1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2700137A6975A10100DA711968E97214"
         "OwnerKey" = "8:_4813249D0B228F15DB7641C237ED785D"
         "MsmSig" = "8:_UNDEFINED"
@@ -274,12 +280,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2700137A6975A10100DA711968E97214"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6CA1C89321A14AC19BC50977592983B1"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -359,6 +359,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4813249D0B228F15DB7641C237ED785D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2700137A6975A10100DA711968E97214"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -481,7 +487,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v3.5"
+                "FrameworkVersion" = "8:.NETFramework,Version=v2.0"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -489,6 +495,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E128F1607BB1DD813DA3F1C4CB71290"
+            {
+            "SourcePath" = "8:ArcBruTile.tlb"
+            "TargetName" = "8:ArcBruTile.tlb"
+            "Tag" = "8:"
+            "Folder" = "8:_7F0D94B67EBE44D1BD15D839502B4177"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:2"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2700137A6975A10100DA711968E97214"
             {
             "AssemblyRegister" = "3:1"
@@ -919,11 +945,6 @@
             "AssemblyAsmDisplayName" = "8:ESRI.ArcGIS.GlobeCore, Version=9.2.3.1380, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E6996F3339F5C5F9AE1068A89D8DF929"
-                    {
-                    "Name" = "8:ESRI.ArcGIS.GlobeCore.DLL"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:ESRI.ArcGIS.GlobeCore.DLL"
             "TargetName" = "8:"
@@ -998,16 +1019,16 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:ArcBruTile 0.1.8"
-        "ProductCode" = "8:{E9CB6787-8DBB-4E7D-A319-FDFFCA1D722E}"
-        "PackageCode" = "8:{BBD6433F-C87C-4C30-8C5C-07ACD79C1995}"
+        "ProductName" = "8:ArcBruTile 0.1.9"
+        "ProductCode" = "8:{1613843B-2359-43C0-A7CE-CBB7086BC664}"
+        "PackageCode" = "8:{4AAD75AA-176B-40F1-8311-2A869442340D}"
         "UpgradeCode" = "8:{52B8E206-86C2-4B53-852C-DE4B0A4AF59F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.1.8"
+        "ProductVersion" = "8:0.1.9"
         "Manufacturer" = "8:CodePlex"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1521,7 +1542,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6CA1C89321A14AC19BC50977592983B1"
             {
-            "SourcePath" = "8:..\\app\\obj\\Debug\\ArcBruTile.dll"
+            "SourcePath" = "8:..\\app\\obj\\Release\\ArcBruTile.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_7F0D94B67EBE44D1BD15D839502B4177"

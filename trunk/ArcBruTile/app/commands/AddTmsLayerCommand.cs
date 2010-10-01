@@ -86,14 +86,6 @@ namespace BruTileArcGIS
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
 
-
-                //string url = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilities&service=wms-c";
-                //var tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
-                //var tileSource = tileSources.Find(source => source.Schema.Name == "osm-map");
-                //InitializeTransform(tileSource.Schema);
-                //AddLayer(new TileLayer(tileSource));
-
-
                 AddTmsForm addTmsForm = new AddTmsForm();
                 DialogResult result=addTmsForm.ShowDialog();
 

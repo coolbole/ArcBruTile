@@ -45,13 +45,16 @@ namespace BruTileArcGIS
             if (lbServices.SelectedItem != null)
             {
                 string name = (String)lbServices.SelectedItem;
-                //SelectedTileSource = tileSources.First(source => source.Schema.Name == name);
+                foreach (ITileSource tileSource in tileSources)
+                {
+                    if (tileSource.Schema.Name == name)
+                    {
+                        SelectedTileSource = tileSource;
+                    }
+                }
                 btnOk.Enabled = true;
             }
-
         }
-
-
     }
 
 }
