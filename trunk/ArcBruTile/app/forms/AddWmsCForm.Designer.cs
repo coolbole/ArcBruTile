@@ -58,18 +58,19 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(475, 20);
             this.textBox1.TabIndex = 22;
+            this.textBox1.Text = "http://labs.metacarta.com/wms-c/tilecache.py";
             // 
             // cbbVersion
             // 
             this.cbbVersion.Enabled = false;
             this.cbbVersion.FormattingEnabled = true;
             this.cbbVersion.Items.AddRange(new object[] {
-            "1.0.0"});
+            "1.1.1"});
             this.cbbVersion.Location = new System.Drawing.Point(85, 95);
             this.cbbVersion.Name = "cbbVersion";
             this.cbbVersion.Size = new System.Drawing.Size(475, 21);
             this.cbbVersion.TabIndex = 21;
-            this.cbbVersion.Text = "1.0.0";
+            this.cbbVersion.Text = "1.1.1";
             // 
             // label4
             // 
@@ -92,7 +93,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(478, 390);
+            this.btnCancel.Location = new System.Drawing.Point(498, 389);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 17;
@@ -102,7 +103,7 @@
             // btnOk
             // 
             this.btnOk.Enabled = false;
-            this.btnOk.Location = new System.Drawing.Point(388, 390);
+            this.btnOk.Location = new System.Drawing.Point(417, 390);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 16;
@@ -125,8 +126,7 @@
             this.tbWmsCUrl.Name = "tbWmsCUrl";
             this.tbWmsCUrl.Size = new System.Drawing.Size(475, 20);
             this.tbWmsCUrl.TabIndex = 14;
-            this.tbWmsCUrl.Text = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilitie" +
-                "s&service=wms-c";
+            this.tbWmsCUrl.Text = "http://labs.metacarta.com/wms-c/tilecache.py";
             // 
             // groupBox1
             // 
@@ -154,7 +154,7 @@
             this.lbServices.FormattingEnabled = true;
             this.lbServices.Location = new System.Drawing.Point(6, 52);
             this.lbServices.Name = "lbServices";
-            this.lbServices.Size = new System.Drawing.Size(536, 251);
+            this.lbServices.Size = new System.Drawing.Size(536, 186);
             this.lbServices.TabIndex = 3;
             this.lbServices.SelectedIndexChanged += new System.EventHandler(this.lbServices_SelectedIndexChanged);
             // 
@@ -176,7 +176,7 @@
             this.Controls.Add(this.tbWmsCUrl);
             this.Controls.Add(this.groupBox1);
             this.Name = "AddWmsCForm";
-            this.Text = "Add WMSC Service";
+            this.Text = "Add WMS-C Service";
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

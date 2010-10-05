@@ -29,7 +29,12 @@ namespace BruTileArcGIS
 
         private void btnRetrieve_Click(object sender, EventArgs e)
         {
-            tileSources = WmscTileSource.TileSourceBuilder(new Uri(tbWmsCUrl.Text), null);
+            // Complete sample urrel:
+            // http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilities&service=wms-c
+            
+            string url = String.Format("{0}?version={0}&request=GetCapabilities&service=wms-c", tbWmsCUrl.Text, cbbVersion.SelectedText);
+
+            tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
 
             var names = new List<string>();
             foreach (var tileSource in tileSources)

@@ -35,10 +35,10 @@ namespace BruTileArcGIS
         {
             base.m_category = "BruTile";
             base.m_caption = "&WmsC";
-            base.m_message = "Add WMSC Layer";
+            base.m_message = "Add WMS-C Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddWmsCLayer";
-            //base.m_bitmap = Resources.tms;
+            base.m_bitmap = Resources.WMS_icon;
         }
         #endregion
 

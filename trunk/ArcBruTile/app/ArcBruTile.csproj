@@ -249,6 +249,7 @@
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
     <Content Include="Resources\SpatialCloud.png" />
     <Content Include="Resources\tms.jpg" />
+    <None Include="Resources\WMS_icon.png" />
     <None Include="App.config" />
     <None Include="Resources\Google.png" />
     <None Include="Resources\google.ico" />
