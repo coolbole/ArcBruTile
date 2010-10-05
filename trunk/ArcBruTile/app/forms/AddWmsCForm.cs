@@ -31,8 +31,8 @@ namespace BruTileArcGIS
         {
             // Complete sample urrel:
             // http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilities&service=wms-c
-            
-            string url = String.Format("{0}?version={0}&request=GetCapabilities&service=wms-c", tbWmsCUrl.Text, cbbVersion.SelectedText);
+            // Does not work yet: http://public-wms.kaartenbalie.nl/wms/nederland
+            string url = String.Format("{0}?version={1}&request=GetCapabilities&service=wms-c", tbWmsCUrl.Text, cbbVersion.SelectedItem);
 
             tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
 
@@ -59,6 +59,11 @@ namespace BruTileArcGIS
                 }
                 btnOk.Enabled = true;
             }
+        }
+
+        private void AddWmsCForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 

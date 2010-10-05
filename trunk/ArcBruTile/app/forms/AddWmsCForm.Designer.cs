@@ -62,10 +62,10 @@
             // 
             // cbbVersion
             // 
-            this.cbbVersion.Enabled = false;
             this.cbbVersion.FormattingEnabled = true;
             this.cbbVersion.Items.AddRange(new object[] {
-            "1.1.1"});
+            "1.1.1",
+            "1.3.0"});
             this.cbbVersion.Location = new System.Drawing.Point(85, 95);
             this.cbbVersion.Name = "cbbVersion";
             this.cbbVersion.Size = new System.Drawing.Size(475, 21);
@@ -178,6 +178,7 @@
             this.Name = "AddWmsCForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add WMS-C Service";
+            this.Load += new System.EventHandler(this.AddWmsCForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
