@@ -45,9 +45,13 @@ namespace BruTileArcGIS
             {
                 result = new ConfigGeodanGeoserver();
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.Google)
+            else if (enumBruTileLayer == EnumBruTileLayer.GoogleMaps)
             {
-                result = new ConfigGoogle();
+                result = new ConfigGoogle("m");
+            }
+            else if (enumBruTileLayer == EnumBruTileLayer.GoogleSatellite)
+            {
+                result = new ConfigGoogle("s");
             }
             else if (enumBruTileLayer == EnumBruTileLayer.SpatialCloud)
             {

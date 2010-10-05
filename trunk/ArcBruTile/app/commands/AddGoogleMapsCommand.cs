@@ -15,8 +15,8 @@ namespace BruTileArcGIS
     /// </summary>
     [Guid("25814B13-2CC3-45C3-80A3-CD0BD4824273")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddGoogleLayerCommand")]
-    public sealed class AddGoogleLayerCommand : BaseCommand
+    [ProgId("AddGoogleMapsCommand")]
+    public sealed class AddGoogleMapsCommand : BaseCommand
     {
         #region private members
         private IMap map;
@@ -27,11 +27,11 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddGoogleLayerCommand()
+        public AddGoogleMapsCommand()
         {
             base.m_category = "BruTile";
             base.m_caption = "&Google";
-            base.m_message = "Add Google Layer";
+            base.m_message = "Add Google Roads Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddGoogleLayer";
             base.m_bitmap = Resources.google;
@@ -85,7 +85,7 @@ namespace BruTileArcGIS
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(application,EnumBruTileLayer.Google);
+                BruTileLayer brutileLayer = new BruTileLayer(application,EnumBruTileLayer.GoogleMaps);
                 brutileLayer.Name = "Google Maps";
 
                 brutileLayer.Visible = true;

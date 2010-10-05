@@ -10,7 +10,6 @@ namespace BruTileArcGIS
     public class ConfigWmsC: IConfig
     {
         private ITileSource tileSource;
-
         public ConfigWmsC(ITileSource tileSource)
         {
             this.tileSource = tileSource;
@@ -20,6 +19,7 @@ namespace BruTileArcGIS
         {
             return tileSource;
         }
+
 
     }
 

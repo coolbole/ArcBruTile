@@ -150,7 +150,8 @@
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
-    <Compile Include="commands\AddGoogleLayerCommand.cs" />
+    <Compile Include="commands\AddGoogleMapsCommand.cs" />
+    <Compile Include="commands\AddGoogleSatelliteCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="commands\AddSpatialCloudLayerCommand.cs" />
     <Compile Include="commands\AddTmsLayerCommand.cs" />

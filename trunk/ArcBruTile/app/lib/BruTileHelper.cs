@@ -159,6 +159,7 @@ namespace BruTileArcGIS
                 }
                 cacheDirType = String.Format("{0}{1}{2}{3}{4}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString(), System.IO.Path.DirectorySeparatorChar, service);
             }
+
             return cacheDirType;
 
         }

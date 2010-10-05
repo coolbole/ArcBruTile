@@ -11,6 +11,12 @@ namespace BruTileArcGIS
     {
         private string format = "png";
         private string name = "GoogleMaps";
+        private string type="m";
+
+        public ConfigGoogle(string Type)
+        {
+            this.type = Type;
+        }
 
         public ITileSource CreateTileSource()
         {
@@ -73,7 +79,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                return new BasicRequest("http://mt1.google.com/vt/lyrs=m@113&hl=nl&x={1}&y={2}&z={0}&s=");
+                return new BasicRequest("http://mt1.google.com/vt/lyrs="+type+"@113&hl=nl&x={1}&y={2}&z={0}&s=");
             }
         }
 

@@ -92,7 +92,11 @@ namespace BruTileArcGIS
 
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
-                if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value)) AddItem("AddGoogleLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
+                {
+                    AddItem("AddGoogleMapsCommand");
+                    AddItem("AddGoogleSatelliteCommand");
+                }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value)) AddItem("AddBingLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
