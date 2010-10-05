@@ -176,6 +176,7 @@
             this.Controls.Add(this.tbWmsCUrl);
             this.Controls.Add(this.groupBox1);
             this.Name = "AddWmsCForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add WMS-C Service";
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
