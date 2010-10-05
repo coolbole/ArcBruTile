@@ -147,8 +147,9 @@
     </Compile>
     <Compile Include="BruTileMenuDef.cs" />
     <Compile Include="commands\AboutBruTileCommand.cs" />
+    <Compile Include="commands\AddBingAerialLayerCommand.cs" />
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
-    <Compile Include="commands\AddBingLayerCommand.cs" />
+    <Compile Include="commands\AddBingRoadLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddGoogleMapsCommand.cs" />
     <Compile Include="commands\AddGoogleSatelliteCommand.cs" />

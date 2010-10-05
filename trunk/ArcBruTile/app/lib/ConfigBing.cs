@@ -25,13 +25,20 @@ namespace BruTileArcGIS
 {
     public class ConfigBing : IConfig
     {
+        private MapType mapType = MapType.Roads;
+
+        public ConfigBing(MapType mapType)
+        {
+            this.mapType = mapType;
+        }
+
         public ITileSource CreateTileSource()
         {
             Configuration config = ConfigurationHelper.GetConfig();
 
             string bingToken=config.AppSettings.Settings["BingToken"].Value;
             string bingUrl = config.AppSettings.Settings["BingUrl"].Value;
-            MapType mapType = MapType.Roads;
+            //MapType mapType = MapType.Roads;
             //string bingMapType = config.AppSettings.Settings["BingMapType"].Value;
             //MapType mapType = (MapType)Enum.Parse(typeof(MapType), bingMapType,false);
 

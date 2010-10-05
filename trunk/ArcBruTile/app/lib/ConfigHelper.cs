@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BrutileArcGIS;
+using BruTile.Web;
 
 namespace BruTileArcGIS
 {
@@ -25,13 +26,17 @@ namespace BruTileArcGIS
             {
                 result = new ConfigOsm();
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.Bing)
+            else if (enumBruTileLayer == EnumBruTileLayer.BingRoad)
             {
-                result = new ConfigBing();
+                result = new ConfigBing(MapType.Roads);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.BingHybrid)
             {
-                result = new ConfigBingHybrid();
+                result = new ConfigBing(MapType.Hybrid);
+            }
+            else if (enumBruTileLayer == EnumBruTileLayer.BingAerial)
+            {
+                result = new ConfigBing(MapType.Aerial);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.ESRI)
             {
@@ -47,11 +52,11 @@ namespace BruTileArcGIS
             }
             else if (enumBruTileLayer == EnumBruTileLayer.GoogleMaps)
             {
-                result = new ConfigGoogle("m");
+                result = new ConfigGoogle(MapType.Roads);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.GoogleSatellite)
             {
-                result = new ConfigGoogle("s");
+                result = new ConfigGoogle(MapType.Aerial);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.SpatialCloud)
             {

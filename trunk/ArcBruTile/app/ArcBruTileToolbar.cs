@@ -97,7 +97,11 @@ namespace BruTileArcGIS
                     AddItem("AddGoogleMapsCommand");
                     AddItem("AddGoogleSatelliteCommand");
                 }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value)) AddItem("AddBingLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
+                {
+                    AddItem("AddBingRoadLayerCommand");
+                    AddItem("AddBingAerialLayerCommand");
+                }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
                 //if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");

@@ -16,8 +16,8 @@ namespace BruTileArcGIS
     /// </summary>
     [Guid("EBE7E2F8-506B-4D37-93D2-6123505CD9D7")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddBingLayerCommand")]
-    public sealed class AddBingLayerCommand : BaseCommand
+    [ProgId("AddBingRoadLayerCommand")]
+    public sealed class AddBingRoadLayerCommand : BaseCommand
     {
         #region private members
         private IApplication application;
@@ -27,11 +27,11 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddBingLayerCommand()
+        public AddBingRoadLayerCommand()
         {
             base.m_category = "BruTile";
             base.m_caption = "&Bing";
-            base.m_message = "Add Bing Layer";
+            base.m_message = "Add Bing Road Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddBingLayer";
             base.m_bitmap = Resources.bing;
@@ -86,9 +86,9 @@ namespace BruTileArcGIS
                 IMap map = mxdoc.FocusMap;
 
                 Configuration config = ConfigurationHelper.GetConfig();
-                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.Bing);
+                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.BingRoad);
                 
-                brutileLayer.Name = "Bing";
+                brutileLayer.Name = "Bing Road";
                 brutileLayer.Visible = true;
 
                 map.AddLayer((ILayer)brutileLayer);

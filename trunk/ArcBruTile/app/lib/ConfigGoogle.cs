@@ -11,11 +11,11 @@ namespace BruTileArcGIS
     {
         private string format = "png";
         private string name = "GoogleMaps";
-        private string type="m";
+        private MapType mapType=MapType.Roads;
 
-        public ConfigGoogle(string Type)
+        public ConfigGoogle(MapType mapType)
         {
-            this.type = Type;
+            this.mapType = mapType;
         }
 
         public ITileSource CreateTileSource()
@@ -79,6 +79,7 @@ namespace BruTileArcGIS
         {
             get
             {
+                string type=(mapType==MapType.Aerial?"s":"m");
                 return new BasicRequest("http://mt1.google.com/vt/lyrs="+type+"@113&hl=nl&x={1}&y={2}&z={0}&s=");
             }
         }
