@@ -79,7 +79,10 @@ namespace BruTileArcGIS
         {
             get
             {
-                string type=(mapType==MapType.Aerial?"s":"m");
+                string type = "";
+                type=(mapType==MapType.Aerial?"s":type);
+                type=(mapType==MapType.Roads?"m":type);
+                type=(mapType==MapType.Hybrid?"h":type);
                 return new BasicRequest("http://mt1.google.com/vt/lyrs="+type+"@113&hl=nl&x={1}&y={2}&z={0}&s=");
             }
         }
