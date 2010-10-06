@@ -8,6 +8,7 @@ using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.SystemUI;
 namespace BruTileArcGIS
 {
     /// <summary>
@@ -30,7 +31,7 @@ namespace BruTileArcGIS
         public AddGoogleMapsCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Google";
+            base.m_caption = "&Roads";
             base.m_message = "Add Google Roads Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddGoogleLayer";
@@ -152,6 +153,5 @@ namespace BruTileArcGIS
         }
 
         #endregion
-
     }
 }

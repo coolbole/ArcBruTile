@@ -158,6 +158,8 @@
     <Compile Include="commands\AddSpatialCloudLayerCommand.cs" />
     <Compile Include="commands\AddTmsLayerCommand.cs" />
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
+    <Compile Include="commands\BingMenuDef.cs" />
+    <Compile Include="commands\GoogleMenuDef.cs" />
     <Compile Include="forms\AddTmsForm.cs">
       <SubType>Form</SubType>
     </Compile>

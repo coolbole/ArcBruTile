@@ -5,12 +5,12 @@ namespace BruTileArcGIS
     /// <summary>
     /// Wordt gebruikt voor het managen van het dropdown menu in de toolbar.
     /// </summary>
-    public class BruTileMenuDef : IMenuDef
+    public class BingMenuDef : IMenuDef
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MplMenuDef"/> class.
         /// </summary>
-        public BruTileMenuDef()
+        public BingMenuDef()
         {
         }
 
@@ -22,7 +22,7 @@ namespace BruTileArcGIS
         /// <value>The caption.</value>
         public string Caption
         {
-            get { return "&ArcBruTile"; }
+            get { return "&Bing"; }
         }
 
         /// <summary>
@@ -35,16 +35,13 @@ namespace BruTileArcGIS
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddTmsLayerCommand";
+                    itemDef.ID = "AddBingRoadLayerCommand";
                     itemDef.Group = false;
+                    //itemDef.
                     break;
                 case 1:
-                    itemDef.ID = "AddWmsCLayerCommand";
+                    itemDef.ID = "AddBingAerialLayerCommand";
                     itemDef.Group = false;
-                    break;
-                case 2:
-                    itemDef.ID = "AboutBruTileCommand";
-                    itemDef.Group = true;
                     break;
             }
 
@@ -56,7 +53,7 @@ namespace BruTileArcGIS
         /// <value>The item count.</value>
         public int ItemCount
         {
-            get { return 3; }
+            get { return 2; }
         }
 
         /// <summary>
@@ -71,3 +68,4 @@ namespace BruTileArcGIS
         #endregion
     }
 }
+

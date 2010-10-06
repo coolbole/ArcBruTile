@@ -30,7 +30,7 @@ namespace BruTileArcGIS
         public AddBingRoadLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Bing";
+            base.m_caption = "&Roads";
             base.m_message = "Add Bing Road Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddBingLayer";

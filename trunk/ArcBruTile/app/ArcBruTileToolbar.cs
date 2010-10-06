@@ -87,20 +87,22 @@ namespace BruTileArcGIS
 
                 //Status sectie
                 BeginGroup();
-                if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
-                if (Convert.ToBoolean(config.AppSettings.Settings["useWmsC"].Value)) AddItem("AddWmsCLayerCommand");
+                //if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
+                //if (Convert.ToBoolean(config.AppSettings.Settings["useWmsC"].Value)) AddItem("AddWmsCLayerCommand");
 
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
                 {
-                    AddItem("AddGoogleMapsCommand");
-                    AddItem("AddGoogleSatelliteCommand");
+                    AddItem("BruTileArcGIS.BingMenuDef");
+                    //AddItem("AddGoogleMapsCommand");
+                    //AddItem("AddGoogleSatelliteCommand");
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
                 {
-                    AddItem("AddBingRoadLayerCommand");
-                    AddItem("AddBingAerialLayerCommand");
+                    AddItem("BruTileArcGIS.GoogleMenuDef");
+                    //AddItem("AddBingRoadLayerCommand");
+                    // AddItem("AddBingAerialLayerCommand");
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");

@@ -30,7 +30,7 @@ namespace BruTileArcGIS
         public AddBingAerialLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Bing";
+            base.m_caption = "&Aerial";
             base.m_message = "Add Bing Aerial Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddBingLayer";
