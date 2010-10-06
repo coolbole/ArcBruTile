@@ -33,7 +33,7 @@ namespace BruTileArcGIS
         public AddTmsLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&TMS";
+            base.m_caption = "&TMS...";
             base.m_message = "Add TMS Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddTmsLayer";

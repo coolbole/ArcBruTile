@@ -34,7 +34,7 @@ namespace BruTileArcGIS
         public AddWmsCLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&WMS-C";
+            base.m_caption = "&WMS-C...";
             base.m_message = "Add WMS-C Layer";
             base.m_toolTip = base.m_message;
             base.m_name = "AddWmsCLayer";
