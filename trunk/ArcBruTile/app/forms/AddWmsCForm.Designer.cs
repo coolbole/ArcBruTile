@@ -38,6 +38,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnRetrieve = new System.Windows.Forms.Button();
             this.lbServices = new System.Windows.Forms.ListBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,6 +49,8 @@
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(475, 20);
             this.textBox2.TabIndex = 23;
+            this.textBox2.Text = "http://www.idee.es/wms-c/IDEE-Base/IDEE-Base?version=1.1.1&request=GetCapabilitie" +
+                "s&service=wms-c";
             // 
             // textBox1
             // 
@@ -62,7 +65,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 43);
+            this.label2.Location = new System.Drawing.Point(18, 46);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 13);
             this.label2.TabIndex = 18;
@@ -104,7 +107,7 @@
             this.tbWmsCUrl.Name = "tbWmsCUrl";
             this.tbWmsCUrl.Size = new System.Drawing.Size(475, 20);
             this.tbWmsCUrl.TabIndex = 14;
-            this.tbWmsCUrl.Text = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilitie" +
+            this.tbWmsCUrl.Text = "http://www.idee.es/wms-c/IDEE-Base/IDEE-Base?version=1.1.1&request=GetCapabilitie" +
                 "s&service=wms-c";
             // 
             // groupBox1
@@ -137,6 +140,15 @@
             this.lbServices.TabIndex = 3;
             this.lbServices.SelectedIndexChanged += new System.EventHandler(this.lbServices_SelectedIndexChanged);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(18, 72);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 24;
+            this.label3.Text = "INSPIRE:";
+            // 
             // AddWmsCForm
             // 
             this.AcceptButton = this.btnOk;
@@ -144,6 +156,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(591, 424);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
@@ -174,5 +187,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnRetrieve;
         private System.Windows.Forms.ListBox lbServices;
+        private System.Windows.Forms.Label label3;
     }
 }

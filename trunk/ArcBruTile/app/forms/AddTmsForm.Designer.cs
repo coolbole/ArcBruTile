@@ -40,6 +40,8 @@
             this.cbbVersion = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +61,7 @@
             this.tbTmsUrl.Name = "tbTmsUrl";
             this.tbTmsUrl.Size = new System.Drawing.Size(475, 20);
             this.tbTmsUrl.TabIndex = 1;
-            this.tbTmsUrl.Text = "http://labs.metacarta.com/wms-c/Basic.py";
+            this.tbTmsUrl.Text = "http://www.idee.es/wms-c/IDEE-Base/IDEE-Base";
             // 
             // label1
             // 
@@ -73,16 +75,16 @@
             // lbServices
             // 
             this.lbServices.FormattingEnabled = true;
-            this.lbServices.Location = new System.Drawing.Point(6, 52);
+            this.lbServices.Location = new System.Drawing.Point(6, 56);
             this.lbServices.Name = "lbServices";
-            this.lbServices.Size = new System.Drawing.Size(536, 251);
+            this.lbServices.Size = new System.Drawing.Size(517, 186);
             this.lbServices.TabIndex = 3;
             this.lbServices.SelectedIndexChanged += new System.EventHandler(this.lbServices_SelectedIndexChanged);
             // 
             // btnOk
             // 
             this.btnOk.Enabled = false;
-            this.btnOk.Location = new System.Drawing.Point(398, 388);
+            this.btnOk.Location = new System.Drawing.Point(401, 417);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 4;
@@ -93,7 +95,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(488, 388);
+            this.btnCancel.Location = new System.Drawing.Point(495, 417);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -113,7 +115,7 @@
             // 
             this.groupBox1.Controls.Add(this.btnRetrieve);
             this.groupBox1.Controls.Add(this.lbServices);
-            this.groupBox1.Location = new System.Drawing.Point(28, 134);
+            this.groupBox1.Location = new System.Drawing.Point(31, 163);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(555, 248);
             this.groupBox1.TabIndex = 8;
@@ -123,7 +125,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(28, 93);
+            this.label4.Location = new System.Drawing.Point(28, 130);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
             this.label4.TabIndex = 9;
@@ -135,7 +137,7 @@
             this.cbbVersion.FormattingEnabled = true;
             this.cbbVersion.Items.AddRange(new object[] {
             "1.0.0"});
-            this.cbbVersion.Location = new System.Drawing.Point(95, 93);
+            this.cbbVersion.Location = new System.Drawing.Point(95, 127);
             this.cbbVersion.Name = "cbbVersion";
             this.cbbVersion.Size = new System.Drawing.Size(475, 21);
             this.cbbVersion.TabIndex = 10;
@@ -159,13 +161,33 @@
             this.textBox2.TabIndex = 13;
             this.textBox2.Text = "http://sagitari.icc.cat/tilecache/tilecache.py";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(95, 93);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(475, 20);
+            this.textBox3.TabIndex = 14;
+            this.textBox3.Text = "http://www.idee.es/wms-c/IDEE-Base/IDEE-Base";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(28, 96);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "INSPIRE:";
+            // 
             // AddTmsForm
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(582, 423);
+            this.ClientSize = new System.Drawing.Size(591, 452);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.cbbVersion);
@@ -200,5 +222,7 @@
         private System.Windows.Forms.ComboBox cbbVersion;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label3;
     }
 }
