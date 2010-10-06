@@ -30,8 +30,6 @@
         {
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.cbbVersion = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
@@ -58,28 +56,8 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(475, 20);
             this.textBox1.TabIndex = 22;
-            this.textBox1.Text = "http://labs.metacarta.com/wms-c/tilecache.py";
-            // 
-            // cbbVersion
-            // 
-            this.cbbVersion.FormattingEnabled = true;
-            this.cbbVersion.Items.AddRange(new object[] {
-            "1.1.1",
-            "1.3.0"});
-            this.cbbVersion.Location = new System.Drawing.Point(85, 95);
-            this.cbbVersion.Name = "cbbVersion";
-            this.cbbVersion.Size = new System.Drawing.Size(475, 21);
-            this.cbbVersion.TabIndex = 21;
-            this.cbbVersion.Text = "1.1.1";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 95);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 13);
-            this.label4.TabIndex = 20;
-            this.label4.Text = "Version:";
+            this.textBox1.Text = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilitie" +
+                "s&service=wms-c";
             // 
             // label2
             // 
@@ -126,15 +104,16 @@
             this.tbWmsCUrl.Name = "tbWmsCUrl";
             this.tbWmsCUrl.Size = new System.Drawing.Size(475, 20);
             this.tbWmsCUrl.TabIndex = 14;
-            this.tbWmsCUrl.Text = "http://labs.metacarta.com/wms-c/tilecache.py";
+            this.tbWmsCUrl.Text = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilitie" +
+                "s&service=wms-c";
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnRetrieve);
             this.groupBox1.Controls.Add(this.lbServices);
-            this.groupBox1.Location = new System.Drawing.Point(18, 136);
+            this.groupBox1.Location = new System.Drawing.Point(18, 112);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(555, 248);
+            this.groupBox1.Size = new System.Drawing.Size(555, 272);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Layers";
@@ -154,7 +133,7 @@
             this.lbServices.FormattingEnabled = true;
             this.lbServices.Location = new System.Drawing.Point(6, 52);
             this.lbServices.Name = "lbServices";
-            this.lbServices.Size = new System.Drawing.Size(536, 186);
+            this.lbServices.Size = new System.Drawing.Size(536, 199);
             this.lbServices.TabIndex = 3;
             this.lbServices.SelectedIndexChanged += new System.EventHandler(this.lbServices_SelectedIndexChanged);
             // 
@@ -167,8 +146,6 @@
             this.ClientSize = new System.Drawing.Size(591, 424);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.cbbVersion);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -189,8 +166,6 @@
 
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox cbbVersion;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;

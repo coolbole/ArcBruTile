@@ -32,17 +32,26 @@ namespace BruTileArcGIS
             // Complete sample urrel:
             // http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilities&service=wms-c
             // Does not work yet: http://public-wms.kaartenbalie.nl/wms/nederland
-            string url = String.Format("{0}?version={1}&request=GetCapabilities&service=wms-c", tbWmsCUrl.Text, cbbVersion.SelectedItem);
+            //string url = String.Format("{0}?version={1}&request=GetCapabilities&service=wms-c", tbWmsCUrl.Text, cbbVersion.SelectedItem);
+            string url = tbWmsCUrl.Text;
 
-            tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
-
-            var names = new List<string>();
-            foreach (var tileSource in tileSources)
+            try
             {
-                names.Add(tileSource.Schema.Name);
+                tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
+
+                var names = new List<string>();
+                foreach (var tileSource in tileSources)
+                {
+                    names.Add(tileSource.Schema.Name);
+                }
+
+                lbServices.DataSource = names;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
             }
 
-            lbServices.DataSource = names;
         }
 
         private void lbServices_SelectedIndexChanged(object sender, EventArgs e)
