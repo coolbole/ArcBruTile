@@ -96,9 +96,9 @@ namespace BruTileArcGIS
                     {
                         myFormat = myFormat.Substring(6, schema.Format.Length - 6);
                     }
-                    if (myFormat.Contains(".png8"))
+                    if (myFormat.Contains("png8"))
                     {
-                        myFormat = myFormat.Replace(".png8", ".png");
+                        myFormat = myFormat.Replace("png8", "png");
                     }
                     fileCache = new FileCache(cacheDirType, myFormat);
                     env = Projector.ProjectEnvelope(env, schema.Srs);
@@ -523,6 +523,11 @@ namespace BruTileArcGIS
             {
                 res = "pgw";
             }
+            else if (format == "png8")
+            {
+                res = "pgw";
+            }
+
             else if (format == "tif")
             {
                 res = "tfw";
