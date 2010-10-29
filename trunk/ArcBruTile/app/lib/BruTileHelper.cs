@@ -31,8 +31,8 @@ namespace BruTileArcGIS
 
         #region private members
         private string cacheDir;
-        private IScreenDisplay screenDisplay; 
-        private bool needReproject=false;
+        private IScreenDisplay screenDisplay;
+        private bool needReproject = false;
         private ISpatialReference dataSpatialReference;
         private ISpatialReference layerSpatialReference;
         private ITileSchema schema;
@@ -63,13 +63,13 @@ namespace BruTileArcGIS
 
         #region public methods
 
-        
+
         /// <summary>
         /// Draws the specified active view.
         /// </summary>
         /// <param name="activeView">The active view.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        public void Draw(IApplication application,IActiveView activeView, IConfig config,ITrackCancel trackCancel,ISpatialReference layerSpatialReference, EnumBruTileLayer enumBruTileLayer)
+        public void Draw(IApplication application, IActiveView activeView, IConfig config, ITrackCancel trackCancel, ISpatialReference layerSpatialReference, EnumBruTileLayer enumBruTileLayer)
         {
             try
             {
@@ -90,15 +90,17 @@ namespace BruTileArcGIS
 
                     string cacheDirType = this.GetCacheDirectory(config, enumBruTileLayer);
 
-                    if (!schema.Format.Contains(@"image/"))
-                    {
-                        fileCache = new FileCache(cacheDirType, schema.Format);
-                    }
-                    else
-                    {
-                        fileCache = new FileCache(cacheDirType, schema.Format.Substring(6, schema.Format.Length - 6));
-                    }
+                    string myFormat = schema.Format;
 
+                    if (myFormat.Contains(@"image/"))
+                    {
+                        myFormat = myFormat.Substring(6, schema.Format.Length - 6);
+                    }
+                    if (myFormat.Contains(".png8"))
+                    {
+                        myFormat = myFormat.Replace(".png8", ".png");
+                    }
+                    fileCache = new FileCache(cacheDirType, myFormat);
                     env = Projector.ProjectEnvelope(env, schema.Srs);
                     if (!env.IsEmpty)
                     {
@@ -120,7 +122,7 @@ namespace BruTileArcGIS
                         LoadTiles(trackCancel);
                         //DrawTilesInMemory(trackCancel);
                     }
-                    
+
                 }
             }
             catch (Exception ex)
@@ -138,7 +140,7 @@ namespace BruTileArcGIS
             {
                 IEnvelope envelope = this.GetEnv(tile.Extent);
                 Uri uri = tileProvider.requestBuilder.GetUri(tile);
-                this.drawTileInMemory(uri,trackCancel,envelope);
+                this.drawTileInMemory(uri, trackCancel, envelope);
             }
         }
 
@@ -153,6 +155,8 @@ namespace BruTileArcGIS
                 string url = configTms.Url;
                 string service = url.Substring(7, url.Length - 7);
                 service = service.Replace(@"/", "-");
+                service = service.Replace(":", "-");
+
                 if (service.EndsWith("-"))
                 {
                     service = service.Substring(0, service.Length - 1);
@@ -173,7 +177,7 @@ namespace BruTileArcGIS
         {
             IList<IWorkItemResult<TileInfo>> workitemResults = new List<IWorkItemResult<TileInfo>>();
             IList<TileInfo> drawTiles = new List<TileInfo>();
-            WebTileProvider tileProvider=(WebTileProvider)tileSource.Provider;
+            WebTileProvider tileProvider = (WebTileProvider)tileSource.Provider;
             string name;
             logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
             application.StatusBar.ShowProgressBar("Loading... ", 0, tiles.Count, 1, true);
@@ -189,7 +193,7 @@ namespace BruTileArcGIS
 
                     // Read tiles from disk
                     name = fileCache.GetFileName(tile.Index);
-                    
+
                     // Determine age of tile...
                     FileInfo fi = new FileInfo(name);
                     if ((DateTime.Now - fi.LastWriteTime).Days > tileTimeOut)
@@ -206,10 +210,10 @@ namespace BruTileArcGIS
                 }
                 else
                 {
-                    needsLoad=true;
+                    needsLoad = true;
                 }
 
-                if(needsLoad)
+                if (needsLoad)
                 {
                     object o = new object[] { tileProvider.requestBuilder, tile };
                     //IWorkItemResult<TileInfo> wir = smartThreadPool.QueueWorkItem(new Func<object, TileInfo>(GetTile), o);
@@ -261,7 +265,7 @@ namespace BruTileArcGIS
                     ((SpatialCloudTileSource)tileSource).LoginId,
                     ((SpatialCloudTileSource)tileSource).Password);
 
-                url=new Uri(url.AbsoluteUri+"&authSign="+hash);
+                url = new Uri(url.AbsoluteUri + "&authSign=" + hash);
             }
 
 
@@ -274,7 +278,7 @@ namespace BruTileArcGIS
             {
                 string name = fileCache.GetFileName(tileInfo.Index);
                 fileCache.Add(tileInfo.Index, bytes);
-                bool result=CreateRaster(tileInfo, bytes, name);
+                bool result = CreateRaster(tileInfo, bytes, name);
                 if (result == false) tileInfo = null;
                 stopWatch.Stop();
                 logger.Debug("Url: " + url.AbsoluteUri + " (" + stopWatch.ElapsedMilliseconds + "ms)");
@@ -324,7 +328,7 @@ namespace BruTileArcGIS
 
         public byte[] GetBitmap(Uri uri)
         {
-            byte[] bytes=null;
+            byte[] bytes = null;
             // arcmap is acting like a genuine browser
             string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
             string referer = "http://maps.google.com/maps";
@@ -351,13 +355,13 @@ namespace BruTileArcGIS
         /// <param name="tile">The tile.</param>
         /// <param name="requestBuilder">The request builder.</param>
         /// <param name="name">The name.</param>
-        private bool CreateRaster(TileInfo tile, byte[] bytes,string name)
+        private bool CreateRaster(TileInfo tile, byte[] bytes, string name)
         {
             FileInfo fi = new FileInfo(name);
             string tfwFile = name.Replace(fi.Extension, "." + this.GetWorldFile(schema.Format));
             this.WriteWorldFile(tfwFile, tile.Extent, schema);
 
-            bool result=AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
+            bool result = AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
             return result;
 
         }
@@ -366,12 +370,12 @@ namespace BruTileArcGIS
         /// Draws the layer.
         /// </summary>
         /// <param name="file">The file.</param>
-        private void DrawRaster(string file, IEnvelope env,ITrackCancel trackCancel)
+        private void DrawRaster(string file, IEnvelope env, ITrackCancel trackCancel)
         {
             try
             {
                 IRasterLayer rl = new RasterLayerClass();
-                
+
                 rl.CreateFromFilePath(file);
 
                 if (needReproject)
@@ -380,7 +384,7 @@ namespace BruTileArcGIS
                     object Missing = Type.Missing;
                     rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
                 }
-                
+
                 // this is needed for ArcGIS 9.2 only
                 IRasterProps rasterProps = (IRasterProps)rl.Raster;
                 rasterProps.Height = schema.Height;
@@ -413,7 +417,7 @@ namespace BruTileArcGIS
         /// <param name="f">The f.</param>
         /// <param name="extent">The extent.</param>
         /// <param name="schema">The schema.</param>
-        private void WriteWorldFile(string f, Extent extent,ITileSchema schema)
+        private void WriteWorldFile(string f, Extent extent, ITileSchema schema)
         {
             using (StreamWriter sw = new StreamWriter(f))
             {
@@ -422,7 +426,7 @@ namespace BruTileArcGIS
                 sw.WriteLine(resX.ToString());
                 sw.WriteLine("0");
                 sw.WriteLine("0");
-                sw.WriteLine((resY*=-1).ToString());
+                sw.WriteLine((resY *= -1).ToString());
                 sw.WriteLine(extent.MinX.ToString());
                 sw.WriteLine(extent.MaxY.ToString());
                 sw.Close();
@@ -447,7 +451,7 @@ namespace BruTileArcGIS
         /// Adds the spatial reference using a schema edit (not used because of more expensive)
         /// </summary>
         /// <param name="file">The file.</param>
-        private bool AddSpatialReferenceSchemaEdit(String file,ISpatialReference spatialReference)
+        private bool AddSpatialReferenceSchemaEdit(String file, ISpatialReference spatialReference)
         {
             bool result = false;
             FileInfo fi = new FileInfo(file);
@@ -477,7 +481,7 @@ namespace BruTileArcGIS
                 // if there is something wrong with loading the result
                 // like Failed to open raster dataset
                 // just log a message and go on
-                logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName+"\\"+ fi.Name);
+                logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName + "\\" + fi.Name);
             }
             return result;
         }
@@ -505,7 +509,7 @@ namespace BruTileArcGIS
         {
             string res = String.Empty;
 
-            format=(format.Contains(@"image/")?format.Substring(6, format.Length - 6):format);
+            format = (format.Contains(@"image/") ? format.Substring(6, format.Length - 6) : format);
 
             if (format == "jpg")
             {
@@ -530,7 +534,7 @@ namespace BruTileArcGIS
         #endregion
 
 
-            /// <summary>
+        /// <summary>
         /// This is a test to draw tiles in memory
         /// At the moment this code results in Attempt to read or write 
         /// protected memory error.
@@ -544,14 +548,14 @@ namespace BruTileArcGIS
             Uri uri = new Uri("http://b.tile.openstreetmap.org//8/127/86.png");
             byte[] bytes = this.GetBitmap(uri);
             RasterWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
-            IRasterWorkspace3 rasterWorkspace = (IRasterWorkspace3)rasterWorkspaceFactory.OpenFromFile(@"c:\temp",0);
+            IRasterWorkspace3 rasterWorkspace = (IRasterWorkspace3)rasterWorkspaceFactory.OpenFromFile(@"c:\temp", 0);
             IRasterDataset rasterDataset = rasterWorkspace.OpenRasterDatasetFromBytes(ref bytes, true);
             IRasterLayer rl = new RasterLayerClass();
 
             // error: Attempted to read or write protected memory. 
             // This is often an indication that other memory is corrupt. (ESRI.ArcGIS.DataSourcesRaster)
             rl.CreateFromDataset(rasterDataset);
-            
+
             IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
             if (geoDatasetSchemaEdit.CanAlterSpatialReference)
             {
@@ -561,7 +565,7 @@ namespace BruTileArcGIS
             // error: Attempted to read or write protected memory. 
             // This is often an indication that other memory is corrupt. (ESRI.ArcGIS.DataSourcesRaster)
             rl.CreateFromDataset(rasterDataset);
-            
+
             if (needReproject)
             {
                 IRasterGeometryProc rasterGeometryProc = new RasterGeometryProcClass();
