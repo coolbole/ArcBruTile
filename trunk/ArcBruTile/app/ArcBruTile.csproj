@@ -160,6 +160,7 @@
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
     <Compile Include="commands\BingMenuDef.cs" />
     <Compile Include="commands\GoogleMenuDef.cs" />
+    <Compile Include="commands\PreCacheBruTileCommand.cs" />
     <Compile Include="forms\AddTmsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,6 +172,18 @@
     </Compile>
     <Compile Include="forms\AddWmsCForm.Designer.cs">
       <DependentUpon>AddWmsCForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\FormPreCache.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\FormPreCache.designer.cs">
+      <DependentUpon>FormPreCache.cs</DependentUpon>
+    </Compile>
+    <Compile Include="forms\FormPreCacheStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\FormPreCacheStatus.designer.cs">
+      <DependentUpon>FormPreCacheStatus.cs</DependentUpon>
     </Compile>
     <Compile Include="lib\ArcMapWindow.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
@@ -187,6 +200,7 @@
     <Compile Include="lib\ConfigSpatialCloud.cs" />
     <Compile Include="lib\ConfigTms.cs" />
     <Compile Include="lib\ConfigWmsC.cs" />
+    <Compile Include="lib\Precache.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
     <Compile Include="lib\ConfigEsri.cs" />
@@ -236,6 +250,12 @@
     <EmbeddedResource Include="forms\AddWmsCForm.resx">
       <DependentUpon>AddWmsCForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="forms\FormPreCache.resx">
+      <DependentUpon>FormPreCache.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="forms\FormPreCacheStatus.resx">
+      <DependentUpon>FormPreCacheStatus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -253,6 +273,7 @@
   <ItemGroup>
     <Content Include="readme.txt" />
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
+    <Content Include="Resources\download.png" />
     <Content Include="Resources\SpatialCloud.png" />
     <Content Include="Resources\tms.jpg" />
     <None Include="Resources\WMS_icon.png" />

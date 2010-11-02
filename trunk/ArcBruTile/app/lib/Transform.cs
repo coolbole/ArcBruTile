@@ -21,7 +21,7 @@ using BruTile;
 
 namespace BruTileArcGIS
 {
-    class Transform
+    public class Transform
     {
         #region Fields
 
