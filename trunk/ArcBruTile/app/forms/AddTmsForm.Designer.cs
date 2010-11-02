@@ -183,9 +183,11 @@
             // checkBoxUseTMSURL
             // 
             this.checkBoxUseTMSURL.AutoSize = true;
+            this.checkBoxUseTMSURL.Checked = true;
+            this.checkBoxUseTMSURL.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUseTMSURL.Location = new System.Drawing.Point(18, 421);
             this.checkBoxUseTMSURL.Name = "checkBoxUseTMSURL";
-            this.checkBoxUseTMSURL.Size = new System.Drawing.Size(262, 17);
+            this.checkBoxUseTMSURL.Size = new System.Drawing.Size(264, 17);
             this.checkBoxUseTMSURL.TabIndex = 26;
             this.checkBoxUseTMSURL.Text = "TMS URL overrules layer URL from capabilities file";
             this.checkBoxUseTMSURL.UseVisualStyleBackColor = true;
