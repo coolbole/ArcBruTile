@@ -165,6 +165,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbWmsCUrl);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "AddWmsCForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add WMS-C Service";

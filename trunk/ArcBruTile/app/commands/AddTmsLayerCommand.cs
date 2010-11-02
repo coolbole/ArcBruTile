@@ -87,12 +87,30 @@ namespace BruTileArcGIS
                 map = mxdoc.FocusMap;
 
                 AddTmsForm addTmsForm = new AddTmsForm();
-                DialogResult result=addTmsForm.ShowDialog();
-
+                //DialogResult result=addTmsForm.ShowDialog();
+ 
+                DialogResult result = addTmsForm.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
                 if (result == DialogResult.OK)
                 {
                     // Fix the service labs.metacarta.com bug: it doubles the version :-(
                     addTmsForm.SelectedTileMap.Href=addTmsForm.SelectedTileMap.Href.Replace(@"1.0.0/1.0.0", @"1.0.0");
+
+                    //Another fix: use provided service url or the capabilities url when different
+                    //http://10.53.2.65/geowebcache/service/tms/1.0.0/brtachtergrondkaart@EPSG:28992@png8
+                    //http://lab.geodata.nationaalgeoregister.nl/test/tms
+                    string capabilitiesHref = addTmsForm.SelectedTileMap.Href.Replace(@"1.0.0/1.0.0", @"1.0.0").Trim();
+                    string serviceURL = addTmsForm.ProvidedServiceURL.Trim();
+                    if (serviceURL.EndsWith(@"/"))
+                    {
+                        serviceURL = serviceURL.Remove(serviceURL.Length - 1);
+                    }
+                    if (!serviceURL.ToLower().Equals(capabilitiesHref.Substring(0, capabilitiesHref.IndexOf("1.0.0")).ToLower()))
+                    {
+                        if (addTmsForm.UseServiceURL)
+                        {
+                            addTmsForm.SelectedTileMap.Href = serviceURL + @"/" + capabilitiesHref.Substring(capabilitiesHref.IndexOf("1.0.0"));
+                        }
+                    }
 
                     BruTileLayer brutileLayer = new BruTileLayer(application, addTmsForm.SelectedTileMap.Href);
                     brutileLayer.Name = addTmsForm.SelectedTileMap.Title;

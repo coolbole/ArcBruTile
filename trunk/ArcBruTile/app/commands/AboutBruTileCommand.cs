@@ -70,7 +70,7 @@ namespace BruTileArcGIS
         #endregion
         #endregion
 
-        private IApplication m_application;
+        private IApplication application;
 
         /// <summary>
         /// Initialiseert een nieuwe instantie van het command.
@@ -95,7 +95,7 @@ namespace BruTileArcGIS
             if (hook == null)
                 return;
 
-            m_application = hook as IApplication;
+            application = hook as IApplication;
 
             //Disable if it is not ArcMap
             if (hook is IMxApplication)
@@ -112,7 +112,7 @@ namespace BruTileArcGIS
         public override void OnClick()
         {
             BruTileAboutBox bruTileAboutBox = new BruTileAboutBox();
-            bruTileAboutBox.ShowDialog();
+            bruTileAboutBox.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
         }
 
         #endregion

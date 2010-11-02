@@ -90,17 +90,17 @@ namespace BruTileArcGIS
 
                     string cacheDirType = this.GetCacheDirectory(config, enumBruTileLayer);
 
-                    string myFormat = schema.Format;
+                    string format = schema.Format;
 
-                    if (myFormat.Contains(@"image/"))
+                    if (format.Contains(@"image/"))
                     {
-                        myFormat = myFormat.Substring(6, schema.Format.Length - 6);
+                        format = format.Substring(6, schema.Format.Length - 6);
                     }
-                    if (myFormat.Contains("png8"))
+                    if (format.Contains("png8"))
                     {
-                        myFormat = myFormat.Replace("png8", "png");
+                        format = format.Replace("png8", "png");
                     }
-                    fileCache = new FileCache(cacheDirType, myFormat);
+                    fileCache = new FileCache(cacheDirType, format);
                     env = Projector.ProjectEnvelope(env, schema.Srs);
                     if (!env.IsEmpty)
                     {

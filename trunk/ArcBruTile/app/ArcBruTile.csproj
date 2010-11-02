@@ -172,6 +172,7 @@
     <Compile Include="forms\AddWmsCForm.Designer.cs">
       <DependentUpon>AddWmsCForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\ArcMapWindow.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
     <Compile Include="controls\BruTilePropertyPageUserControl.cs">

@@ -13,6 +13,20 @@ namespace BruTileArcGIS
     public partial class AddTmsForm : Form
     {
         private TileMap selectedTileMap=null;
+        private string providedServiceURL = string.Empty;
+        private bool useServiceURL = true;
+
+        public bool UseServiceURL
+        {
+            get { return useServiceURL; }
+            set { useServiceURL = value; }
+        }
+
+        public string ProvidedServiceURL
+        {
+            get { return providedServiceURL; }
+            set { providedServiceURL = value; }
+        }
         private List<TileMap> tilemaps;
 
         public AddTmsForm()
@@ -63,6 +77,7 @@ namespace BruTileArcGIS
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            this.ProvidedServiceURL = tbTmsUrl.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -74,6 +89,11 @@ namespace BruTileArcGIS
                 selectedTileMap = (TileMap)lbServices.SelectedItem;
                 btnOk.Enabled = true;
             }
+        }
+
+        private void checkBoxUseTMSURL_CheckedChanged(object sender, EventArgs e)
+        {
+            this.UseServiceURL = checkBoxUseTMSURL.Checked;
         }
     }
 }

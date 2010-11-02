@@ -89,7 +89,7 @@ namespace BruTileArcGIS
 
 
                 AddWmsCForm addWmsCForm = new AddWmsCForm();
-                DialogResult result = addWmsCForm.ShowDialog();
+                DialogResult result = addWmsCForm.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
 
                 if (result == DialogResult.OK)
                 {
