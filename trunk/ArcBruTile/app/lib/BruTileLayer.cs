@@ -43,6 +43,8 @@ namespace BruTileArcGIS
         private double layerWeight=101;
         private IConfig config;
         public const string GUID = "1EF3586D-8B42-4921-9958-A73F4833A6FA";
+        private int currentLevel;
+
         #endregion
 
         #region constructors
@@ -158,7 +160,7 @@ namespace BruTileArcGIS
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
                             bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer);                                  
+                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel);                                  
                         }
                         catch (Exception ex)
                         {
@@ -205,6 +207,17 @@ namespace BruTileArcGIS
             get{return cached;}
             set{cached = value;}
         }
+
+        /// <summary>
+        /// Gets or sets the EnumBruTile.
+        /// </summary>
+        /// <value>The enum bru tile layer.</value>
+        public EnumBruTileLayer EnumBruTileLayer
+        {
+            get { return enumBruTileLayer; }
+            set { enumBruTileLayer = value; }
+        }
+
 
         /// <summary>
         /// Gets or sets the maximum scale.
@@ -254,6 +267,16 @@ namespace BruTileArcGIS
             get{return showTips;}
             set{showTips = value;}
         }
+
+        /// <summary>
+        /// gets or sets the current level
+        /// </summary>
+        public int CurrentLevel
+        {
+            get { return currentLevel; }
+            set { currentLevel = value; }
+        }
+
 
         /// <summary>
         /// Sets the spatial reference.

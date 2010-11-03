@@ -69,7 +69,7 @@ namespace BruTileArcGIS
         /// </summary>
         /// <param name="activeView">The active view.</param>
         /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        public void Draw(IApplication application, IActiveView activeView, IConfig config, ITrackCancel trackCancel, ISpatialReference layerSpatialReference, EnumBruTileLayer enumBruTileLayer)
+        public void Draw(IApplication application, IActiveView activeView, IConfig config, ITrackCancel trackCancel, ISpatialReference layerSpatialReference, EnumBruTileLayer enumBruTileLayer, ref int currentLevel)
         {
             try
             {
@@ -121,6 +121,7 @@ namespace BruTileArcGIS
 
                         LoadTiles(trackCancel);
                         //DrawTilesInMemory(trackCancel);
+                        currentLevel = level;
                     }
 
                 }

@@ -113,9 +113,6 @@ namespace BruTileArcGIS
                 base.m_enabled = false;
 
             // TODO:  Add other initialization code
-            
-            // just disable for now, have to wait for code
-            this.m_enabled = false;
         }
 
         /// <summary>
@@ -149,11 +146,11 @@ namespace BruTileArcGIS
                     if (layer.GetType() == typeof(BruTileLayer))
                     {
                         // TODO: Fix the next code. BruTileLayer should have a CurrentLevel property...
-                        //BruTileLayer btLayer = layer as BruTileLayer;
-                        //layerIsOsmAndVisible = layer.Visible && ((currLevel = btLayer.CurrentLevel) >= precacheMinimumLevel);
-                        //extent = btLayer.Extent;
-                        //enumBruTileLayer = btLayer.EnumBruTileLayer;
-                        //break;
+                        BruTileLayer btLayer = layer as BruTileLayer;
+                        layerIsOsmAndVisible = layer.Visible && ((currLevel = btLayer.CurrentLevel) >= precacheMinimumLevel);
+                        extent = btLayer.Extent;
+                        enumBruTileLayer = btLayer.EnumBruTileLayer;
+                        break;
                     }
                 }
                 if (!layerIsOsmAndVisible)
