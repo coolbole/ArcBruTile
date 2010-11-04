@@ -375,15 +375,9 @@ namespace BruTileArcGIS
         {
             try
             {
-                IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactory();
-                IRasterWorkspace rasterWorkspace=(IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(System.IO.Path.GetDirectoryName(file), 0);
-                IRasterDataset rasterDataset=rasterWorkspace.OpenRasterDataset(System.IO.Path.GetFileName(file));
-                IRasterLayer rl = new RasterLayerClass();
-                rl.CreateFromDataset(rasterDataset);
-                
                 // Old method:
-                //IRasterLayer rl = new RasterLayerClass();
-                //rl.CreateFromFilePath(file);
+                IRasterLayer rl = new RasterLayerClass();
+                rl.CreateFromFilePath(file);
 
                 if (needReproject)
                 {
@@ -403,7 +397,7 @@ namespace BruTileArcGIS
                 // Do not remove this line...
                 rl.SpatialReference = layerSpatialReference;
                 rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, null);
-                //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+                activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, trackCancel, env);
             }
             catch
             {
@@ -592,11 +586,14 @@ namespace BruTileArcGIS
             rasterProps.Height = schema.Height;
             rasterProps.Width = schema.Width;
 
+            //IRasterExporter rasterexp = new RasterExporterClass();
+            //byte[] bts=rasterexp.ExportToBytes(rl.Raster, "png");
+            
             // Now set the spatial reference to the dataframe spatial reference! 
             // Do not remove this line...
             rl.SpatialReference = layerSpatialReference;
             rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, trackCancel);
-            activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+            //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
         }
     }
 }
