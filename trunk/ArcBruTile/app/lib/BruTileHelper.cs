@@ -375,9 +375,15 @@ namespace BruTileArcGIS
         {
             try
             {
+                IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactory();
+                IRasterWorkspace rasterWorkspace=(IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(System.IO.Path.GetDirectoryName(file), 0);
+                IRasterDataset rasterDataset=rasterWorkspace.OpenRasterDataset(System.IO.Path.GetFileName(file));
                 IRasterLayer rl = new RasterLayerClass();
-
-                rl.CreateFromFilePath(file);
+                rl.CreateFromDataset(rasterDataset);
+                
+                // Old method:
+                //IRasterLayer rl = new RasterLayerClass();
+                //rl.CreateFromFilePath(file);
 
                 if (needReproject)
                 {
@@ -391,11 +397,13 @@ namespace BruTileArcGIS
                 rasterProps.Height = schema.Height;
                 rasterProps.Width = schema.Width;
 
+                // Improve rendering quality with RSP_BilinearInterpolation
+                rl.Renderer.ResamplingType = rstResamplingTypes.RSP_BilinearInterpolation;
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
                 rl.SpatialReference = layerSpatialReference;
-                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, trackCancel);
-                activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
+                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)screenDisplay, null);
+                //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, env);
             }
             catch
             {
