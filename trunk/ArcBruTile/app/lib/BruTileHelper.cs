@@ -307,10 +307,9 @@ namespace BruTileArcGIS
                 string name = fileCache.GetFileName(tileInfo.Index);
                 fileCache.Add(tileInfo.Index, bytes);
                 bool result = CreateRaster(tileInfo, bytes, name);
-                doneEvent.Set();
             }
+            doneEvent.Set();
             logger.Debug("Tile retrieved: " + url.AbsoluteUri);
-
         }
 
 
