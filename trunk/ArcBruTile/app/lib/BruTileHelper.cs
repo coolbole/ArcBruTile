@@ -171,10 +171,13 @@ namespace BruTileArcGIS
                 logger.Debug("Start drawing tile" + file + "...");
 
                 ITileSchema schema = tileSource.Schema;
-
-                // Old method:
                 IRasterLayer rl = new RasterLayerClass();
                 rl.CreateFromFilePath(file);
+                IRasterProps props=(IRasterProps)rl.Raster;
+                SpatialReferences sp=new SpatialReferences();
+                
+                //props.Extent = env;
+                props.SpatialReference = dataSpatialReference;
 
                 if (needReproject)
                 {
@@ -325,49 +328,9 @@ namespace BruTileArcGIS
             string tfwFile = name.Replace(fi.Extension, "." + this.GetWorldFile(schema.Format));
             this.WriteWorldFile(tfwFile, tile.Extent, schema);
 
-            bool result = AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
-            return result;
+            //bool result = AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
+            return true;
 
-        }
-
-
-        /// <summary>
-        /// Adds the spatial reference using a schema edit (not used because of more expensive)
-        /// </summary>
-        /// <param name="file">The file.</param>
-        private bool AddSpatialReferenceSchemaEdit(String file, ISpatialReference spatialReference)
-        {
-            bool result = false;
-            FileInfo fi = new FileInfo(file);
-            fi.IsReadOnly = false;
-            if (fi.Extension == "jpeg")
-            {
-                string newname = fi.Name.Replace("jpeg", "jpg");
-                fi = new FileInfo(newname);
-            }
-            IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
-            IRasterWorkspace rasterWorkSpace = (IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(fi.DirectoryName, 0);
-
-            try
-            {
-                IRasterDataset rasterDataset = rasterWorkSpace.OpenRasterDataset(fi.Name);
-
-                IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
-
-                if (geoDatasetSchemaEdit.CanAlterSpatialReference)
-                {
-                    geoDatasetSchemaEdit.AlterSpatialReference(spatialReference);
-                }
-                result = true;
-            }
-            catch (System.Runtime.InteropServices.COMException comException)
-            {
-                // if there is something wrong with loading the result
-                // like Failed to open raster dataset
-                // just log a message and go on
-                logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName + "\\" + fi.Name);
-            }
-            return result;
         }
 
         public byte[] GetBitmap(Uri uri)
@@ -500,3 +463,45 @@ namespace BruTileArcGIS
 
     }
 }
+
+
+/**
+/// <summary>
+/// Adds the spatial reference using a schema edit (not used because of more expensive)
+/// </summary>
+/// <param name="file">The file.</param>
+private bool AddSpatialReferenceSchemaEdit(String file, ISpatialReference spatialReference)
+{
+    bool result = false;
+    FileInfo fi = new FileInfo(file);
+    fi.IsReadOnly = false;
+    if (fi.Extension == "jpeg")
+    {
+        string newname = fi.Name.Replace("jpeg", "jpg");
+        fi = new FileInfo(newname);
+    }
+    IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
+    IRasterWorkspace rasterWorkSpace = (IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(fi.DirectoryName, 0);
+
+    try
+    {
+        IRasterDataset rasterDataset = rasterWorkSpace.OpenRasterDataset(fi.Name);
+
+        IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
+
+        if (geoDatasetSchemaEdit.CanAlterSpatialReference)
+        {
+            geoDatasetSchemaEdit.AlterSpatialReference(spatialReference);
+        }
+        result = true;
+    }
+    catch (System.Runtime.InteropServices.COMException comException)
+    {
+        // if there is something wrong with loading the result
+        // like Failed to open raster dataset
+        // just log a message and go on
+        logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName + "\\" + fi.Name);
+    }
+    return result;
+}
+*/
