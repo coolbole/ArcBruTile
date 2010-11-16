@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BrutileArcGIS</RootNamespace>
     <AssemblyName>ArcBruTile</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -124,12 +124,18 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArcBruTileInstaller.cs">
@@ -150,6 +156,7 @@
     <Compile Include="commands\AddBingAerialLayerCommand.cs" />
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingRoadLayerCommand.cs" />
+    <Compile Include="commands\AddFusionLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddGoogleHybridLayerCommand.cs" />
     <Compile Include="commands\AddGoogleMapsCommand.cs" />
@@ -200,6 +207,16 @@
     <Compile Include="lib\ConfigSpatialCloud.cs" />
     <Compile Include="lib\ConfigTms.cs" />
     <Compile Include="lib\ConfigWmsC.cs" />
+    <Compile Include="lib\CustomLayerBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="lib\Extent.cs" />
+    <Compile Include="lib\FusionLayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="lib\KMLIdentifyObject.cs" />
+    <Compile Include="lib\KMLReader.cs" />
+    <Compile Include="lib\KMLWebRequestStateObject.cs" />
     <Compile Include="lib\Precache.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
@@ -274,6 +291,7 @@
     <Content Include="readme.txt" />
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
     <Content Include="Resources\download.png" />
+    <None Include="Resources\kml.jpg" />
     <Content Include="Resources\SpatialCloud.png" />
     <Content Include="Resources\tms.jpg" />
     <None Include="Resources\WMS_icon.png" />

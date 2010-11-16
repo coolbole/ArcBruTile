@@ -43,6 +43,10 @@ namespace BruTileArcGIS
                     itemDef.Group = false;
                     break;
                 case 2:
+                    itemDef.ID = "AddFusionLayerCommand";
+                    itemDef.Group = false;
+                    break;
+                case 3:
                     itemDef.ID = "AboutBruTileCommand";
                     itemDef.Group = true;
                     break;
@@ -56,7 +60,7 @@ namespace BruTileArcGIS
         /// <value>The item count.</value>
         public int ItemCount
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         /// <summary>
