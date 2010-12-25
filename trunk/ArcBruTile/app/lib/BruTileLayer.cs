@@ -63,13 +63,13 @@ namespace BruTileArcGIS
             this.application = pApp;
         }
 
-        
-        public BruTileLayer(IApplication app, string TmsUrl)
+
+        public BruTileLayer(IApplication app, EnumBruTileLayer EnumBruTileLayer, string TmsUrl)
         {
-            config = ConfigHelper.GetTmsConfig(TmsUrl);
+            config = ConfigHelper.GetConfig(EnumBruTileLayer, TmsUrl);
 
             this.application = app;
-            this.enumBruTileLayer = EnumBruTileLayer.TMS;
+            this.enumBruTileLayer = EnumBruTileLayer;
             InitializeLayer();
         }
 
@@ -93,6 +93,7 @@ namespace BruTileArcGIS
             this.application = application;
             this.config = config;
             this.enumBruTileLayer = EnumBruTileLayer.WMSC;
+            //this.enumBruTileLayer = EnumBruTileLayer.TMS;
             InitializeLayer();
         }
 
@@ -104,7 +105,9 @@ namespace BruTileArcGIS
             this.tileTimeOut = CacheSettings.GetTileTimeOut();
 
             SpatialReferences spatialReferences = new SpatialReferences();
-            ITileSchema schema = config.CreateTileSource().Schema;
+
+            ITileSource tileSource=config.CreateTileSource();
+            ITileSchema schema = tileSource.Schema;
             this.dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
             this.envelope = GetDefaultEnvelope(config);
 

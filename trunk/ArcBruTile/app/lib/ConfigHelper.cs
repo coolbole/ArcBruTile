@@ -13,6 +13,27 @@ namespace BruTileArcGIS
             return new ConfigTms(url);
         }
 
+        public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer, string Url)
+        {
+            IConfig result=null;
+
+            if (enumBruTileLayer == EnumBruTileLayer.TMS)
+            {
+                result = new ConfigTms(Url);
+            }
+            else if (enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
+            {
+                result = new ConfigInvertedTMS(Url);
+            }
+            else
+            {
+                result = new ConfigOsm();
+            }
+
+            return result;
+        }
+
+
         /// <summary>
         /// Gets the config.
         /// </summary>
@@ -25,18 +46,19 @@ namespace BruTileArcGIS
             if (enumBruTileLayer == EnumBruTileLayer.OSM)
             {
                 result = new ConfigOsm();
+                //result.
             }
             else if (enumBruTileLayer == EnumBruTileLayer.BingRoad)
             {
-                result = new ConfigBing(MapType.Roads);
+                result = new ConfigBing(BingMapType.Roads);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.BingHybrid)
             {
-                result = new ConfigBing(MapType.Hybrid);
+                result = new ConfigBing(BingMapType.Hybrid);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.BingAerial)
             {
-                result = new ConfigBing(MapType.Aerial);
+                result = new ConfigBing(BingMapType.Aerial);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.ESRI)
             {
@@ -52,16 +74,17 @@ namespace BruTileArcGIS
             }
             else if (enumBruTileLayer == EnumBruTileLayer.GoogleMaps)
             {
-                result = new ConfigGoogle(MapType.Roads);
+                result = new ConfigGoogle(BingMapType.Roads);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.GoogleSatellite)
             {
-                result = new ConfigGoogle(MapType.Aerial);
+                result = new ConfigGoogle(BingMapType.Aerial);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.SpatialCloud)
             {
                 result = new ConfigSpatialCloud();
             }
+
 
             return result;
         }

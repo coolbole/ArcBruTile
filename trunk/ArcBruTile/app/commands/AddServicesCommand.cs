@@ -14,12 +14,12 @@ using System.Reflection;
 namespace BruTileArcGIS
 {
     /// <summary>
-    /// Command voor het tonen van de laser tools about box.
+    /// Command used for showing dialog with predefined services.
     /// </summary>
-    [Guid("BC096A33-F2C4-459E-8E7C-CBB9DA72BDB6")]
+    [Guid("BC096A33-F2C4-459E-8E7C-CBB9DA72BDB7")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AboutBruTileCommand")]
-    public sealed class AboutBruTileCommand : BaseCommand
+    [ProgId("AddServicesCommand")]
+    public sealed class AddServicesCommand : BaseCommand
     {
         #region COM Registration Function(s)
         [ComRegisterFunction()]
@@ -76,13 +76,13 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialiseert een nieuwe instantie van het command.
         /// </summary>
-        public AboutBruTileCommand()
+        public AddServicesCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&About ArcBruTile...";
-            base.m_message = "About BruTile...";
+            base.m_caption = "&Add service...";
+            base.m_message = "Add service...";
             base.m_toolTip = base.m_caption;
-            base.m_name = "AboutBruTileCommand";
+            base.m_name = "ServicesCommand";
         }
 
         #region Overriden Class Methods
@@ -112,19 +112,58 @@ namespace BruTileArcGIS
         /// </summary>
         public override void OnClick()
         {
-            BruTileAboutBox bruTileAboutBox = new BruTileAboutBox();
-            bruTileAboutBox.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
+            try
+            {
 
-            /**MemberInfo obj = typeof(AddOsmLayerCommand);
-            object[] attr=obj.GetCustomAttributes(true);
+                IMxDocument mxdoc = (IMxDocument)application.Document;
+                IMap map = mxdoc.FocusMap;
 
-            ProgIdAttribute pia = new ProgIdAttribute("test");
-            attr.SetValue(attr[0], pia);
-            ProgIdAttribute progId=(ProgIdAttribute)attr[0];
-            progId.Value = "test";
-            //attr[0]
-            int i = 1;
-             */ 
+                AddServicesForm addServicesForm = new AddServicesForm();
+
+                DialogResult result = addServicesForm.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
+                //DialogResult result = addServicesForm.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    TileMap selectedService = addServicesForm.SelectedService;
+                    TileMapService provider = addServicesForm.SelectedTileMapService;
+
+                    // Fix the service labs.metacarta.com bug: it doubles the version :-(
+                    selectedService.Href = selectedService.Href.Replace(@"1.0.0/1.0.0", @"1.0.0").Trim();
+
+
+                    /**string capabilitiesHref = selectedTileMapService.Href.Replace(@"1.0.0/1.0.0", @"1.0.0").Trim();
+                    string serviceURL = selectedService.Href.Trim();
+                    if (serviceURL.EndsWith(@"/"))
+                    {
+                        serviceURL = serviceURL.Remove(serviceURL.Length - 1);
+                    }
+                    if (!serviceURL.ToLower().Equals(capabilitiesHref.Substring(0, capabilitiesHref.IndexOf("1.0.0")).ToLower()))
+                    {
+                        if (true)
+                        {
+                            selectedService.Href = serviceURL + @"/" + capabilitiesHref.Substring(capabilitiesHref.IndexOf("1.0.0"));
+                        }
+                    }*/
+
+                    // Normally the layer is a TMS
+                    EnumBruTileLayer layerType=EnumBruTileLayer.TMS;
+
+                    // If the type is inverted TMS we have to do something special
+                    if (provider.Type == "InvertedTMS")
+                    {
+                        layerType = EnumBruTileLayer.InvertedTMS;
+                    }
+
+                    BruTileLayer brutileLayer = new BruTileLayer(application, layerType, selectedService.Href);
+                    brutileLayer.Name = selectedService.Title;
+                    brutileLayer.Visible = true;
+                    map.AddLayer((ILayer)brutileLayer);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         #endregion

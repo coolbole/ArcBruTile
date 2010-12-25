@@ -77,32 +77,25 @@ namespace BruTileArcGIS
             // Configure logfiles
             XmlConfigurator.Configure(new FileInfo(Assembly.GetExecutingAssembly().Location + ".config"));
 
+
             try
             {
                 logger.Info("Startup ArcBruTile");
-                //Menu sectie
                 AddItem("BruTileArcGIS.BruTileMenuDef");
-
                 Configuration config = ConfigurationHelper.GetConfig();
 
                 //Status sectie
                 BeginGroup();
-                //if (Convert.ToBoolean(config.AppSettings.Settings["useTms"].Value)) AddItem("AddTmsLayerCommand");
-                //if (Convert.ToBoolean(config.AppSettings.Settings["useWmsC"].Value)) AddItem("AddWmsCLayerCommand");
 
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
                 {
                     AddItem("BruTileArcGIS.BingMenuDef");
-                    //AddItem("AddGoogleMapsCommand");
-                    //AddItem("AddGoogleSatelliteCommand");
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
                 {
                     AddItem("BruTileArcGIS.GoogleMenuDef");
-                    //AddItem("AddBingRoadLayerCommand");
-                    // AddItem("AddBingAerialLayerCommand");
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");

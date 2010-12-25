@@ -14,7 +14,7 @@ namespace BruTileArcGIS
 
             string bingToken = config.AppSettings.Settings["BingToken"].Value;
             string bingUrl = config.AppSettings.Settings["BingUrl"].Value;
-            MapType mapType = MapType.Hybrid;
+            BingMapType mapType = BingMapType.Hybrid;
 
             return new BingTileSource(
                 bingUrl, bingToken, mapType);

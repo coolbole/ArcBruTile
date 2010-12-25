@@ -11,9 +11,9 @@ namespace BruTileArcGIS
     {
         private string format = "png";
         private string name = "GoogleMaps";
-        private MapType mapType=MapType.Roads;
+        private BingMapType mapType=BingMapType.Roads;
 
-        public ConfigGoogle(MapType mapType)
+        public ConfigGoogle(BingMapType mapType)
         {
             this.mapType = mapType;
         }
@@ -80,9 +80,9 @@ namespace BruTileArcGIS
             get
             {
                 string type = "";
-                type=(mapType==MapType.Aerial?"s":type);
-                type=(mapType==MapType.Roads?"m":type);
-                type=(mapType==MapType.Hybrid?"h":type);
+                type=(mapType==BingMapType.Aerial?"s":type);
+                type=(mapType==BingMapType.Roads?"m":type);
+                type=(mapType==BingMapType.Hybrid?"h":type);
                 return new BasicRequest("http://mt1.google.com/vt/lyrs="+type+"@113&hl=nl&x={1}&y={2}&z={0}&s=");
             }
         }

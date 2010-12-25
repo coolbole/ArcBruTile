@@ -65,7 +65,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -91,9 +91,9 @@ namespace BruTileArcGIS
 
                 kmlLayer.HotlinkField = "sip";
                 kmlLayer.HotlinkType = esriHyperlinkType.esriHyperlinkTypeDocument;
+
+                map.AddLayer(kmlLayer);
                 
-                map.AddLayer(layer);
-                ((IActiveView)map).Refresh();
             }
             catch (Exception ex)
             {

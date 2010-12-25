@@ -9,6 +9,23 @@ namespace BruTileArcGIS
 {
     public static class CacheSettings
     {
+        public static string GetServicesConfigDir()
+        {
+            Configuration config = ConfigurationHelper.GetConfig();
+            string servicesConfigDir = config.AppSettings.Settings["servicesConfigDir"].Value;
+            if (servicesConfigDir.Contains("%"))
+            {
+                servicesConfigDir = CacheSettings.ReplaceEnvironmentVar(servicesConfigDir);
+            }
+
+            if (!Directory.Exists(servicesConfigDir))
+            {
+                Directory.CreateDirectory(servicesConfigDir);
+            }
+
+            return servicesConfigDir;
+        }
+
         public static string GetCacheFolder()
         {
             Configuration config=ConfigurationHelper.GetConfig();

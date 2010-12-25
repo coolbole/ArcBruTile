@@ -25,6 +25,8 @@ namespace BruTileArcGIS
             // Handle non official EPSG codes...
             if (code == 900913 | code==41001 ) code = 102113;
 
+            //if(code == 3857.3857
+
             if(this.isProjectedSpatialReference(code))
             {
                 res = this.GetProjectedSpatialReference(code);

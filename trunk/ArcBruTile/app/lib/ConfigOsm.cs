@@ -27,7 +27,15 @@ namespace BruTileArcGIS
     {
         public ITileSource CreateTileSource()
         {
+            //OsmTileSource osmTileSource = new OsmTileSource();
             return new OsmTileSource();
         }
     }
 }
+
+
+              //TmsTileSource t=new TmsTileSource(new Uri("http://io.viaeuropa.uk.com/viaeuropa/demoqqcjn0/hybrid/"), new SphericalMercatorInvertedWorldSchema());
+               //return t;
+            //: base(new Uri("http://b.tile.openstreetmap.org"), new SphericalMercatorInvertedWorldSchema())
+            //{
+

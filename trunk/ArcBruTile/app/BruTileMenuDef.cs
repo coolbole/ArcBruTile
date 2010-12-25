@@ -35,7 +35,7 @@ namespace BruTileArcGIS
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddTmsLayerCommand";
+                    itemDef.ID = "AddServicesCommand";
                     itemDef.Group = false;
                     break;
                 case 1:

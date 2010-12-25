@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Services>
+  <TileMapService title="La Infraestructura de Datos Espaciales de España" version="1.0.0" href="http://www.idee.es/wms-c/IDEE-Base/IDEE-Base/1.0.0/" type="TMS"/>
+</Services>
+
+

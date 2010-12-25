@@ -25,9 +25,9 @@ namespace BruTileArcGIS
 {
     public class ConfigBing : IConfig
     {
-        private MapType mapType = MapType.Roads;
+        private BingMapType mapType = BingMapType.Roads;
 
-        public ConfigBing(MapType mapType)
+        public ConfigBing(BingMapType mapType)
         {
             this.mapType = mapType;
         }

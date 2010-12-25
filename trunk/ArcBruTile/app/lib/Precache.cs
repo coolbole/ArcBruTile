@@ -153,7 +153,7 @@ namespace BruTileArcGIS
                         counter++;
                         try
                         {
-                            Uri url = t.WebTileProvider.requestBuilder.GetUri(info);
+                            Uri url = t.WebTileProvider.Request.GetUri(info);
                             byte[] bytes = RequestHelper.FetchImage(url);
                             t.FileCache.Add(info.Index, bytes);
 

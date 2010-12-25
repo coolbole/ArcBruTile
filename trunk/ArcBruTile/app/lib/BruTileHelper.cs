@@ -62,6 +62,7 @@ namespace BruTileArcGIS
             this.activeView = activeView;
             this.config = config;
             this.tileSource = config.CreateTileSource();
+
             this.trackCancel = trackCancel;
             this.layerSpatialReference = layerSpatialReference;
             this.enumBruTileLayer = enumBruTileLayer;
@@ -142,7 +143,7 @@ namespace BruTileArcGIS
 
                 if (needsLoad)
                 {
-                    object o = new object[] { tileProvider.requestBuilder, tiles[i], doneEvents[i] };
+                    object o = new object[] { tileProvider.Request, tiles[i], doneEvents[i] };
 
                     threadTask[i] = new Thread(new ParameterizedThreadStart(downloadTile));
                     threadTask[i].SetApartmentState(ApartmentState.STA);
@@ -253,12 +254,12 @@ namespace BruTileArcGIS
 
         private string GetCacheDirectory(IConfig config, EnumBruTileLayer layerType)
         {
-            string cacheDirType = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString());
+            string cacheDirectory = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString());
 
-            if (enumBruTileLayer == EnumBruTileLayer.TMS)
+            if (enumBruTileLayer == EnumBruTileLayer.TMS || enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
             {
-                ConfigTms configTms = (ConfigTms)config;
-                string url = configTms.Url;
+                string url=(enumBruTileLayer == EnumBruTileLayer.TMS? ((ConfigTms)config).Url: ((ConfigInvertedTMS)config).Url);
+
                 string service = url.Substring(7, url.Length - 7);
                 service = service.Replace(@"/", "-");
                 service = service.Replace(":", "-");
@@ -267,11 +268,10 @@ namespace BruTileArcGIS
                 {
                     service = service.Substring(0, service.Length - 1);
                 }
-                cacheDirType = String.Format("{0}{1}{2}{3}{4}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString(), System.IO.Path.DirectorySeparatorChar, service);
+                cacheDirectory = String.Format("{0}{1}{2}{3}{4}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString(), System.IO.Path.DirectorySeparatorChar, service);
             }
 
-            return cacheDirType;
-
+            return cacheDirectory;
         }
 
 

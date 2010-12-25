@@ -3,6 +3,8 @@ http://brutile.codeplex.com/SourceControl/changeset/changes/42178
 Author: BT
 Date: 26/4/2010
 
+Update: 13 december 2010: ArcBruTile code is now using BruTile changeset 59016
+
 Some customizations i've made to the BruTile dll:
 1] method BruTile.PreDefined.SphericalMercatorWorldSchema.SphericalMercatorWorldSchema()
 Old code:
@@ -25,22 +27,28 @@ New code:
         public string Exists(TileIndex index)
 Reason: We need to know if the file already exists on disk
 
+4] Method BruTile.Web.RequestHelper.FetchImage(Uri uri, string userAgent, string referer, bool keepAlive)
+Added:
+            webRequest.AllowAutoRedirect=true;
+Reason: The SpatialCloud service uses redirection to retrieve an image
+
+
+5] added setter for tileschema
+            set { _tileSchema = value; }
+
+
+NB: I didn't use the Silverlight version of BruTile, because of errors with System.dll. Maybe this
+is because the ArcBruTile extension or ArcMap already uses 
+
+
+===========================================================================================
+old
 4] property BruTile.Web.WebTileProvider.requestBuilder 
 Old code:
         IRequest requestBuilder;
 New code:
         public IRequest requestBuilder;
 Reason: We need to know the url's of the tiles to fetch tiles in a threadpool
-
-5] Method BruTile.Web.RequestHelper.FetchImage(Uri uri, string userAgent, string referer, bool keepAlive)
-Added:
-            webRequest.AllowAutoRedirect=true;
-Reason: The SpatialCloud service uses redirection to retrieve an image
-
-NB: I didn't use the Silverlight version of BruTile, because of errors with System.dll. Maybe this
-is because the ArcBruTile extension or ArcMap already uses 
-
-
 
 
 
