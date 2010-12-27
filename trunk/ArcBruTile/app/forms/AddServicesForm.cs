@@ -43,6 +43,11 @@ namespace BruTileArcGIS
             }
 
             lbProvider.DataSource = files;
+
+            if (files.Count==0)
+            {
+                dgvServices.DataSource = null;
+            }
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -64,9 +69,7 @@ namespace BruTileArcGIS
             {
                 Title = el1.Attribute("title").Value,
                 Version = el1.Attribute("version").Value,
-                Href = el1.Attribute("href").Value,
-                Type=el1.Attribute("type").Value
-            };
+                Href = el1.Attribute("href").Value            };
 
             btnRemoveProvider.Enabled = true;
 
@@ -77,6 +80,7 @@ namespace BruTileArcGIS
             dgvServices.Columns.Remove("Href");
             dgvServices.Columns.Remove("Profile");
             dgvServices.Columns.Remove("Srs");
+            dgvServices.Columns.Remove("Type");
 
             //resize columns
             dgvServices.Columns[0].Width=120;
@@ -149,6 +153,11 @@ namespace BruTileArcGIS
             {
                 MessageBox.Show("File " + file + " does not exist. Cannot remove provider.", "Error");
             }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
 
     }

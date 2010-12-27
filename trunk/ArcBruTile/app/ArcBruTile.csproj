@@ -312,31 +312,14 @@
     <None Include="Resources\kml.jpg" />
     <Content Include="Resources\SpatialCloud.png" />
     <Content Include="Resources\tms.jpg" />
-    <Content Include="services\idee.es.xml">
+    <Content Include="services\arcbrutile_sample_services.xml">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="services\vr-theworld.com.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="services\metacarta.com.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="services\osgeo.org.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="services\europa-tech.com.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="services\nationaalgeoregister.nl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\WMS_icon.png" />
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\Google.png" />
     <None Include="Resources\google.ico" />
   </ItemGroup>

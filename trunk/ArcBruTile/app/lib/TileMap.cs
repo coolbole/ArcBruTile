@@ -13,6 +13,8 @@ namespace BruTileArcGIS
         public string Srs { get; set; }
         public string Title { get; set; }
         public string Profile { get; set; }
+        public string Type { get; set; }
+
 
         static public int Compare(TileMap a, TileMap b)
         {
@@ -25,6 +27,5 @@ namespace BruTileArcGIS
         public string Title { get; set; }
         public string Version { get; set; }
         public string Href { get; set; }
-        public string Type { get; set; }
     }
 }

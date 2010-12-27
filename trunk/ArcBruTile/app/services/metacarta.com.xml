@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Services>
-  <TileMapService title="MetaCarta" version="1.0.0" href="http://labs.metacarta.com/wms-c/Basic.py/1.0.0/" type="TMS"/>
-</Services>
-
-

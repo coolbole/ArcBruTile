@@ -61,7 +61,10 @@ namespace BruTileArcGIS
             this.application = application;
             this.activeView = activeView;
             this.config = config;
-            this.tileSource = config.CreateTileSource();
+            if (this.tileSource == null)
+            {
+                this.tileSource = config.CreateTileSource();
+            }
 
             this.trackCancel = trackCancel;
             this.layerSpatialReference = layerSpatialReference;

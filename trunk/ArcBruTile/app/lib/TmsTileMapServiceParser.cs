@@ -35,6 +35,12 @@ namespace BruTileArcGIS
                 tileMap.Srs = node.Attributes["srs"].Value;
                 tileMap.Profile = node.Attributes["profile"].Value;
                 tileMap.Title= node.Attributes["title"].Value;
+                tileMap.Title = node.Attributes["title"].Value;
+                if (node.Attributes["type"] != null)
+                {
+                    tileMap.Type = node.Attributes["type"].Value;
+                }
+
                 tilemaps.Add(tileMap);
             }
 

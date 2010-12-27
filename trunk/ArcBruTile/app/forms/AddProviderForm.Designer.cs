@@ -33,15 +33,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.rdbTMS = new System.Windows.Forms.RadioButton();
-            this.rdbInvertedTMS = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lbProviders = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -66,7 +65,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(213, 145);
+            this.btnOk.Location = new System.Drawing.Point(214, 316);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(109, 23);
             this.btnOk.TabIndex = 4;
@@ -78,7 +77,7 @@
             // 
             this.btnCancel.CausesValidation = false;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(328, 145);
+            this.btnCancel.Location = new System.Drawing.Point(329, 316);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -86,67 +85,32 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // rdbTMS
-            // 
-            this.rdbTMS.AutoSize = true;
-            this.rdbTMS.CausesValidation = false;
-            this.rdbTMS.Checked = true;
-            this.rdbTMS.Location = new System.Drawing.Point(71, 113);
-            this.rdbTMS.Name = "rdbTMS";
-            this.rdbTMS.Size = new System.Drawing.Size(48, 17);
-            this.rdbTMS.TabIndex = 10;
-            this.rdbTMS.TabStop = true;
-            this.rdbTMS.Text = "TMS";
-            this.rdbTMS.UseVisualStyleBackColor = true;
-            this.rdbTMS.CheckedChanged += new System.EventHandler(this.rdbTMS_CheckedChanged);
-            // 
-            // rdbInvertedTMS
-            // 
-            this.rdbInvertedTMS.AutoSize = true;
-            this.rdbInvertedTMS.CausesValidation = false;
-            this.rdbInvertedTMS.Location = new System.Drawing.Point(134, 113);
-            this.rdbInvertedTMS.Name = "rdbInvertedTMS";
-            this.rdbInvertedTMS.Size = new System.Drawing.Size(90, 17);
-            this.rdbInvertedTMS.TabIndex = 11;
-            this.rdbInvertedTMS.Text = "Inverted TMS";
-            this.rdbInvertedTMS.UseVisualStyleBackColor = true;
-            this.rdbInvertedTMS.CheckedChanged += new System.EventHandler(this.rdbInvertedTMS_CheckedChanged);
-            // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.linkLabel1);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.lbProviders);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.tbName);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.rdbInvertedTMS);
-            this.groupBox2.Controls.Add(this.rdbTMS);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.tbTmsUrl);
             this.groupBox2.Location = new System.Drawing.Point(12, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(391, 139);
+            this.groupBox2.Size = new System.Drawing.Size(391, 310);
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Provider Description:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(71, 87);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(293, 20);
-            this.textBox1.TabIndex = 16;
-            this.textBox1.Text = "http://tilecache.osgeo.org/wms-c/Basic.py/1.0.0/";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 90);
+            this.label4.Location = new System.Drawing.Point(15, 93);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(50, 13);
             this.label4.TabIndex = 15;
-            this.label4.Text = "Example:";
+            this.label4.Text = "Samples:";
             // 
             // tbName
             // 
@@ -166,18 +130,38 @@
             this.label3.TabIndex = 13;
             this.label3.Text = "Name:";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 113);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Type:";
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
+            // 
+            // lbProviders
+            // 
+            this.lbProviders.FormattingEnabled = true;
+            this.lbProviders.Location = new System.Drawing.Point(71, 93);
+            this.lbProviders.Name = "lbProviders";
+            this.lbProviders.Size = new System.Drawing.Size(293, 173);
+            this.lbProviders.TabIndex = 16;
+            this.lbProviders.SelectedIndexChanged += new System.EventHandler(this.lbProviders_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(71, 273);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(231, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Want to add your tileservices here? Contact us!";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(71, 291);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(150, 13);
+            this.linkLabel1.TabIndex = 18;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://arcbrutile.codeplex.com";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // AddProviderForm
             // 
@@ -185,7 +169,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(409, 180);
+            this.ClientSize = new System.Drawing.Size(432, 351);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox2);
@@ -197,6 +181,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Provider";
+            this.Load += new System.EventHandler(this.AddProviderForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
@@ -210,14 +195,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.RadioButton rdbTMS;
-        private System.Windows.Forms.RadioButton rdbInvertedTMS;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ListBox lbProviders;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -131,27 +131,16 @@ namespace BruTileArcGIS
                     selectedService.Href = selectedService.Href.Replace(@"1.0.0/1.0.0", @"1.0.0").Trim();
 
 
-                    /**string capabilitiesHref = selectedTileMapService.Href.Replace(@"1.0.0/1.0.0", @"1.0.0").Trim();
-                    string serviceURL = selectedService.Href.Trim();
-                    if (serviceURL.EndsWith(@"/"))
-                    {
-                        serviceURL = serviceURL.Remove(serviceURL.Length - 1);
-                    }
-                    if (!serviceURL.ToLower().Equals(capabilitiesHref.Substring(0, capabilitiesHref.IndexOf("1.0.0")).ToLower()))
-                    {
-                        if (true)
-                        {
-                            selectedService.Href = serviceURL + @"/" + capabilitiesHref.Substring(capabilitiesHref.IndexOf("1.0.0"));
-                        }
-                    }*/
-
                     // Normally the layer is a TMS
                     EnumBruTileLayer layerType=EnumBruTileLayer.TMS;
 
                     // If the type is inverted TMS we have to do something special
-                    if (provider.Type == "InvertedTMS")
+                    if (selectedService.Type != null)
                     {
-                        layerType = EnumBruTileLayer.InvertedTMS;
+                        if (selectedService.Type == "InvertedTMS")
+                        {
+                            layerType = EnumBruTileLayer.InvertedTMS;
+                        }
                     }
 
                     BruTileLayer brutileLayer = new BruTileLayer(application, layerType, selectedService.Href);

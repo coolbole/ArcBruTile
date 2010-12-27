@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Services>
-  <TileMapService title="Nationaal Georegister" version="1.0.0" href="http://acceptatie.geodata.nationaalgeoregister.nl/tms/1.0.0" type="TMS"/>
-</Services>
-
-

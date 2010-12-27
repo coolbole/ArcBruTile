@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Net;
 using System.Net.Sockets;
+using System.IO;
+using System.Diagnostics;
 
 namespace BruTileArcGIS
 {
@@ -33,6 +35,46 @@ namespace BruTileArcGIS
         public AddProviderForm()
         {
             InitializeComponent();
+
+            InitForm();
+        }
+
+        private void InitForm()
+        {
+            string sampleProviders = "http://www.google.com/fusiontables/api/query?sql=SELECT Title,Url, Version from 368892";
+            List<TileMapService> providers = this.GetList(sampleProviders);
+            lbProviders.DataSource = providers;
+            lbProviders.DisplayMember = "Title";
+        }
+
+        private List<TileMapService> GetList(string Url)
+        {
+            List<TileMapService> providers = new List<TileMapService>();
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+            request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14";
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            System.IO.Stream stream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(stream);
+
+            bool first = true;
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+
+                if (!first)
+                {
+                    TileMapService tileMapService = new TileMapService();
+                    tileMapService.Title = line.Split(',')[0];
+                    tileMapService.Href = line.Split(',')[1];
+                    tileMapService.Version = line.Split(',')[2];
+                    providers.Add(tileMapService);
+                }
+
+                first = false;
+            }
+
+            return providers;
         }
 
         private bool checkUrl(string url)
@@ -68,11 +110,6 @@ namespace BruTileArcGIS
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
-        }
-
-        private void rdbInvertedTMS_CheckedChanged(object sender, EventArgs e)
-        {
-            this.enumBruTileLayer = EnumBruTileLayer.InvertedTMS;
         }
 
         private void rdbTMS_CheckedChanged(object sender, EventArgs e)
@@ -118,6 +155,31 @@ namespace BruTileArcGIS
         {
             Uri result;
             return (Uri.TryCreate(url, UriKind.Absolute, out result));
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddProviderForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lbProviders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TileMapService tileMapService=(TileMapService)lbProviders.SelectedItem;
+            tbName.Text = tileMapService.Title;
+            tbTmsUrl.Text = tileMapService.Href;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ProcessStartInfo psi=new ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = "http://arcbrutile.codeplex.com";
+            Process.Start(psi);
         }
 
     }
