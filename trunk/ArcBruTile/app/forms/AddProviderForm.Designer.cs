@@ -34,13 +34,13 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lbProviders = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lbProviders = new System.Windows.Forms.ListBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -48,7 +48,7 @@
             // tbTmsUrl
             // 
             this.tbTmsUrl.CausesValidation = false;
-            this.tbTmsUrl.Location = new System.Drawing.Point(71, 57);
+            this.tbTmsUrl.Location = new System.Drawing.Point(71, 48);
             this.tbTmsUrl.Name = "tbTmsUrl";
             this.tbTmsUrl.Size = new System.Drawing.Size(293, 20);
             this.tbTmsUrl.TabIndex = 1;
@@ -57,7 +57,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 60);
+            this.label1.Location = new System.Drawing.Point(15, 56);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 2;
@@ -103,10 +103,39 @@
             this.groupBox2.Text = "Provider Description:";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(71, 291);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(150, 13);
+            this.linkLabel1.TabIndex = 18;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://arcbrutile.codeplex.com";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(71, 273);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(231, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Want to add your tileservices here? Contact us!";
+            // 
+            // lbProviders
+            // 
+            this.lbProviders.FormattingEnabled = true;
+            this.lbProviders.Location = new System.Drawing.Point(71, 80);
+            this.lbProviders.Name = "lbProviders";
+            this.lbProviders.Size = new System.Drawing.Size(293, 186);
+            this.lbProviders.TabIndex = 16;
+            this.lbProviders.SelectedIndexChanged += new System.EventHandler(this.lbProviders_SelectedIndexChanged);
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(15, 93);
+            this.label4.Location = new System.Drawing.Point(15, 80);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(50, 13);
             this.label4.TabIndex = 15;
@@ -133,35 +162,6 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // lbProviders
-            // 
-            this.lbProviders.FormattingEnabled = true;
-            this.lbProviders.Location = new System.Drawing.Point(71, 93);
-            this.lbProviders.Name = "lbProviders";
-            this.lbProviders.Size = new System.Drawing.Size(293, 173);
-            this.lbProviders.TabIndex = 16;
-            this.lbProviders.SelectedIndexChanged += new System.EventHandler(this.lbProviders_SelectedIndexChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(71, 273);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(231, 13);
-            this.label2.TabIndex = 17;
-            this.label2.Text = "Want to add your tileservices here? Contact us!";
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(71, 291);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(150, 13);
-            this.linkLabel1.TabIndex = 18;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "http://arcbrutile.codeplex.com";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // AddProviderForm
             // 

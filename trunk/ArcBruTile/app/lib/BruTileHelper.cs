@@ -16,6 +16,7 @@ using ESRI.ArcGIS.DataSourcesRaster;
 using ESRI.ArcGIS.Display;
 using BrutileArcGIS;
 using log4net;
+using ESRI.ArcGIS.ADF.COMSupport;
 
 namespace BruTileArcGIS
 {
@@ -56,16 +57,12 @@ namespace BruTileArcGIS
                          ESRI.ArcGIS.esriSystem.ITrackCancel trackCancel,
                          ESRI.ArcGIS.Geometry.ISpatialReference layerSpatialReference,
                          EnumBruTileLayer enumBruTileLayer,
-                         ref int currentLevel)
+                         ref int currentLevel, ITileSource tileSource)
         {
             this.application = application;
             this.activeView = activeView;
             this.config = config;
-            if (this.tileSource == null)
-            {
-                this.tileSource = config.CreateTileSource();
-            }
-
+            this.tileSource = tileSource;
             this.trackCancel = trackCancel;
             this.layerSpatialReference = layerSpatialReference;
             this.enumBruTileLayer = enumBruTileLayer;
@@ -99,6 +96,7 @@ namespace BruTileArcGIS
                         DrawRaster(name, envelope, trackCancel);
                     }
                 }
+
                 logger.Debug("End drawing tiles: " + tiles.Count.ToString());
 
             }

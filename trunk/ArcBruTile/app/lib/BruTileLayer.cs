@@ -10,6 +10,8 @@ using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geometry;
 using Microsoft.SqlServer.MessageBox;
 using ESRI.ArcGIS.Geodatabase;
+using System.Drawing;
+using ESRI.ArcGIS.ADF.COMSupport;
 
 namespace BruTileArcGIS
 {
@@ -44,6 +46,8 @@ namespace BruTileArcGIS
         private IConfig config;
         public const string GUID = "1EF3586D-8B42-4921-9958-A73F4833A6FA";
         private int currentLevel;
+        private ITileSchema schema;
+        private ITileSource tileSource;
 
         #endregion
 
@@ -64,9 +68,9 @@ namespace BruTileArcGIS
         }
 
 
-        public BruTileLayer(IApplication app, EnumBruTileLayer EnumBruTileLayer, string TmsUrl)
+        public BruTileLayer(IApplication app, EnumBruTileLayer EnumBruTileLayer, string TmsUrl, bool overwriteUrls)
         {
-            config = ConfigHelper.GetConfig(EnumBruTileLayer, TmsUrl);
+            config = ConfigHelper.GetConfig(EnumBruTileLayer, TmsUrl, overwriteUrls);
 
             this.application = app;
             this.enumBruTileLayer = EnumBruTileLayer;
@@ -106,10 +110,10 @@ namespace BruTileArcGIS
 
             SpatialReferences spatialReferences = new SpatialReferences();
 
-            ITileSource tileSource=config.CreateTileSource();
-            ITileSchema schema = tileSource.Schema;
+            tileSource=config.CreateTileSource();
+            schema = tileSource.Schema;
             this.dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
-            this.envelope = GetDefaultEnvelope(config);
+            this.envelope = GetDefaultEnvelope();
 
             if (map.SpatialReference == null)
             {
@@ -163,7 +167,10 @@ namespace BruTileArcGIS
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 
                             bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel);                                  
+                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel, tileSource);
+
+                            //DrawAttribute();
+
                         }
                         catch (Exception ex)
                         {
@@ -173,6 +180,28 @@ namespace BruTileArcGIS
                     } // isVisible
                 }  // isValid
             }  //drawphase
+            else if (drawPhase == esriDrawPhase.esriDPAnnotation)
+            {
+                //DrawAttribute();
+            }
+        }
+
+        private void DrawAttribute()
+        {
+            IActiveView activeView = map as IActiveView;
+            // Now draw attribution...
+            IPoint copyrightPoint = new PointClass();
+            
+            copyrightPoint.SpatialReference = this.layerSpatialReference;
+            copyrightPoint = activeView.Extent.LowerLeft;
+            copyrightPoint.X = copyrightPoint.X + (activeView.Extent.LowerRight.X - activeView.Extent.LowerLeft.X) / 15;
+            copyrightPoint.Y = copyrightPoint.Y + (activeView.Extent.UpperLeft.Y - activeView.Extent.LowerLeft.Y) / 30;
+            ITextSymbol textSymbol = new TextSymbolClass();
+            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 12, FontStyle.Bold);
+            textSymbol.Font = (stdole.IFontDisp)OLE.GetIFontDispFromFont(drawFont);
+            activeView.ScreenDisplay.SetSymbol((ISymbol)textSymbol);
+            activeView.ScreenDisplay.DrawText(copyrightPoint, "ArcBruTile");
+            activeView.PartialRefresh(esriViewDrawPhase.esriViewGraphics, null, activeView.Extent);
         }
 
         /// <summary>
@@ -337,7 +366,7 @@ namespace BruTileArcGIS
         /// <value>The extent.</value>
         private IEnvelope GetDefaultEnvelope()
         {
-            BruTile.Extent ext = config.CreateTileSource().Schema.Extent;
+            BruTile.Extent ext = schema.Extent;
             IEnvelope envelope = new EnvelopeClass();
             envelope.XMin = ext.MinX;
             envelope.XMax = ext.MaxX;
@@ -348,17 +377,6 @@ namespace BruTileArcGIS
         }
 
 
-        private IEnvelope GetDefaultEnvelope(IConfig config)
-        {
-            BruTile.Extent ext = config.CreateTileSource().Schema.Extent;
-            IEnvelope envelope = new EnvelopeClass();
-            envelope.XMin = ext.MinX;
-            envelope.XMax = ext.MaxX;
-            envelope.YMin = ext.MinY;
-            envelope.YMax = ext.MaxY;
-            envelope.SpatialReference = dataSpatialReference;
-            return envelope;
-        }
         #region IGeoDataset Members
         /// <summary>
         /// Gets the extent.
@@ -411,7 +429,8 @@ namespace BruTileArcGIS
             {
                 case EnumBruTileLayer.TMS:
                     string url = (string)Stream.Read();
-                    config = ConfigHelper.GetTmsConfig(url);
+                    // Todo: fix this hardcoded value...
+                    config = ConfigHelper.GetTmsConfig(url, true);
                     break;
                 default:
                     config = ConfigHelper.GetConfig(enumBruTileLayer);

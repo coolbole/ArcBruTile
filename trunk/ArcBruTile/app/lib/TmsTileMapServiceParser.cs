@@ -40,6 +40,11 @@ namespace BruTileArcGIS
                 {
                     tileMap.Type = node.Attributes["type"].Value;
                 }
+                if (node.Attributes["overwriteurls"] != null)
+                {
+                    tileMap.OverwriteUrls = bool.Parse(node.Attributes["overwriteurls"].Value);
+                }
+
 
                 tilemaps.Add(tileMap);
             }

@@ -143,7 +143,7 @@ namespace BruTileArcGIS
                         }
                     }
 
-                    BruTileLayer brutileLayer = new BruTileLayer(application, layerType, selectedService.Href);
+                    BruTileLayer brutileLayer = new BruTileLayer(application, layerType, selectedService.Href, selectedService.OverwriteUrls);
                     brutileLayer.Name = selectedService.Title;
                     brutileLayer.Visible = true;
                     map.AddLayer((ILayer)brutileLayer);

@@ -81,6 +81,7 @@ namespace BruTileArcGIS
             dgvServices.Columns.Remove("Profile");
             dgvServices.Columns.Remove("Srs");
             dgvServices.Columns.Remove("Type");
+            dgvServices.Columns.Remove("OverwriteUrls");
 
             //resize columns
             dgvServices.Columns[0].Width=120;

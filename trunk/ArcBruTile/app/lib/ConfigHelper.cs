@@ -8,18 +8,18 @@ namespace BruTileArcGIS
 {
     public class ConfigHelper
     {
-        public static IConfig GetTmsConfig(string url)
+        public static IConfig GetTmsConfig(string url, bool overwriteUrls)
         {
-            return new ConfigTms(url);
+            return new ConfigTms(url, overwriteUrls);
         }
 
-        public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer, string Url)
+        public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer, string Url, bool overwriteUrls)
         {
             IConfig result=null;
 
             if (enumBruTileLayer == EnumBruTileLayer.TMS)
             {
-                result = new ConfigTms(Url);
+                result = new ConfigTms(Url, overwriteUrls);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
             {
