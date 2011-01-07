@@ -74,28 +74,36 @@ namespace BruTileArcGIS
                 tiles = this.GetTiles(activeView, config);
                 logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
 
-                Thread t = new Thread(new ThreadStart(DownloadTiles));
-                t.Start();
-
-                downloadFinished.WaitOne();
-
-                // 3. Now draw all tiles...
-
-                if (layerSpatialReference != null)
+                if (tiles.Count > 0)
                 {
-                    needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
-                    logger.Debug("Need reproject tile: " + needReproject.ToString());
-                }
+                    Thread t = new Thread(new ThreadStart(DownloadTiles));
+                    t.Start();
 
-                foreach (TileInfo tile in tiles)
-                {
-                    if (tile != null)
+                    downloadFinished.WaitOne();
+
+                    // 3. Now draw all tiles...
+
+                    if (layerSpatialReference != null)
                     {
-                        IEnvelope envelope = this.GetEnv(tile.Extent);
-                        String name = fileCache.GetFileName(tile.Index);
-                        DrawRaster(name, envelope, trackCancel);
+                        needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
+                        logger.Debug("Need reproject tile: " + needReproject.ToString());
+                    }
+
+                    foreach (TileInfo tile in tiles)
+                    {
+                        if (tile != null)
+                        {
+                            IEnvelope envelope = this.GetEnv(tile.Extent);
+                            String name = fileCache.GetFileName(tile.Index);
+                            DrawRaster(name, envelope, trackCancel);
+                        }
                     }
                 }
+                else
+                {
+                    logger.Debug("No tiles to retrieve or draw");
+                }
+            
 
                 logger.Debug("End drawing tiles: " + tiles.Count.ToString());
 
