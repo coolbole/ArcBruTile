@@ -12,6 +12,7 @@ using Microsoft.SqlServer.MessageBox;
 using ESRI.ArcGIS.Geodatabase;
 using System.Drawing;
 using ESRI.ArcGIS.ADF.COMSupport;
+using log4net;
 
 namespace BruTileArcGIS
 {
@@ -24,6 +25,7 @@ namespace BruTileArcGIS
     [ProgId("BruTileArcGIS.BruTileLayer")]
     public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant
     {
+        private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         #region private members
         private IApplication application;
         private IEnvelope envelope;
@@ -161,8 +163,16 @@ namespace BruTileArcGIS
 
                             Debug.WriteLine("Draw event");
                             IActiveView activeView = map as IActiveView;
+                            logger.Debug("Layer name: " + this.Name);
 
                             envelope = activeView.Extent;
+                            logger.Debug("Draw extent: xmin:" + envelope.XMin.ToString() + 
+                                ", ymin:" + envelope.YMin.ToString() +
+                                ", xmax:" + envelope.YMin.ToString() +
+                                ", ymax:" + envelope.YMin.ToString()
+                                );
+                            logger.Debug("Layer spatial reference: " + layerSpatialReference.FactoryCode.ToString());
+                            logger.Debug("Map spatial reference: " + map.SpatialReference.FactoryCode.ToString());
 
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 

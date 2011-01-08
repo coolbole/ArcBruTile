@@ -367,13 +367,23 @@ namespace BruTileArcGIS
         {
             ITileSchema schema = tileSource.Schema;
             IEnvelope env = Projector.ProjectEnvelope(activeView.Extent, schema.Srs);
+            logger.Debug("Tilesource schema srs: " + schema.Srs);
+            logger.Debug("Projected envelope: xmin:" + env.XMin.ToString() +
+                        ", ymin:" + env.YMin.ToString() +
+                        ", xmax:" + env.YMin.ToString() +
+                        ", ymax:" + env.YMin.ToString()
+                        );
+
             int mapWidth = activeView.ExportFrame.right;
             int mapHeight = activeView.ExportFrame.bottom;
             float resolution = GetMapResolution(env, mapWidth);
+            logger.Debug("Map resolution: " + resolution.ToString());
+
             PointF centerPoint = GetCenterPoint(env);
 
             Transform transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
             int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
+            logger.Debug("Current level: " + level.ToString());
 
             currentLevel = level;
 
