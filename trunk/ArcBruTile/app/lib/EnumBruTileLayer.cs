@@ -6,7 +6,9 @@
     public enum EnumBruTileLayer
     {
         //Europa,
-        OSM, 
+        OSM,
+        OSMMapnik,
+        OSMCycle,
         ESRI, 
         BingRoad, BingAerial, BingHybrid, 
         TMS, 

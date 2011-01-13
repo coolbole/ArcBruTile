@@ -38,6 +38,8 @@ namespace BruTileArcGIS
         private ITileSource tileSource;
         bool needReproject = false;
         IList<TileInfo> tiles;
+        //IList<TileInfo> downloadTiles;
+
 
 
         /// <summary>
@@ -76,9 +78,13 @@ namespace BruTileArcGIS
 
                 if (tiles.Count > 0)
                 {
+                    // this is a hack, otherwise we get error message...
+                    // "WaitAll for multiple handles on a STA thread is not supported. (mscorlib)"
+                    // so lets start a thread first...
                     Thread t = new Thread(new ThreadStart(DownloadTiles));
                     t.Start();
 
+                    // wait till finished
                     downloadFinished.WaitOne();
 
                     // 3. Now draw all tiles...
@@ -86,8 +92,8 @@ namespace BruTileArcGIS
                     if (layerSpatialReference != null)
                     {
                         needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
-                        logger.Debug("Need reproject tile: " + needReproject.ToString());
                     }
+                    logger.Debug("Need reproject tile: " + needReproject.ToString());
 
                     foreach (TileInfo tile in tiles)
                     {
@@ -112,6 +118,8 @@ namespace BruTileArcGIS
 
         private void DownloadTiles()
         {
+            //downloadTiles = new List<TileInfo>();
+
 
             // 1. First get a list of tiles to retrieve for current extent
             WebTileProvider tileProvider = (WebTileProvider)tileSource.Provider;

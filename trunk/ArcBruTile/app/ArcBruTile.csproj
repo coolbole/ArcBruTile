@@ -58,57 +58,42 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\BruTile\BruTile.dll</HintPath>
     </Reference>
-    <Reference Include="ESRI.ArcGIS.ADF, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.ADF.dll</HintPath>
-    </Reference>
+    <Reference Include="ESRI.ArcGIS.ADF, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86" />
     <Reference Include="ESRI.ArcGIS.ArcMapUI, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.ArcMapUI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Carto, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.Carto.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.CartoUI, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.CartoUI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.DataSourcesGDB, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.DataSourcesGDB.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.DataSourcesRaster, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.DataSourcesRaster.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Display, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.Display.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Framework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.Framework.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Geodatabase, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.Geodatabase.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Geometry, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.Geometry.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.Output, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.Output.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.System, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.System.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ESRI.ArcGIS.SystemUI, Version=10.0.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\ArcGIS\10\ESRI.ArcGIS.SystemUI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net">
       <HintPath>lib\log4net\log4net.dll</HintPath>
@@ -118,6 +103,7 @@
       <HintPath>lib\SqlServer\Microsoft.ExceptionMessageBox.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
+    <Reference Include="Microsoft.VisualC.STLCLR" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -154,6 +140,7 @@
     <Compile Include="commands\AddBingAerialLayerCommand.cs" />
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingRoadLayerCommand.cs" />
+    <Compile Include="commands\AddOsmCycleLayerCommand.cs" />
     <Compile Include="commands\AddServicesCommand.cs" />
     <Compile Include="commands\AddFusionLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
@@ -165,6 +152,7 @@
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
     <Compile Include="commands\BingMenuDef.cs" />
     <Compile Include="commands\GoogleMenuDef.cs" />
+    <Compile Include="commands\OsmMenuDef.cs" />
     <Compile Include="commands\PreCacheBruTileCommand.cs" />
     <Compile Include="forms\AddServicesForm.cs">
       <SubType>Form</SubType>
@@ -196,6 +184,7 @@
     <Compile Include="forms\FormPreCacheStatus.designer.cs">
       <DependentUpon>FormPreCacheStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="commands\AddOsmTilesAtHomeLayerCommand.cs" />
     <Compile Include="lib\ArcMapWindow.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
@@ -222,6 +211,9 @@
     <Compile Include="lib\KMLIdentifyObject.cs" />
     <Compile Include="lib\KMLReader.cs" />
     <Compile Include="lib\KMLWebRequestStateObject.cs" />
+    <Compile Include="lib\OsmCycleTileSource.cs" />
+    <Compile Include="lib\OsmMapnikTileSource.cs" />
+    <Compile Include="lib\OsmMapType.cs" />
     <Compile Include="lib\Precache.cs" />
     <Compile Include="lib\ProjectInfo.cs" />
     <Compile Include="lib\Projector.cs" />

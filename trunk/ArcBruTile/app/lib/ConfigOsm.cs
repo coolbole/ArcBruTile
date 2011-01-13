@@ -25,9 +25,31 @@ namespace BruTileArcGIS
 {
     public class ConfigOsm : IConfig
     {
+        private OsmMapType osmMapType;
+
+        public ConfigOsm(OsmMapType maptype)
+        {
+            osmMapType = maptype;
+        }
+
         public ITileSource CreateTileSource()
         {
-            return new OsmTileSource();
+            ITileSource result = null;
+
+            if (osmMapType == OsmMapType.Default)
+            {
+                result= new OsmTileSource();
+            }
+            else if (osmMapType == OsmMapType.Mapnik)
+            {
+                result=new OsmMapnikTileSource();
+            }
+            else if (osmMapType == OsmMapType.Cycle)
+            {
+                result = new OsmCycleTileSource();
+            }
+
+            return result;
         }
     }
 }

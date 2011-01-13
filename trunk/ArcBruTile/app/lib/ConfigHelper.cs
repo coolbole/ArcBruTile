@@ -27,7 +27,7 @@ namespace BruTileArcGIS
             }
             else
             {
-                result = new ConfigOsm();
+                result = new ConfigOsm(OsmMapType.Default);
             }
 
             return result;
@@ -41,12 +41,19 @@ namespace BruTileArcGIS
         /// <returns></returns>
         public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer)
         {
-            IConfig result = new ConfigOsm();
+            IConfig result = new ConfigOsm(OsmMapType.Default);
 
             if (enumBruTileLayer == EnumBruTileLayer.OSM)
             {
-                result = new ConfigOsm();
-                //result.
+                result = new ConfigOsm(OsmMapType.Default);
+            }
+            else if (enumBruTileLayer == EnumBruTileLayer.OSMMapnik)
+            {
+                result = new ConfigOsm(OsmMapType.Mapnik);
+            }
+            else if (enumBruTileLayer == EnumBruTileLayer.OSMCycle)
+            {
+                result = new ConfigOsm(OsmMapType.Cycle);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.BingRoad)
             {

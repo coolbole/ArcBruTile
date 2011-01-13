@@ -19,6 +19,12 @@ namespace BruTileArcGIS
     /// <summary>
     /// Represents a custom BruTile Layer
     /// todo: implement IPersistStream?
+    /// 
+    /// Todo: Implement the following interfaces?
+    /// ICompositeLayer, IConnectionPointContainer, IDisplayAdmin, IDisplayAdmin2, IGeoDataset, ILayer2, 
+    /// ILayerDrawingProperties, ILayerExtensions, ILayerGeneralProperties, ILayerInfo, ILayerPosition, 
+    /// ILayerSymbologyExtents, IMapLevel, IPublishLayer, ISymbolLevels, IPersistStream, IPersist, 
+    /// IDllThreadManager, IGroupLayer, ILayer, IIdentify, ILayerEvents
     /// </summary>
     [Guid("1EF3586D-8B42-4921-9958-A73F4833A6FA")]
     [ClassInterface(ClassInterfaceType.None)]
@@ -172,7 +178,10 @@ namespace BruTileArcGIS
                                 ", ymax:" + envelope.YMin.ToString()
                                 );
                             logger.Debug("Layer spatial reference: " + layerSpatialReference.FactoryCode.ToString());
-                            logger.Debug("Map spatial reference: " + map.SpatialReference.FactoryCode.ToString());
+                            if (map.SpatialReference != null)
+                            {
+                                logger.Debug("Map spatial reference: " + map.SpatialReference.FactoryCode.ToString());
+                            }
 
                             IScreenDisplay screenDisplay = activeView.ScreenDisplay;
 

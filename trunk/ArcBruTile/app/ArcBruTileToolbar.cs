@@ -88,7 +88,11 @@ namespace BruTileArcGIS
                 BeginGroup();
 
                 BeginGroup();
-                if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value)) AddItem("AddOsmLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value))
+                {
+
+                    AddItem("BruTileArcGIS.OsmMenuDef");
+                }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
                 {
                     AddItem("BruTileArcGIS.BingMenuDef");

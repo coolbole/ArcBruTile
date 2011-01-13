@@ -14,10 +14,10 @@ namespace BruTileArcGIS
     /// <summary>
     /// ArcGIS Command to show a BruTile.
     /// </summary>
-    [Guid("16FAE639-CA76-4D5D-AB36-FE997B2101C4")]
+    [Guid("FDC97E00-6DFD-43AC-A6FC-C1DDE2001962")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("AddOsmLayerCommand")]
-    public sealed class AddOsmLayerCommand : BaseCommand
+    [ProgId("AddOsmTilesAtHomeLayerCommand")]
+    public sealed class AddOsmTilesAtHomeLayerCommand : BaseCommand
     {
         #region private members
         private IMap map;
@@ -28,13 +28,13 @@ namespace BruTileArcGIS
         /// <summary>
         /// Initialises a new BruTileCommand.
         /// </summary>
-        public AddOsmLayerCommand()
+        public AddOsmTilesAtHomeLayerCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Mapnik";
-            base.m_message = "Add OpenStreetMap Layer";
+            base.m_caption = "&Tiles@Home";
+            base.m_message = "Add OpenStreetMap Tiles@Home Layer";
             base.m_toolTip = base.m_message;
-            base.m_name = "AddOsmLayer";
+            base.m_name = "AddOsmTilesAtHomeLayer";
             base.m_bitmap = Resources.osm_logo;
         }
         #endregion
@@ -84,8 +84,8 @@ namespace BruTileArcGIS
                 Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
-                BruTileLayer brutileLayer = new BruTileLayer(application,EnumBruTileLayer.OSM);
-                brutileLayer.Name = "OpenStreetMap Mapnik";
+                BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.OSMMapnik);
+                brutileLayer.Name = "OpenStreetMap Tiles@Home";
 
                 brutileLayer.Visible = true;
                 map.AddLayer((ILayer)brutileLayer);
@@ -94,7 +94,7 @@ namespace BruTileArcGIS
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString()+", "+ex.StackTrace);
+                MessageBox.Show(ex.ToString() + ", " + ex.StackTrace);
             }
         }
 
