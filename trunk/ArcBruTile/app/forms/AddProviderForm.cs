@@ -41,7 +41,7 @@ namespace BruTileArcGIS
 
         private void InitForm()
         {
-            string sampleProviders = "http://www.google.com/fusiontables/api/query?sql=SELECT Title,Url, Version from 368892";
+            string sampleProviders = "http://www.google.com/fusiontables/api/query?sql=SELECT Title,Url, Version from 368892 order by Title";
             List<TileMapService> providers = this.GetList(sampleProviders);
             lbProviders.DataSource = providers;
             lbProviders.DisplayMember = "Title";

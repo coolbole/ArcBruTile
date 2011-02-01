@@ -29,7 +29,8 @@ namespace BruTileArcGIS
     [Guid("1EF3586D-8B42-4921-9958-A73F4833A6FA")]
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
-    public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant
+    public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant, ILayer2, IMapLevel,
+        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         #region private members
@@ -483,6 +484,114 @@ namespace BruTileArcGIS
 
 
         #endregion
+
+
+        #region IMapLevel Members
+        private int mapLevel;
+
+        public int MapLevel
+        {
+            get
+            {
+                return this.mapLevel;
+            }
+            set
+            {
+                this.mapLevel = value;
+            }
+        }
+
+        #endregion
+
+        #region ILayerDrawingProperties Members
+
+        private bool drawingPropsDirty;
+
+        public bool DrawingPropsDirty
+        {
+            get
+            {
+                return drawingPropsDirty;
+            }
+            set
+            {
+                drawingPropsDirty = value;
+            }
+        }
+
+        #endregion
+
+        #region ILayerGeneralProperties Members
+        private double lastMaximumScale;
+        private double lastMinimumSchale;
+        private string layerDescription;
+
+
+        public double LastMaximumScale
+        {
+            get { return lastMaximumScale; }
+        }
+
+        public double LastMinimumScale
+        {
+            get { return LastMaximumScale; }
+        }
+
+        public string LayerDescription
+        {
+            get
+            {
+                return layerDescription;
+                throw new NotImplementedException();
+            }
+            set
+            {
+                layerDescription = value;
+            }
+        }
+
+        #endregion
+
+
+
+
+        #region IDisplayAdmin2 Members
+
+        public bool DoesBlending
+        {
+            get { return true; }
+        }
+
+        public bool RequiresBanding
+        {
+            get { return true; }
+        }
+
+        public bool UsesFilter
+        {
+            get { return true; }
+        }
+
+        #endregion
+
+        #region ISymbolLevels Members
+        private bool useSymbolLevels;
+
+        public bool UseSymbolLevels
+        {
+            get
+            {
+                return useSymbolLevels;
+            }
+            set
+            {
+                useSymbolLevels = value;
+            }
+        }
+
+        #endregion
+
+
 
     }
 }
