@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcBruTile", "app\ArcBruTile.csproj", "{501036A0-A949-4E35-A8BF-B375CD6D20C3}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ArcBruTileSetup", "ArcBruTileSetup\ArcBruTileSetup.vdproj", "{CC9AF60F-97C4-4775-9054-76977F72EB64}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ArcBruTileSetup", "ArcBruTileSetup\ArcBruTileSetup.vdproj", "{CC241B56-D9B7-4023-940F-FC52B50B8B65}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -19,8 +19,10 @@ Global
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC9AF60F-97C4-4775-9054-76977F72EB64}.Debug|Any CPU.ActiveCfg = Debug
-		{CC9AF60F-97C4-4775-9054-76977F72EB64}.Release|Any CPU.ActiveCfg = Release
+		{CC241B56-D9B7-4023-940F-FC52B50B8B65}.Debug|Any CPU.ActiveCfg = Debug
+		{CC241B56-D9B7-4023-940F-FC52B50B8B65}.Debug|Any CPU.Build.0 = Debug
+		{CC241B56-D9B7-4023-940F-FC52B50B8B65}.Release|Any CPU.ActiveCfg = Release
+		{CC241B56-D9B7-4023-940F-FC52B50B8B65}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
