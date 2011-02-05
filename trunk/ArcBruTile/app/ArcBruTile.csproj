@@ -173,14 +173,10 @@
     <Compile Include="commands\AddServicesCommand.cs" />
     <Compile Include="commands\AddFusionLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
-    <Compile Include="commands\AddGoogleHybridLayerCommand.cs" />
-    <Compile Include="commands\AddGoogleMapsCommand.cs" />
-    <Compile Include="commands\AddGoogleSatelliteCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="commands\AddSpatialCloudLayerCommand.cs" />
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
     <Compile Include="commands\BingMenuDef.cs" />
-    <Compile Include="commands\GoogleMenuDef.cs" />
     <Compile Include="commands\OsmMenuDef.cs" />
     <Compile Include="commands\PreCacheBruTileCommand.cs" />
     <Compile Include="forms\AddServicesForm.cs">
@@ -226,7 +222,6 @@
     <Compile Include="lib\CacheSettings.cs" />
     <Compile Include="lib\ConfigBingHybrid.cs" />
     <Compile Include="lib\ConfigInvertedTMS.cs" />
-    <Compile Include="lib\ConfigGoogle.cs" />
     <Compile Include="lib\ConfigSpatialCloud.cs" />
     <Compile Include="lib\ConfigTms.cs" />
     <Compile Include="lib\ConfigWmsC.cs" />

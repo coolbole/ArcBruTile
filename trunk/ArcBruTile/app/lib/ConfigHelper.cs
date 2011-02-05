@@ -79,14 +79,6 @@ namespace BruTileArcGIS
             {
                 result = new ConfigGeodanGeoserver();
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.GoogleMaps)
-            {
-                result = new ConfigGoogle(BingMapType.Roads);
-            }
-            else if (enumBruTileLayer == EnumBruTileLayer.GoogleSatellite)
-            {
-                result = new ConfigGoogle(BingMapType.Aerial);
-            }
             else if (enumBruTileLayer == EnumBruTileLayer.SpatialCloud)
             {
                 result = new ConfigSpatialCloud();
