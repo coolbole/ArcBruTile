@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Net;
+using System.Diagnostics;
 
 namespace BruTileArcGIS
 {
@@ -15,9 +17,6 @@ namespace BruTileArcGIS
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.labelProductName.Text = AssemblyProduct;
             this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelCopyright.Text = AssemblyCopyright;
-            this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = AssemblyDescription;
         }
 
         #region Assembly Attribute Accessors
@@ -99,5 +98,10 @@ namespace BruTileArcGIS
             }
         }
         #endregion
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=P4TKQNQKS4JKS");
+        }
     }
 }

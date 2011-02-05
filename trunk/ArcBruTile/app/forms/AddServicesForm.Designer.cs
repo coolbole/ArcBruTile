@@ -149,7 +149,7 @@
             this.MaximizeBox = false;
             this.Name = "AddServicesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add service";
+            this.Text = "Add TMS service";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.AddPredefinedServicesForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvServices)).EndInit();

@@ -57,7 +57,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 56);
+            this.label1.Location = new System.Drawing.Point(15, 48);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 2;
@@ -180,7 +180,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add Provider";
+            this.Text = "Add TMS Provider";
             this.Load += new System.EventHandler(this.AddProviderForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

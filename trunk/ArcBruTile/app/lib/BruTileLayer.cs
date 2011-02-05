@@ -441,26 +441,43 @@ namespace BruTileArcGIS
 
         public void Load(IVariantStream Stream)
         {
-            name = (string)Stream.Read();
-            visible = (bool)Stream.Read();
-            enumBruTileLayer = (EnumBruTileLayer)Stream.Read();
-
-            switch (enumBruTileLayer)
+            try
             {
-                case EnumBruTileLayer.TMS:
-                    string url = (string)Stream.Read();
-                    // Todo: fix this hardcoded value...
-                    config = ConfigHelper.GetTmsConfig(url, true);
-                    break;
-                default:
-                    config = ConfigHelper.GetConfig(enumBruTileLayer);
-                    break;
-            }
+                name = (string)Stream.Read();
+                visible = (bool)Stream.Read();
+                enumBruTileLayer = (EnumBruTileLayer)Stream.Read();
 
-            InitializeLayer();
-            // get the active map later when 
-            map = null;
-            Util.SetBruTilePropertyPage(application, this);
+                logger.Debug("Load layer " + name + ", type: " + enumBruTileLayer.ToString());
+
+                switch (enumBruTileLayer)
+                {
+                    case EnumBruTileLayer.TMS:
+                        string url = (string)Stream.Read();
+                        // Todo: fix this hardcoded value...
+                        config = ConfigHelper.GetTmsConfig(url, true);
+                        logger.Debug("Url: " + url);
+                        break;
+                    case EnumBruTileLayer.InvertedTMS:
+                        string urlInverted = (string)Stream.Read();
+                        // Todo: fix this hardcoded value...
+                        logger.Debug("Url: " + urlInverted);
+                        config = ConfigHelper.GetConfig(EnumBruTileLayer.InvertedTMS, urlInverted, true);
+                        break;
+
+                    default:
+                        config = ConfigHelper.GetConfig(enumBruTileLayer);
+                        break;
+                }
+
+                InitializeLayer();
+                // get the active map later when 
+                map = null;
+                Util.SetBruTilePropertyPage(application, this);
+            }
+            catch (Exception ex)
+            {
+                logger.Debug("Error loading custom layer: " + ex.Message);
+            }
         }
 
         public void Save(IVariantStream Stream)
@@ -475,6 +492,10 @@ namespace BruTileArcGIS
                 case EnumBruTileLayer.TMS:
                     ConfigTms tms = config as ConfigTms;
                     Stream.Write(tms.Url);
+                    break;
+                case EnumBruTileLayer.InvertedTMS:
+                    ConfigInvertedTMS invertedtms = config as ConfigInvertedTMS;
+                    Stream.Write(invertedtms.Url);
                     break;
                 default:
                     break;

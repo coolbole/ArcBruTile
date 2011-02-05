@@ -93,13 +93,17 @@ namespace BruTileArcGIS
 
                     AddItem("BruTileArcGIS.OsmMenuDef");
                 }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
+                if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
                 {
                     AddItem("BruTileArcGIS.BingMenuDef");
                 }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
+
+                if (config.AppSettings.Settings["useGoogle"] != null)
                 {
-                    AddItem("BruTileArcGIS.GoogleMenuDef");
+                    if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
+                    {
+                        AddItem("BruTileArcGIS.GoogleMenuDef");
+                    }
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
                 if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");

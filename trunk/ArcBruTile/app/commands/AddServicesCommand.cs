@@ -79,8 +79,8 @@ namespace BruTileArcGIS
         public AddServicesCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&Add service...";
-            base.m_message = "Add service...";
+            base.m_caption = "&Add TMS service...";
+            base.m_message = "Add TMS service...";
             base.m_toolTip = base.m_caption;
             base.m_name = "ServicesCommand";
         }
