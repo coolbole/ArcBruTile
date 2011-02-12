@@ -81,7 +81,6 @@ namespace BruTileArcGIS
         {
             try
             {
-                Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
                 BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.OSMCycle);
@@ -89,7 +88,6 @@ namespace BruTileArcGIS
 
                 brutileLayer.Visible = true;
                 map.AddLayer((ILayer)brutileLayer);
-                //map.MoveLayer((ILayer)brutileLayer, map.LayerCount);
                 Util.SetBruTilePropertyPage(application, brutileLayer);
             }
             catch (Exception ex)

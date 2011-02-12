@@ -10,6 +10,8 @@ using ESRI.ArcGIS.esriSystem;
 using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
+using log4net.Core;
+using log4net;
 
 namespace BruTileArcGIS
 {
@@ -21,6 +23,8 @@ namespace BruTileArcGIS
     [ProgId("AboutBruTileCommand")]
     public sealed class AboutBruTileCommand : BaseCommand
     {
+        private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
+
         #region COM Registration Function(s)
         [ComRegisterFunction()]
         [ComVisible(false)]
@@ -114,17 +118,6 @@ namespace BruTileArcGIS
         {
             BruTileAboutBox bruTileAboutBox = new BruTileAboutBox();
             bruTileAboutBox.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
-
-            /**MemberInfo obj = typeof(AddOsmLayerCommand);
-            object[] attr=obj.GetCustomAttributes(true);
-
-            ProgIdAttribute pia = new ProgIdAttribute("test");
-            attr.SetValue(attr[0], pia);
-            ProgIdAttribute progId=(ProgIdAttribute)attr[0];
-            progId.Value = "test";
-            //attr[0]
-            int i = 1;
-             */ 
         }
 
         #endregion

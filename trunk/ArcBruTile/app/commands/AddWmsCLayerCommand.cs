@@ -83,7 +83,6 @@ namespace BruTileArcGIS
         {
             try
             {
-                Configuration config = ConfigurationHelper.GetConfig();
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 map = mxdoc.FocusMap;
 

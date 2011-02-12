@@ -32,8 +32,8 @@
             this.labelProductName = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -110,6 +110,15 @@
             this.okButton.TabIndex = 24;
             this.okButton.Text = "&OK";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(140, 78);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(268, 26);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "If you want to support ArcBruTile development it will be greatly appreciated :-)";
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -120,15 +129,6 @@
             this.pictureBox1.TabIndex = 25;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(140, 78);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(268, 26);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "If you want to support ArcBruTile development it will be greatly appreciated :-)";
             // 
             // BruTileAboutBox
             // 

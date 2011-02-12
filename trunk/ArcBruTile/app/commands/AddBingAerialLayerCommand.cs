@@ -85,14 +85,12 @@ namespace BruTileArcGIS
                 IMxDocument mxdoc = (IMxDocument)application.Document;
                 IMap map = mxdoc.FocusMap;
 
-                Configuration config = ConfigurationHelper.GetConfig();
                 BruTileLayer brutileLayer = new BruTileLayer(application, EnumBruTileLayer.BingAerial);
 
                 brutileLayer.Name = "Bing Aerial";
                 brutileLayer.Visible = true;
 
                 map.AddLayer((ILayer)brutileLayer);
-                //map.MoveLayer((ILayer)brutileLayer, map.LayerCount);
 
                 Util.SetBruTilePropertyPage(application, brutileLayer);
             }
