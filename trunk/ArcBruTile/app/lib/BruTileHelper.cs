@@ -28,7 +28,7 @@ namespace BruTileArcGIS
         private IApplication application;
         private IActiveView activeView;
         private IConfig config;
-        private ITrackCancel trackCancel;
+        private static ITrackCancel trackCancel;
         private static ISpatialReference layerSpatialReference;
         private static ISpatialReference dataSpatialReference;
         private static EnumBruTileLayer enumBruTileLayer;
@@ -64,7 +64,7 @@ namespace BruTileArcGIS
             this.activeView = activeView;
             this.config = config;
             BruTileHelper.tileSource = tileSource;
-            this.trackCancel = trackCancel;
+            BruTileHelper.trackCancel = trackCancel;
             BruTileHelper.layerSpatialReference = layerSpatialReference;
             BruTileHelper.enumBruTileLayer = enumBruTileLayer;
             this.currentLevel = currentLevel;
@@ -286,6 +286,12 @@ namespace BruTileArcGIS
             TileInfo tileInfo = (TileInfo)parameters[0];
             int index = (int)parameters[1];
 
+            if (!trackCancel.Continue())
+            {
+                doneEvents[index].Set();
+                return;
+            }
+            
             Uri url = tileProvider.Request.GetUri(tileInfo);
             logger.Debug("Url: " + url.ToString());
             /**if (tileSource is SpatialCloudTileSource)
