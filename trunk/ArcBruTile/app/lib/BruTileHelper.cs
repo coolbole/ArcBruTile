@@ -39,6 +39,7 @@ namespace BruTileArcGIS
         bool needReproject = false;
         IList<TileInfo> tiles;
         static ManualResetEvent[] doneEvents;
+        static WebTileProvider tileProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BruTileHelper"/> class.
@@ -68,6 +69,7 @@ namespace BruTileArcGIS
             BruTileHelper.enumBruTileLayer = enumBruTileLayer;
             this.currentLevel = currentLevel;
             fileCache = GetFileCache(config);
+            tileProvider = (WebTileProvider)tileSource.Provider;
 
             if (!activeView.Extent.IsEmpty)
             {
@@ -117,8 +119,6 @@ namespace BruTileArcGIS
 
         private void DownloadTiles()
         {
-            // 1. First get a list of tiles to retrieve for current extent
-            WebTileProvider tileProvider = (WebTileProvider)tileSource.Provider;
 
             // Loop through the tiles, and filter tiles that are already on disk.
             IList<TileInfo> downloadTiles=new List<TileInfo>();
@@ -154,12 +154,11 @@ namespace BruTileArcGIS
                 {
                     doneEvents[i] = new ManualResetEvent(false);
 
-                    object o = new object[] { tileProvider.Request, downloadTiles[i], i};
+                    object o = new object[] { downloadTiles[i], i};
                     ThreadPool.SetMaxThreads(5, 5); 
                     ThreadPool.QueueUserWorkItem(new WaitCallback(downloadTile),o);
                 }
 
-                logger.Debug("Start waiting for remote tiles...");
                 WaitHandle.WaitAll(doneEvents);
                 logger.Debug("End waiting for remote tiles...");
             }
@@ -282,51 +281,36 @@ namespace BruTileArcGIS
 
         private static void downloadTile(object tile)
         {
-            int index=0;
-            Uri url=null;
-            try
+            object[] parameters = (object[])tile;
+            if (parameters.Length != 2) throw new ArgumentException("Two parameters expected");
+            TileInfo tileInfo = (TileInfo)parameters[0];
+            int index = (int)parameters[1];
+
+            Uri url = tileProvider.Request.GetUri(tileInfo);
+            logger.Debug("Url: " + url.ToString());
+            /**if (tileSource is SpatialCloudTileSource)
             {
-                logger.Debug("method download tiles");
-                object[] parameters = (object[])tile;
-                if (parameters.Length != 3) throw new ArgumentException("Two parameters expected");
-                IRequest requestBuilder = (IRequest)parameters[0];
-                TileInfo tileInfo = (TileInfo)parameters[1];
-                index = (int)parameters[2];
+                string hash = SpatialCloudAuthSign.GetMD5Hash(
+                    tileInfo.Index.Level.ToString(),
+                    tileInfo.Index.Col.ToString(),
+                    tileInfo.Index.Row.ToString(),
+                    "jpg",
+                    ((SpatialCloudTileSource)tileSource).LoginId,
+                    ((SpatialCloudTileSource)tileSource).Password);
 
-                url = requestBuilder.GetUri(tileInfo);
-                logger.Debug("Tile to retrieve: " + url.AbsoluteUri);
+                url = new Uri(url.AbsoluteUri + "&authSign=" + hash);
+            }*/
 
-                /**if (tileSource is SpatialCloudTileSource)
-                {
-                    string hash = SpatialCloudAuthSign.GetMD5Hash(
-                        tileInfo.Index.Level.ToString(),
-                        tileInfo.Index.Col.ToString(),
-                        tileInfo.Index.Row.ToString(),
-                        "jpg",
-                        ((SpatialCloudTileSource)tileSource).LoginId,
-                        ((SpatialCloudTileSource)tileSource).Password);
+            byte[] bytes = GetBitmap(url);
 
-                    url = new Uri(url.AbsoluteUri + "&authSign=" + hash);
-                }*/
-
-                byte[] bytes = GetBitmap(url);
-
-                if (bytes != null)
-                {
-                    string name = fileCache.GetFileName(tileInfo.Index);
-                    fileCache.Add(tileInfo.Index, bytes);
-                    CreateRaster(tileInfo, bytes, name);
-                    logger.Debug("Tile retrieved: " + url.AbsoluteUri);
-                }
-            }
-            catch (Exception ex)
+            if (bytes != null)
             {
-                logger.Debug("Error on download tile " + url.AbsoluteUri + ". Error: " + ex.ToString());
+                string name = fileCache.GetFileName(tileInfo.Index);
+                fileCache.Add(tileInfo.Index, bytes);
+                CreateRaster(tileInfo, bytes, name);
+                logger.Debug("Tile retrieved: " + url.AbsoluteUri);
             }
-            finally 
-            {
-                doneEvents[index].Set();
-            }
+            doneEvents[index].Set();
         }
 
 
