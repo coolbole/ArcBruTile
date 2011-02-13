@@ -37,6 +37,9 @@ Reason: The SpatialCloud service uses redirection to retrieve an image
             set { _tileSchema = value; }
 
 
+6] Added timeout to RequestHelper.Fetchimage
+webRequest.Timeout = 5000;
+
 NB: I didn't use the Silverlight version of BruTile, because of errors with System.dll. Maybe this
 is because the ArcBruTile extension or ArcMap already uses 
 

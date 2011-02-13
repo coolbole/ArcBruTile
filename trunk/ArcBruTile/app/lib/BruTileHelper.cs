@@ -101,7 +101,10 @@ namespace BruTileArcGIS
                         {
                             IEnvelope envelope = this.GetEnv(tile.Extent);
                             String name = fileCache.GetFileName(tile.Index);
-                            DrawRaster(name, envelope, trackCancel);
+                            if (File.Exists(name))
+                            {
+                                DrawRaster(name, envelope, trackCancel);
+                            }
                         }
                     }
                 }
@@ -124,16 +127,15 @@ namespace BruTileArcGIS
             // 1. First get a list of tiles to retrieve for current extent
             WebTileProvider tileProvider = (WebTileProvider)tileSource.Provider;
 
-            // 2. Download tiles...
-            Thread[] threadTask = new Thread[tiles.Count];
-            ManualResetEvent[] doneEvents = new ManualResetEvent[tiles.Count];
-
+            // Loop through the tiles, and filter tiles that are already on disk.
+            IList<TileInfo> downloadTiles=new List<TileInfo>();
             for (int i = 0; i < tiles.Count; i++)
             {
-                bool needsLoad = false;
-                doneEvents[i] = new ManualResetEvent(false);
-
-                if (fileCache.Exists(tiles[i].Index))
+                if (!fileCache.Exists(tiles[i].Index))
+                {
+                    downloadTiles.Add(tiles[i]);
+                }
+                else
                 {
                     // Read tiles from disk
                     string name = fileCache.GetFileName(tiles[i].Index);
@@ -143,36 +145,38 @@ namespace BruTileArcGIS
                     if ((DateTime.Now - fi.LastWriteTime).Days > tileTimeOut)
                     {
                         File.Delete(name);
-                        needsLoad = true;
-                    }
-                    else
-                    {
-                        logger.Debug("Read tile from local cache: " + name);
-
-                        needsLoad = false;
-                        doneEvents[i].Set();
+                        downloadTiles.Add(tiles[i]);
                     }
                 }
-                else
-                {
-                    needsLoad = true;
-                }
+            }
 
-                if (needsLoad)
+            logger.Debug("Number of download tiles:" + downloadTiles.Count.ToString());
+
+            if (downloadTiles.Count > 0)
+            {
+                // 2. Download tiles...
+                Thread[] threadTask = new Thread[downloadTiles.Count];
+                ManualResetEvent[] doneEvents = new ManualResetEvent[downloadTiles.Count];
+
+                for (int i = 0; i < downloadTiles.Count; i++)
                 {
-                    object o = new object[] { tileProvider.Request, tiles[i], doneEvents[i] };
+                    doneEvents[i] = new ManualResetEvent(false);
+
+                    object o = new object[] { tileProvider.Request, downloadTiles[i], doneEvents[i] };
 
                     threadTask[i] = new Thread(new ParameterizedThreadStart(downloadTile));
                     threadTask[i].SetApartmentState(ApartmentState.STA);
                     threadTask[i].Name = "Tile_" + i.ToString();
+                    //threadTask[i].Ti
                     threadTask[i].Start((object)o);
+
                 }
+
+                logger.Debug("Start waiting for remote tiles...");
+                WaitHandle.WaitAll(doneEvents);
+                logger.Debug("End waiting for remote tiles...");
+
             }
-
-            logger.Debug("Start waiting for remote tiles...");
-            WaitHandle.WaitAll(doneEvents);
-            logger.Debug("End waiting for remote tiles...");
-
             downloadFinished.Set();
 
         }
@@ -316,17 +320,16 @@ namespace BruTileArcGIS
                 url = new Uri(url.AbsoluteUri + "&authSign=" + hash);
             }
 
-
             byte[] bytes = this.GetBitmap(url);
 
             if (bytes != null)
             {
                 string name = fileCache.GetFileName(tileInfo.Index);
                 fileCache.Add(tileInfo.Index, bytes);
-                bool result = CreateRaster(tileInfo, bytes, name);
+                CreateRaster(tileInfo, bytes, name);
+                logger.Debug("Tile retrieved: " + url.AbsoluteUri);
             }
             doneEvent.Set();
-            logger.Debug("Tile retrieved: " + url.AbsoluteUri);
         }
 
 
@@ -352,11 +355,9 @@ namespace BruTileArcGIS
         public byte[] GetBitmap(Uri uri)
         {
             byte[] bytes = null;
-            // arcmap is acting like a genuine browser
             string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
-            string referer = "http://maps.google.com/maps";
+            string referer = String.Empty;// "http://maps.google.com/maps";
 
-            //byte[] bytes = ImageRequest.GetImageFromServer(uri,userAgent,referer,false);
             try
             {
                 bytes = RequestHelper.FetchImage(uri, userAgent, referer, false);

@@ -99,6 +99,7 @@ namespace BruTileArcGIS
             {
                 btnOk.Enabled = true;
                 SelectedService = (TileMap)dgvServices.CurrentRow.DataBoundItem;
+                //SelectedService.
             }
         }
 
