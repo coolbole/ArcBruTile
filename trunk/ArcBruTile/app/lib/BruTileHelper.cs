@@ -37,7 +37,9 @@ namespace BruTileArcGIS
         ManualResetEvent downloadFinished = new ManualResetEvent(false);
         private static ITileSource tileSource;
         bool needReproject = false;
-        IList<TileInfo> tiles;
+        IList<TileInfo> tiles=null;
+        IList<TileInfo> oldDrawnTiles = null;
+
         static ManualResetEvent[] doneEvents;
         static WebTileProvider tileProvider;
 
@@ -73,11 +75,18 @@ namespace BruTileArcGIS
 
             if (!activeView.Extent.IsEmpty)
             {
+                // Make backup of old drawn tiles
+                oldDrawnTiles = tiles;
+
                 tiles = this.GetTiles(activeView, config);
                 logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
 
                 if (tiles.Count > 0)
                 {
+                    application.StatusBar.ProgressBar.MinRange = 0;
+                    application.StatusBar.ProgressBar.MaxRange = tiles.Count;
+                    application.StatusBar.ProgressBar.Show();
+
                     // this is a hack, otherwise we get error message...
                     // "WaitAll for multiple handles on a STA thread is not supported. (mscorlib)"
                     // so lets start a thread first...
@@ -89,7 +98,7 @@ namespace BruTileArcGIS
 
                     // 3. Now draw all tiles...
 
-                    if (layerSpatialReference != null)
+                    if (layerSpatialReference != null && dataSpatialReference!=null)
                     {
                         needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
                     }
@@ -97,16 +106,36 @@ namespace BruTileArcGIS
 
                     foreach (TileInfo tile in tiles)
                     {
+                        application.StatusBar.ProgressBar.Step();
+
                         if (tile != null)
                         {
                             IEnvelope envelope = this.GetEnv(tile.Extent);
                             String name = fileCache.GetFileName(tile.Index);
                             if (File.Exists(name))
                             {
-                                DrawRaster(name, envelope, trackCancel);
+                                bool found = false;
+                                if (oldDrawnTiles != null)
+                                {
+                                    foreach (TileInfo oldTile in oldDrawnTiles)
+                                    {
+                                        if (oldTile.Index == tile.Index)
+                                        {
+                                            found = true;
+                                        }
+                                    }
+                                }
+                                if (!found)
+                                {
+                                    if (trackCancel.Continue())
+                                    {
+                                        DrawRaster(name, envelope, trackCancel);
+                                    }
+                                }
                             }
                         }
                     }
+                    application.StatusBar.ProgressBar.Hide();
                 }
                 else
                 {

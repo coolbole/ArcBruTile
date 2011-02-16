@@ -30,7 +30,7 @@ namespace BruTileArcGIS
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
     public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant, ILayer2, IMapLevel,
-        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin
+        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         #region private members
@@ -613,6 +613,76 @@ namespace BruTileArcGIS
         #endregion
 
 
+        private short brightness;
+        private short contrast;
+        private bool supportsInteractive = true;
+        private short transparancy;
 
+        #region ILayerEffects Members
+
+        public short Brightness
+        {
+            get
+            {
+                return brightness;
+            }
+            set
+            {
+                brightness = value;
+            }
+        }
+
+        public short Contrast
+        {
+            get
+            {
+                return contrast;
+            }
+            set
+            {
+                contrast = value;
+            }
+        }
+
+        public bool SupportsBrightnessChange
+        {
+            get { return true; }
+        }
+
+        public bool SupportsContrastChange
+        {
+            get { return true; }
+        }
+
+        public bool SupportsInteractive
+        {
+            get
+            {
+                return supportsInteractive;
+            }
+            set
+            {
+                supportsInteractive = value;
+            }
+        }
+
+        public bool SupportsTransparency
+        {
+            get { return true; }
+        }
+
+        public short Transparency
+        {
+            get
+            {
+                return transparancy;
+            }
+            set
+            {
+                transparancy = value;
+            }
+        }
+
+        #endregion
     }
 }
