@@ -18,19 +18,13 @@ namespace BruTileArcGIS
 {
     /// <summary>
     /// Represents a custom BruTile Layer
-    /// todo: implement IPersistStream?
-    /// 
-    /// Todo: Implement the following interfaces?
-    /// ICompositeLayer, IConnectionPointContainer, IDisplayAdmin, IDisplayAdmin2, IGeoDataset, ILayer2, 
-    /// ILayerDrawingProperties, ILayerExtensions, ILayerGeneralProperties, ILayerInfo, ILayerPosition, 
-    /// ILayerSymbologyExtents, IMapLevel, IPublishLayer, ISymbolLevels, IPersistStream, IPersist, 
-    /// IDllThreadManager, IGroupLayer, ILayer, IIdentify, ILayerEvents
     /// </summary>
     [Guid("1EF3586D-8B42-4921-9958-A73F4833A6FA")]
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
     public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant, ILayer2, IMapLevel,
-        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects
+        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects,
+         IDisplayFilterManager
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         #region private members
@@ -57,6 +51,10 @@ namespace BruTileArcGIS
         private int currentLevel;
         private ITileSchema schema;
         private ITileSource tileSource;
+        private short brightness;
+        private short contrast;
+        private bool supportsInteractive = true;
+        private short transparency = 0;
 
         #endregion
 
@@ -137,6 +135,8 @@ namespace BruTileArcGIS
                 envelope.Project(map.SpatialReference);
                 ((IActiveView)map).Extent = envelope;
             }
+
+            displayFilter = new TransparencyDisplayFilterClass();
         }
 
 
@@ -168,6 +168,9 @@ namespace BruTileArcGIS
                                 this.map = mxdoc.FocusMap;
                             }
 
+                            displayFilter.Transparency = (short)(255 - ((transparency * 255) / 100));
+                            display.Filter = displayFilter;
+
                             Debug.WriteLine("Draw event");
                             IActiveView activeView = map as IActiveView;
                             logger.Debug("Layer name: " + this.Name);
@@ -188,9 +191,6 @@ namespace BruTileArcGIS
 
                             bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
                             bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel, tileSource);
-
-                            //DrawAttribute();
-
                         }
                         catch (Exception ex)
                         {
@@ -506,7 +506,6 @@ namespace BruTileArcGIS
 
         #endregion
 
-
         #region IMapLevel Members
         private int mapLevel;
 
@@ -573,9 +572,6 @@ namespace BruTileArcGIS
 
         #endregion
 
-
-
-
         #region IDisplayAdmin2 Members
 
         public bool DoesBlending
@@ -611,12 +607,6 @@ namespace BruTileArcGIS
         }
 
         #endregion
-
-
-        private short brightness;
-        private short contrast;
-        private bool supportsInteractive = true;
-        private short transparancy;
 
         #region ILayerEffects Members
 
@@ -675,11 +665,32 @@ namespace BruTileArcGIS
         {
             get
             {
-                return transparancy;
+                return transparency;
             }
             set
             {
-                transparancy = value;
+                //displayFilter.Transparency 
+                transparency = value;
+                //displayFilter.Transparency =  transparency;
+                //transparency = (short)(255 - ((transparency * 255) / 100));
+
+            }
+        }
+
+        #endregion
+
+        #region IDisplayFilterManager Members
+        private ITransparencyDisplayFilter displayFilter;
+
+        public IDisplayFilter DisplayFilter
+        {
+            get
+            {
+                return displayFilter;
+            }
+            set
+            {
+                displayFilter = (ITransparencyDisplayFilter) value;
             }
         }
 

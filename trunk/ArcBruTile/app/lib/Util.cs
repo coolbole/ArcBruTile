@@ -33,27 +33,30 @@ namespace BruTileArcGIS
         public static void SetBruTilePropertyPage(IApplication application, BruTileLayer layer)
         {
 
-            IBasicDocument basicDocument = application.Document as IBasicDocument;
+            //IBasicDocument basicDocument = application.Document as IBasicDocument;
 
-            ISet propertyObjects = new SetClass();
-            propertyObjects.Add(basicDocument.ActiveView);
-            propertyObjects.Add(layer); //or check ContextItem is a layer?
-            propertyObjects.Add(application); //optional?
+            //ISet propertyObjects = new SetClass();
+            //propertyObjects.Add(basicDocument.ActiveView);
+            //propertyObjects.Add(layer); //or check ContextItem is a layer?
+           // propertyObjects.Add(application); //optional?
 
-            IComPropertySheet propertySheet = new ComPropertySheetClass();
-            propertySheet.Title = "BruTile Property sheet";
-            propertySheet.HideHelpButton = true;
-            propertySheet.ClearCategoryIDs();
-            propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
-            propertySheet.AddPage(new BruTilePropertyPageUserControl()); //my custom page
-            
-            FeatureLayerDisplayPropertyPageClass displayPropertyPage = new FeatureLayerDisplayPropertyPageClass();
-            propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
-            propertySheet.AddPage(displayPropertyPage);
+            //IComPropertySheet propertySheet = new ComPropertySheetClass();
+            //propertySheet.Title = "BruTile Property sheet";
+            //propertySheet.HideHelpButton = true;
+            //propertySheet.ClearCategoryIDs();
+            //propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
+            //propertySheet.AddPage(new BruTilePropertyPageUserControl()); //my custom page
+            //LayerDrawingPropertyPage layerDrawingPropertyPage = new LayerDrawingPropertyPageClass();
+            //propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
+            //propertySheet.AddPage(layerDrawingPropertyPage);
+
+            //FeatureLayerDisplayPropertyPageClass displayPropertyPage = new FeatureLayerDisplayPropertyPageClass();
+            //propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
+            //propertySheet.AddPage(displayPropertyPage);
             
             //Pass in layer, active view and the application
-            propertyObjects.Add(layer);
-            propertyObjects.Reset();
+            //propertyObjects.Add(layer);
+            //propertyObjects.Reset();
             //propertySheet.EditProperties(propertyObjects, application.hWnd);
         }
 

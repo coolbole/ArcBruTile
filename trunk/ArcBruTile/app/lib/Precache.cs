@@ -12,6 +12,7 @@ using BruTile.Web;
 using System.IO;
 using System.ComponentModel;
 using log4net;
+using System.Windows.Forms;
 
 namespace BruTileArcGIS
 {
@@ -74,6 +75,10 @@ namespace BruTileArcGIS
             t.FileCache = fileCache;
             t.CacheDir = cacheDir;
 
+
+           // int NumberOfTiles= this.GetNumberOfTiles(t);
+            //MessageBox.Show("Number of tiles: " + NumberOfTiles);
+
             InitializeBackgroundWorker();
 
             backgroundWorkerPrecache.RunWorkerAsync(t);
@@ -115,6 +120,7 @@ namespace BruTileArcGIS
             backgroundWorkerPrecache.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorkerPrecache_RunWorkerCompleted);
             backgroundWorkerPrecache.ProgressChanged += new ProgressChangedEventHandler(backgroundWorkerPrecache_ProgressChanged);
         }
+
 
         /// <summary>
         /// 

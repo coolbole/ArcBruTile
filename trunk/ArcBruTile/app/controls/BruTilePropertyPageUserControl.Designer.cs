@@ -41,7 +41,7 @@
             this.groupBox2.Size = new System.Drawing.Size(277, 95);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Cache";
+            this.groupBox2.Text = "Cache.";
             // 
             // button1
             // 

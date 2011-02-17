@@ -32,7 +32,7 @@ namespace BruTileArcGIS
         private static ISpatialReference layerSpatialReference;
         private static ISpatialReference dataSpatialReference;
         private static EnumBruTileLayer enumBruTileLayer;
-        private int currentLevel;
+        private int _currentLevel;
         private static FileCache fileCache;
         ManualResetEvent downloadFinished = new ManualResetEvent(false);
         private static ITileSource tileSource;
@@ -69,7 +69,7 @@ namespace BruTileArcGIS
             BruTileHelper.trackCancel = trackCancel;
             BruTileHelper.layerSpatialReference = layerSpatialReference;
             BruTileHelper.enumBruTileLayer = enumBruTileLayer;
-            this.currentLevel = currentLevel;
+            this._currentLevel = currentLevel;
             fileCache = GetFileCache(config);
             tileProvider = (WebTileProvider)tileSource.Provider;
 
@@ -79,6 +79,7 @@ namespace BruTileArcGIS
                 oldDrawnTiles = tiles;
 
                 tiles = this.GetTiles(activeView, config);
+                currentLevel = _currentLevel;
                 logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
 
                 if (tiles.Count > 0)
@@ -410,7 +411,7 @@ namespace BruTileArcGIS
             int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
             logger.Debug("Current level: " + level.ToString());
 
-            currentLevel = level;
+            _currentLevel = level;
 
             IList<TileInfo> tiles = schema.GetTilesInView(transform.Extent, level);
 

@@ -17,6 +17,8 @@ using ESRI.ArcGIS.Geometry;
 using System.Diagnostics;
 using System.ComponentModel;
 using BrutileArcGIS.Properties;
+using BruTile;
+using System.Collections.Generic;
 
 namespace BruTileArcGIS
 {
@@ -115,6 +117,22 @@ namespace BruTileArcGIS
             // TODO:  Add other initialization code
         }
 
+
+        private int GetNumberOfTiles(ITileSchema schema, IEnvelope env)
+        {
+            int result = 0;
+
+            //start the actual precache process
+            for (int i = 0; i < schema.Resolutions.Count; i++)
+            {
+                //IList<TileInfo> tiles = schema.GetTilesInView(env, i);
+                //result += tiles.Count;
+            }
+            return result;
+        }
+
+
+
         /// <summary>
         /// Occurs when this command is clicked
         /// </summary>
@@ -126,6 +144,7 @@ namespace BruTileArcGIS
                 XmlConfigurator.Configure(new FileInfo(Assembly.GetExecutingAssembly().Location + ".config"));
                 Configuration config = ConfigurationHelper.GetConfig();
                 string levelStr = config.AppSettings.Settings["precacheStartLevel"].Value;
+                levelStr = "14"; // hardcoded to prevent abuse
                 int precacheMinimumLevel;
                 if (!int.TryParse(levelStr, out precacheMinimumLevel))
                 {
@@ -138,55 +157,87 @@ namespace BruTileArcGIS
                 IMxDocument mxdoc = (IMxDocument)m_application.Document;
                 IMap map = mxdoc.FocusMap;
                 bool layerIsOsmAndVisible = false;
-                int currLevel = 0;
-                IEnvelope extent = null;
-                for (int i = 0; i < map.LayerCount; i++)
+
+                BruTileLayer bruTileLayer=this.GetFirstOsmBruTileLayer(map);
+                if (bruTileLayer != null)
                 {
-                    ILayer layer = map.get_Layer(i);
-                    if (layer.GetType() == typeof(BruTileLayer))
+                    if (bruTileLayer.Visible)
                     {
-                        // TODO: Fix the next code. BruTileLayer should have a CurrentLevel property...
-                        BruTileLayer btLayer = layer as BruTileLayer;
-                        layerIsOsmAndVisible = layer.Visible && ((currLevel = btLayer.CurrentLevel) >= precacheMinimumLevel);
-                        extent = btLayer.Extent;
-                        enumBruTileLayer = btLayer.EnumBruTileLayer;
-                        break;
+                        layerIsOsmAndVisible = (bruTileLayer.CurrentLevel >= precacheMinimumLevel);
+
+                        if (!layerIsOsmAndVisible)
+                        {
+                            MessageBox.Show(String.Format("Error: The current OpenStreetMap layer level ({0}) is smaller than the minimum precache level ({1}).", bruTileLayer.CurrentLevel, precacheMinimumLevel));
+                        }
                     }
-                }
-                if (!layerIsOsmAndVisible)
-                {
-                    MessageBox.Show(string.Format("There is no (visible) OpenStreetLayer available, or the current level ({0}) is smaller than the minimum precache level ({1}). This is required.", currLevel, precacheMinimumLevel));
-                    return;
-                }
-
-                //show form
-                FormPreCache formPreCache = new FormPreCache();
-                if (formPreCache.ShowDialog().Equals(DialogResult.OK))
-                {
-                    int[] precacheLevels = formPreCache.preCacheLevels;
-                    string precacheAreaName = formPreCache.preCacheAreaName;
-                    formPreCache.Close();
-
-                    //get user folder
-                    string cacheDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcBruTile\\PreCache");
-                    cacheDir = System.IO.Path.Combine(cacheDir, precacheAreaName);
-
-                    //start precache procedure here
-                    Precache precacher = new Precache(new IntPtr(m_application.hWnd), mxdoc.ActiveView, enumBruTileLayer, map.SpatialReference, cacheDir);
-                    precacher.RunPrecacher();
+                    else
+                    {
+                        MessageBox.Show("Error: The OpenStreetMap layer is not visible.");
+                    }
                 }
                 else
                 {
-                    formPreCache.Close();
+                    MessageBox.Show("Error: There is no OpenStreetMap layer loaded.");
+                }
+
+                if (layerIsOsmAndVisible)
+                {
+                    // Show warning...
+                    IConfig config1 = ConfigHelper.GetConfig(enumBruTileLayer);
+                    ITileSource tileSource = config1.CreateTileSource();
+                    ITileSchema schema = tileSource.Schema;
+                    int number=this.GetNumberOfTiles(schema, ((IActiveView)map).Extent); 
+
+
+
+                    //show form
+                    FormPreCache formPreCache = new FormPreCache();
+                    if (formPreCache.ShowDialog().Equals(DialogResult.OK))
+                    {
+                        int[] precacheLevels = formPreCache.preCacheLevels;
+                        string precacheAreaName = formPreCache.preCacheAreaName;
+                        formPreCache.Close();
+
+                        //get user folder
+                        string cacheDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ArcBruTile\\PreCache");
+                        cacheDir = System.IO.Path.Combine(cacheDir, precacheAreaName);
+
+                        //start precache procedure here
+                        Precache precacher = new Precache(new IntPtr(m_application.hWnd), mxdoc.ActiveView, enumBruTileLayer, map.SpatialReference, cacheDir);
+                        precacher.RunPrecacher();
+                    }
+                    else
+                    {
+                        formPreCache.Close();
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
-                //MessageBox.Show("Vette error man!\n" + ex.ToString());
             }
         }
 
         #endregion
+
+
+        private BruTileLayer GetFirstOsmBruTileLayer(IMap map)
+        {
+            BruTileLayer result = null;
+            for (int i = 0; i < map.LayerCount; i++)
+            {
+                ILayer layer = map.get_Layer(i);
+                if (layer.GetType() == typeof(BruTileLayer))
+                {
+                    BruTileLayer btLayer = layer as BruTileLayer;
+                    if (btLayer.EnumBruTileLayer == EnumBruTileLayer.OSM)
+                    {
+                        result = btLayer;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
     }
 }
