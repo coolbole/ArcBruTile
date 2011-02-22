@@ -23,8 +23,8 @@ namespace BruTileArcGIS
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
     public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant, ILayer2, IMapLevel,
-        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects,
-         IDisplayFilterManager
+        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects
+        , IDisplayFilterManager
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         #region private members
@@ -41,7 +41,6 @@ namespace BruTileArcGIS
         private ISpatialReference dataSpatialReference = null;
         private bool visible=false;
         private IMap map;
-        private BruTileHelper bruTileHelper;
         private EnumBruTileLayer enumBruTileLayer;
         private string cacheDir;
         private int tileTimeOut;
@@ -55,6 +54,8 @@ namespace BruTileArcGIS
         private short contrast;
         private bool supportsInteractive = true;
         private short transparency = 0;
+        IScreenDisplay screenDisplay;
+        bool displayChanged = false;
 
         #endregion
 
@@ -136,7 +137,6 @@ namespace BruTileArcGIS
                 ((IActiveView)map).Extent = envelope;
             }
 
-            displayFilter = new TransparencyDisplayFilterClass();
         }
 
 
@@ -168,9 +168,6 @@ namespace BruTileArcGIS
                                 this.map = mxdoc.FocusMap;
                             }
 
-                            displayFilter.Transparency = (short)(255 - ((transparency * 255) / 100));
-                            display.Filter = displayFilter;
-
                             Debug.WriteLine("Draw event");
                             IActiveView activeView = map as IActiveView;
                             logger.Debug("Layer name: " + this.Name);
@@ -181,16 +178,39 @@ namespace BruTileArcGIS
                                 ", xmax:" + envelope.YMin.ToString() +
                                 ", ymax:" + envelope.YMin.ToString()
                                 );
-                            logger.Debug("Layer spatial reference: " + layerSpatialReference.FactoryCode.ToString());
+                            if (layerSpatialReference != null)
+                            {
+                                logger.Debug("Layer spatial reference: " + layerSpatialReference.FactoryCode.ToString());
+                            }
                             if (map.SpatialReference != null)
                             {
                                 logger.Debug("Map spatial reference: " + map.SpatialReference.FactoryCode.ToString());
                             }
 
-                            IScreenDisplay screenDisplay = activeView.ScreenDisplay;
+                            if (displayChanged)
+                            {
+                                if (transparency > 0)
+                                {
+                                    // Use also: IDimDisplayFilter;
+                                    displayFilter = new TransparencyDisplayFilterClass();
+                                    screenDisplay = activeView.ScreenDisplay;
+                                    displayFilter.Transparency = (short)(255 - ((transparency * 255) / 100));
+                                    displayFilter.Flags = esriDisplayFilterFlags.esriDFExternalCache;
+                                    displayChanged = false;
+                                }
+                                else
+                                {
+                                    displayFilter = null;
+                                }
+                            }
+                            if (displayFilter != null)
+                            {
+                                screenDisplay.Filter = displayFilter;
+                            }
 
-                            bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel, tileSource);
+
+                            BruTileHelper bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
+                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel, tileSource, display);
                         }
                         catch (Exception ex)
                         {
@@ -371,7 +391,6 @@ namespace BruTileArcGIS
                 if (!visible)
                 {
                     ((IGraphicsContainer)map).DeleteAllElements();
-                    ((IActiveView)map).Refresh();
                 }
             }
         }
@@ -669,11 +688,8 @@ namespace BruTileArcGIS
             }
             set
             {
-                //displayFilter.Transparency 
                 transparency = value;
-                //displayFilter.Transparency =  transparency;
-                //transparency = (short)(255 - ((transparency * 255) / 100));
-
+                displayChanged = true;
             }
         }
 

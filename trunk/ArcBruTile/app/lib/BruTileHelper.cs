@@ -39,6 +39,7 @@ namespace BruTileArcGIS
         bool needReproject = false;
         IList<TileInfo> tiles=null;
         IList<TileInfo> oldDrawnTiles = null;
+        private IDisplay display;
 
         static ManualResetEvent[] doneEvents;
         static WebTileProvider tileProvider;
@@ -60,7 +61,7 @@ namespace BruTileArcGIS
                          ESRI.ArcGIS.esriSystem.ITrackCancel trackCancel,
                          ESRI.ArcGIS.Geometry.ISpatialReference layerSpatialReference,
                          EnumBruTileLayer enumBruTileLayer,
-                         ref int currentLevel, ITileSource tileSource)
+                         ref int currentLevel, ITileSource tileSource, IDisplay display)
         {
             this.application = application;
             this.activeView = activeView;
@@ -72,12 +73,10 @@ namespace BruTileArcGIS
             this._currentLevel = currentLevel;
             fileCache = GetFileCache(config);
             tileProvider = (WebTileProvider)tileSource.Provider;
+            this.display = display;
 
             if (!activeView.Extent.IsEmpty)
             {
-                // Make backup of old drawn tiles
-                oldDrawnTiles = tiles;
-
                 tiles = this.GetTiles(activeView, config);
                 currentLevel = _currentLevel;
                 logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
@@ -111,31 +110,16 @@ namespace BruTileArcGIS
 
                         if (tile != null)
                         {
-                            IEnvelope envelope = this.GetEnv(tile.Extent);
                             String name = fileCache.GetFileName(tile.Index);
+
                             if (File.Exists(name))
                             {
-                                bool found = false;
-                                if (oldDrawnTiles != null)
-                                {
-                                    foreach (TileInfo oldTile in oldDrawnTiles)
-                                    {
-                                        if (oldTile.Index == tile.Index)
-                                        {
-                                            found = true;
-                                        }
-                                    }
-                                }
-                                if (!found)
-                                {
-                                    if (trackCancel.Continue())
-                                    {
-                                        DrawRaster(name, envelope, trackCancel);
-                                    }
-                                }
+                                IEnvelope envelope = this.GetEnv(tile.Extent);
+                                DrawRaster(name, envelope, trackCancel);
                             }
                         }
                     }
+
                     application.StatusBar.ProgressBar.Hide();
                 }
                 else
@@ -232,7 +216,8 @@ namespace BruTileArcGIS
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
                 rl.SpatialReference = layerSpatialReference;
-                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
+                //rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
+                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, display, null);
                 //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, trackCancel, env);
                 logger.Debug("End drawing tile.");
 
