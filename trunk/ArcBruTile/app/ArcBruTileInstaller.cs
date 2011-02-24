@@ -108,6 +108,7 @@ namespace BruTileArcGIS
             string cmd = string.Format("\"{0}\" /p:Desktop", base.GetType().Assembly.Location);
             esriRegAsm.StartInfo.Arguments = cmd;
             logger.Debug("Register for ArcGIS 10: " + cmd);
+            
             esriRegAsm.Start();
             logger.Debug("Register for ArcGIS 10 finished.");
         }
