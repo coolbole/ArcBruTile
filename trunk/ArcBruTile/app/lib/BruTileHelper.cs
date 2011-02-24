@@ -41,7 +41,8 @@ namespace BruTileArcGIS
         IList<TileInfo> oldDrawnTiles = null;
         private IDisplay display;
 
-        static ManualResetEvent[] doneEvents;
+        //static ManualResetEvent[] doneEvents;
+        static MultipleThreadResetEvent multipleThreadResetEvent;
         static WebTileProvider tileProvider;
 
         /// <summary>
@@ -162,18 +163,20 @@ namespace BruTileArcGIS
             if (downloadTiles.Count > 0)
             {
                 // 2. Download tiles...
-                doneEvents = new ManualResetEvent[downloadTiles.Count];
+                //doneEvents = new ManualResetEvent[downloadTiles.Count];
+                multipleThreadResetEvent = new MultipleThreadResetEvent(downloadTiles.Count);
 
                 for (int i = 0; i < downloadTiles.Count; i++)
                 {
-                    doneEvents[i] = new ManualResetEvent(false);
+                    //doneEvents[i] = new ManualResetEvent(false);
 
                     object o = new object[] { downloadTiles[i], i};
                     ThreadPool.SetMaxThreads(5, 5); 
                     ThreadPool.QueueUserWorkItem(new WaitCallback(downloadTile),o);
                 }
 
-                WaitHandle.WaitAll(doneEvents);
+                //WaitHandle.WaitAll(doneEvents);
+                multipleThreadResetEvent.WaitAll();
                 logger.Debug("End waiting for remote tiles...");
             }
             downloadFinished.Set();
@@ -303,7 +306,8 @@ namespace BruTileArcGIS
 
             if (!trackCancel.Continue())
             {
-                doneEvents[index].Set();
+                //doneEvents[index].Set();
+                multipleThreadResetEvent.SetOne();
                 return;
             }
             
@@ -331,7 +335,8 @@ namespace BruTileArcGIS
                 CreateRaster(tileInfo, bytes, name);
                 logger.Debug("Tile retrieved: " + url.AbsoluteUri);
             }
-            doneEvents[index].Set();
+            multipleThreadResetEvent.SetOne();
+            //doneEvents[index].Set();
         }
 
 

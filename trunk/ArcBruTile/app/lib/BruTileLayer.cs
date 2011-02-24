@@ -137,6 +137,7 @@ namespace BruTileArcGIS
                 ((IActiveView)map).Extent = envelope;
             }
 
+            displayFilter = new TransparencyDisplayFilterClass();
         }
 
 
@@ -187,29 +188,12 @@ namespace BruTileArcGIS
                                 logger.Debug("Map spatial reference: " + map.SpatialReference.FactoryCode.ToString());
                             }
 
-                            if (displayChanged)
-                            {
-                                if (transparency > 0)
-                                {
-                                    // Use also: IDimDisplayFilter;
-                                    displayFilter = new TransparencyDisplayFilterClass();
-                                    screenDisplay = activeView.ScreenDisplay;
-                                    displayFilter.Transparency = (short)(255 - ((transparency * 255) / 100));
-                                    displayFilter.Flags = esriDisplayFilterFlags.esriDFExternalCache;
-                                    displayChanged = false;
-                                }
-                                else
-                                {
-                                    displayFilter = null;
-                                }
-                            }
-                            if (displayFilter != null)
-                            {
-                                screenDisplay.Filter = displayFilter;
-                            }
-
-
                             BruTileHelper bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
+                            displayFilter.Transparency = (short)(255 - ((transparency * 255) / 100));
+                            if (display.Filter == null)
+                            {
+                                // display.Filter = displayFilter;
+                            }
                             bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel, tileSource, display);
                         }
                         catch (Exception ex)
@@ -689,7 +673,6 @@ namespace BruTileArcGIS
             set
             {
                 transparency = value;
-                displayChanged = true;
             }
         }
 

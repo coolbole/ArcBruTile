@@ -237,6 +237,7 @@
     <Compile Include="lib\KMLIdentifyObject.cs" />
     <Compile Include="lib\KMLReader.cs" />
     <Compile Include="lib\KMLWebRequestStateObject.cs" />
+    <Compile Include="lib\MultipleThreadResetEvent.cs" />
     <Compile Include="lib\OsmCycleTileSource.cs" />
     <Compile Include="lib\OsmMapnikTileSource.cs" />
     <Compile Include="lib\OsmMapType.cs" />
