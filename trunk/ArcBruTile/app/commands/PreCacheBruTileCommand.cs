@@ -115,6 +115,8 @@ namespace BruTileArcGIS
                 base.m_enabled = false;
 
             // TODO:  Add other initialization code
+            // Disable for now because of OSM complaints
+            base.m_enabled = false;
         }
 
 

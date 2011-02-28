@@ -356,6 +356,8 @@ namespace BruTileArcGIS
         {
             if (drawPhase != esriDrawPhase.esriDPGeography) return;
             if (display == null) return;
+            GetKMLData();
+
             if (base.table == null || this.styleTable == null) return;
             if (!dataRead) return;
 

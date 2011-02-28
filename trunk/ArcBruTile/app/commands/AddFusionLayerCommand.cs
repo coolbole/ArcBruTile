@@ -8,6 +8,13 @@ using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
+using System.Net;
+using System.IO;
+using System.Xml.Linq;
+using ESRI.ArcGIS.Geometry;
+using System.Xml;
+using System.Collections.Generic;
+using ESRI.ArcGIS.Display;
 
 namespace BruTileArcGIS
 {
@@ -18,6 +25,8 @@ namespace BruTileArcGIS
     {
                 #region private members
         private IApplication application;
+        private IMap map;
+        private IMxDocument mxdoc;
         #endregion
 
         #region constructors
@@ -69,6 +78,8 @@ namespace BruTileArcGIS
             }
         }
 
+        
+
         /// <summary>
         /// Occurs when this command is clicked
         /// </summary>
@@ -76,23 +87,67 @@ namespace BruTileArcGIS
         {
             try
             {
-                IMxDocument mxdoc = (IMxDocument)application.Document;
-                IMap map = mxdoc.FocusMap;
+                mxdoc = (IMxDocument)application.Document;
+                map = mxdoc.FocusMap;
 
-                KMLLayerClass kmlLayer = new KMLLayerClass();
+                IActiveView activeView = mxdoc.FocusMap as IActiveView;
+                IEnvelope env=activeView.Extent;
+                string url = String.Format("http://www.google.com/fusiontables/api/query?sql=select kml_4326 from 424612 where ST_INTERSECTS(kml_4326, RECTANGLE(LATLNG({0}, {1}), LATLNG({2}, {3})))", 
+                    //-10, -90, 0, 0);
+                    
+                    Math.Round(env.YMin,0), 
+                    Math.Round(env.XMin,0), 
+                    Math.Round(env.YMax,0), 
+                    Math.Round(env.XMax,0));
+                //string url = "http://www.google.com/fusiontables/api/query?sql=select kml_4326 from 424612 where ST_INTERSECTS(kml_4326, RECTANGLE(LATLNG(-10, -90), LATLNG(0, 0)))";
+                WebRequest webRequest = HttpWebRequest.Create(url);
+                WebResponse response = webRequest.GetResponse();
+                Stream stream = response.GetResponseStream();
+                
+                
+                StreamReader reader = new StreamReader(stream);
+                string line;
+                bool first = true;
+                List<IPolyline> polylines = new List<IPolyline>();
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!first)
+                    {
+                        // line is something with kml
+                        line=@"<?xml version='1.0' encoding='utf-8'?>"+line.Trim('"');
+
+                        try
+                        {
+                            XmlDocument xdoc = new XmlDocument();
+                            xdoc.LoadXml(line);
+                            string coords = xdoc.SelectSingleNode(@"LineString/coordinates").InnerText.Trim();
+                            IPolyline polyline = KMLReader.CreatePolylineFromKmlString(coords, null);
+                            polylines.Add(polyline);
+                        }
+                        catch (Exception ex)
+                        {
+                            int a = 1;
+                        }
+                    }
+                    first = false;
+                }
+                IDisplay display=((IMxApplication)application).Display; 
+
+                this.DrawPolyline(display, polylines);
+
+                /**KMLLayerClass kmlLayer = new KMLLayerClass();
                 kmlLayer.Name = "test";
                 kmlLayer.URL = "http://www.bgs.ac.uk/feeds/MhSeismology.kml";
                 //kmlLayer.URL = "http://www.google.com/fusiontables/api/query?sql=SELECT%20*%20FROM%20297903%20WHERE%20ST_INTERSECTS(geometry,RECTANGLE(LATLNG(35.7108378353,-97.6025390625),LATLNG(35.7108378353,-97.6025390625)))%20LIMIT%20250";
                 kmlLayer.RefreshRate = 100;
                 kmlLayer.ShowTips = true;
 
-                kmlLayer.GetKMLData();
                 ILayer layer = kmlLayer as ILayer;
 
                 kmlLayer.HotlinkField = "sip";
                 kmlLayer.HotlinkType = esriHyperlinkType.esriHyperlinkTypeDocument;
 
-                map.AddLayer(kmlLayer);
+                map.AddLayer(kmlLayer);*/
                 
             }
             catch (Exception ex)
@@ -100,6 +155,54 @@ namespace BruTileArcGIS
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void DrawPolyline(IDisplay display,List<IPolyline> lines)
+        {
+            ISimpleLineSymbol lineSymbol = new SimpleLineSymbolClass();
+            lineSymbol.Style = esriSimpleLineStyle.esriSLSSolid;
+            lineSymbol.Width = 5;
+            IRgbColor c=new RgbColorClass();
+            c.Red = 255;
+            lineSymbol.Color = c;
+            display.SetSymbol((ISymbol)lineSymbol);
+
+            display.StartDrawing(display.hDC, System.Convert.ToInt16(ESRI.ArcGIS.Display.esriScreenCache.esriNoScreenCache));
+
+            foreach (var line in lines)
+            {
+                line.SpatialReference = map.SpatialReference;
+               display.DrawPolyline(line);
+            }
+            display.FinishDrawing();
+            IActiveView activeView = mxdoc.FocusMap as IActiveView;
+            IEnvelope env = new EnvelopeClass();
+            env.XMin = -180;
+            env.XMin = 0;
+            env.YMin = -90;
+            env.YMax = 0;
+            
+           // activeView.Extent = lines[0].Envelope;
+           // activeView.Refresh();
+        }
+
+
+        /// <summary>
+        /// create a WGS1984 geographic coordinate system.
+        /// In this case, the underlying data provided by the service is in WGS1984.
+        /// </summary>
+        /// <returns></returns>
+        private ISpatialReference CreateWGS84SpatialReference()
+        {
+            ISpatialReferenceFactory spatialRefFatcory = new SpatialReferenceEnvironmentClass();
+            IGeographicCoordinateSystem geoCoordSys;
+            geoCoordSys = spatialRefFatcory.CreateGeographicCoordinateSystem((int)esriSRGeoCSType.esriSRGeoCS_WGS1984);
+            geoCoordSys.SetFalseOriginAndUnits(-180.0, -180.0, 5000000.0);
+            geoCoordSys.SetZFalseOriginAndUnits(0.0, 100000.0);
+            geoCoordSys.SetMFalseOriginAndUnits(0.0, 100000.0);
+
+            return geoCoordSys as ISpatialReference;
+        }
+
 
         #endregion
 

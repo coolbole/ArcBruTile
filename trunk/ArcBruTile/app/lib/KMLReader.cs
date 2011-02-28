@@ -151,7 +151,7 @@ namespace BruTileArcGIS
         /// <returns></returns>
         public static XElement ReadXML(string url)
         {
-            WebRequest webRequest = HttpWebRequest.Create(url);
+                WebRequest webRequest = HttpWebRequest.Create(url);
             return ReadXML(webRequest);
         }
 
@@ -1214,12 +1214,41 @@ namespace BruTileArcGIS
             else extent.Union(geometryExtent);
         }
 
+
+        public static IPolyline CreatePolylineFromKmlString(string Coords, ISpatialReference spatialReference)
+        {
+            object missing = Type.Missing;
+
+            IPolyline esriPolyline = null;
+
+            string[] coordsArray = Coords.Split(new char[] { ' ' });
+            if (coordsArray.Length > 0)
+            {
+                esriPolyline = new PolylineClass();
+
+                IPointCollection pointCollection = esriPolyline as IPointCollection;
+
+                IZAware zaware = esriPolyline as IZAware;
+                zaware.ZAware = true;
+
+                foreach (string coord in coordsArray)
+                {
+                    IPoint esriPoint = KMLReader.CreatePointFromString(coord);
+                    if (esriPoint != null) pointCollection.AddPoint(esriPoint, ref missing, ref missing);
+                }
+
+                //esriPolyline.SpatialReference = spatialReference;
+            }
+            return esriPolyline;
+        }
+
+
         /// <summary>
         /// Create an arcgis point from a kml string
         /// </summary>
         /// <param name="coord"></param>
         /// <returns></returns>
-        protected static IPoint CreatePointFromString(string coord)
+        public static IPoint CreatePointFromString(string coord)
         {
             if (coord.Trim() == string.Empty) return null;
 
