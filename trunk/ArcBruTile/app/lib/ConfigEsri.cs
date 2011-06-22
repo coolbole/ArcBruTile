@@ -1,4 +1,5 @@
-﻿using BruTile;
+﻿using System.Linq;
+using BruTile;
 using BruTile.Web;
 
 namespace BruTileArcGIS
@@ -40,10 +41,17 @@ namespace BruTileArcGIS
                     0.0000214576721191407,
                     0.0000107288360595703 };
 
-                string format = "jpg";
+                const string format = "jpg";
 
-                TileSchema schema = new TileSchema();
-                foreach (double resolution in resoltions) schema.Resolutions.Add(resolution);
+                var schema = new TileSchema();
+
+                var count = 0;
+                foreach (var resolution in resoltions) 
+                {
+                    schema.Resolutions.Add(new Resolution { Id = count.ToString(), UnitsPerPixel = resolution });
+                    count++;
+                }
+                
                 schema.Height = 512;
                 schema.Width = 512;
                 schema.Extent = new Extent(-180, -90, 180, 90);

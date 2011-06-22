@@ -69,15 +69,20 @@ namespace BruTileArcGIS
             }
         }
 
-        public static BruTile.ITileSchema Schema
+        public static ITileSchema Schema
         {
             get
             {
-                string format = "jpg";
-                string name = "GeodanGeoserver";
+                const string format = "jpg";
+                const string name = "GeodanGeoserver";
 
-                TileSchema schema = new TileSchema();
-                foreach (double resolution in ScalesGeodan) schema.Resolutions.Add(resolution);
+                var schema = new TileSchema();
+                var count = 0;
+                foreach (var resolution in ScalesGeodan)
+                {
+                    schema.Resolutions.Add(new Resolution { Id = count.ToString(), UnitsPerPixel = resolution });
+                    count++;
+                }
                 schema.Height = 256;
                 schema.Width = 256;
                 schema.Extent = new Extent(0, 300000, 300000, 660000);

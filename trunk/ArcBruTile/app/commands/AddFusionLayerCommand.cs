@@ -74,7 +74,7 @@ namespace BruTileArcGIS
         {
             get
             {
-                return false;
+                return true;
             }
         }
 

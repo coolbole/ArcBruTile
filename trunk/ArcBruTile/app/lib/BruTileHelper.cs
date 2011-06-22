@@ -34,16 +34,18 @@ namespace BruTileArcGIS
         private static EnumBruTileLayer enumBruTileLayer;
         private int _currentLevel;
         private static FileCache fileCache;
-        ManualResetEvent downloadFinished = new ManualResetEvent(false);
         private static ITileSource tileSource;
         bool needReproject = false;
         IList<TileInfo> tiles=null;
         IList<TileInfo> oldDrawnTiles = null;
         private IDisplay display;
 
-        //static ManualResetEvent[] doneEvents;
-        static MultipleThreadResetEvent multipleThreadResetEvent;
+        //!!!static ManualResetEvent[] doneEvents;
+        //!!!static MultipleThreadResetEvent multipleThreadResetEvent;
         static WebTileProvider tileProvider;
+
+
+        private Random random = new Random((int)DateTime.Now.Ticks);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BruTileHelper"/> class.
@@ -88,11 +90,13 @@ namespace BruTileArcGIS
                     application.StatusBar.ProgressBar.MaxRange = tiles.Count;
                     application.StatusBar.ProgressBar.Show();
 
+                    var downloadFinished = new ManualResetEvent(false);
+        
                     // this is a hack, otherwise we get error message...
                     // "WaitAll for multiple handles on a STA thread is not supported. (mscorlib)"
                     // so lets start a thread first...
-                    Thread t = new Thread(new ThreadStart(DownloadTiles));
-                    t.Start();
+                    Thread t = new Thread(new ParameterizedThreadStart(DownloadTiles));
+                    t.Start(downloadFinished);
 
                     // wait till finished
                     downloadFinished.WaitOne();
@@ -132,8 +136,9 @@ namespace BruTileArcGIS
             }
         }
 
-        private void DownloadTiles()
+        private void DownloadTiles(object args)
         {
+            var downloadFinished = args as ManualResetEvent;
 
             // Loop through the tiles, and filter tiles that are already on disk.
             IList<TileInfo> downloadTiles=new List<TileInfo>();
@@ -163,20 +168,20 @@ namespace BruTileArcGIS
             if (downloadTiles.Count > 0)
             {
                 // 2. Download tiles...
-                //doneEvents = new ManualResetEvent[downloadTiles.Count];
-                multipleThreadResetEvent = new MultipleThreadResetEvent(downloadTiles.Count);
+                //var doneEvents = new ManualResetEvent[downloadTiles.Count];
+                var doneEvents = new MultipleThreadResetEvent(downloadTiles.Count);
 
                 for (int i = 0; i < downloadTiles.Count; i++)
                 {
-                    //doneEvents[i] = new ManualResetEvent(false);
+                    //!!!doneEvents[i] = new ManualResetEvent(false);
 
-                    object o = new object[] { downloadTiles[i], i};
+                    object o = new object[] { downloadTiles[i], doneEvents};
                     ThreadPool.SetMaxThreads(5, 5); 
                     ThreadPool.QueueUserWorkItem(new WaitCallback(downloadTile),o);
                 }
 
                 //WaitHandle.WaitAll(doneEvents);
-                multipleThreadResetEvent.WaitAll();
+                doneEvents.WaitAll();
                 logger.Debug("End waiting for remote tiles...");
             }
             downloadFinished.Set();
@@ -302,12 +307,12 @@ namespace BruTileArcGIS
             object[] parameters = (object[])tile;
             if (parameters.Length != 2) throw new ArgumentException("Two parameters expected");
             TileInfo tileInfo = (TileInfo)parameters[0];
-            int index = (int)parameters[1];
+            var doneEvent = (MultipleThreadResetEvent)parameters[1];
 
             if (!trackCancel.Continue())
             {
-                //doneEvents[index].Set();
-                multipleThreadResetEvent.SetOne();
+                doneEvent.SetOne();
+                //!!!multipleThreadResetEvent.SetOne();
                 return;
             }
             
@@ -328,15 +333,22 @@ namespace BruTileArcGIS
 
             byte[] bytes = GetBitmap(url);
 
-            if (bytes != null)
+            try
             {
-                string name = fileCache.GetFileName(tileInfo.Index);
-                fileCache.Add(tileInfo.Index, bytes);
-                CreateRaster(tileInfo, bytes, name);
-                logger.Debug("Tile retrieved: " + url.AbsoluteUri);
+                if (bytes != null)
+                {
+                    string name = fileCache.GetFileName(tileInfo.Index);
+                    fileCache.Add(tileInfo.Index, bytes);
+                    CreateRaster(tileInfo, bytes, name);
+                    logger.Debug("Tile retrieved: " + url.AbsoluteUri);
+                }
             }
-            multipleThreadResetEvent.SetOne();
-            //doneEvents[index].Set();
+            catch (Exception)
+            {
+                //Console.WriteLine("soep");
+            }
+            doneEvent.SetOne();
+            //doneEvent.Set();
         }
 
 
@@ -367,7 +379,9 @@ namespace BruTileArcGIS
 
             try
             {
+                
                 bytes = RequestHelper.FetchImage(uri, userAgent, referer, false);
+
             }
             catch (System.Net.WebException webException)
             {
