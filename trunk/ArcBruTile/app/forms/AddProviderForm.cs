@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.IO;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace BruTileArcGIS
 {
@@ -41,7 +42,8 @@ namespace BruTileArcGIS
 
         private void InitForm()
         {
-            string sampleProviders = "http://www.google.com/fusiontables/api/query?sql=SELECT Title,Url, Version from 368892 order by Title";
+            var config = ConfigurationHelper.GetConfig();
+            string sampleProviders = config.AppSettings.Settings["sampleProviders"].Value;
             List<TileMapService> providers = this.GetList(sampleProviders);
             lbProviders.DataSource = providers;
             lbProviders.DisplayMember = "Title";
@@ -62,14 +64,11 @@ namespace BruTileArcGIS
             {
                 string line = reader.ReadLine();
 
-                if (!first)
-                {
-                    TileMapService tileMapService = new TileMapService();
-                    tileMapService.Title = line.Split(',')[0];
-                    tileMapService.Href = line.Split(',')[1];
-                    tileMapService.Version = line.Split(',')[2];
-                    providers.Add(tileMapService);
-                }
+                TileMapService tileMapService = new TileMapService();
+                tileMapService.Title = line.Split(',')[0];
+                tileMapService.Href = line.Split(',')[1];
+                tileMapService.Version = line.Split(',')[2];
+                providers.Add(tileMapService);
 
                 first = false;
             }
