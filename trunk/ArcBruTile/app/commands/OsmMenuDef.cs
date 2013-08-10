@@ -39,10 +39,6 @@ namespace BruTileArcGIS
                     itemDef.Group = false;
                     //itemDef.
                     break;
-                case 1:
-                    itemDef.ID = "AddOsmCycleLayerCommand";
-                    itemDef.Group = false;
-                    break;
             }
 
         }
@@ -53,7 +49,7 @@ namespace BruTileArcGIS
         /// <value>The item count.</value>
         public int ItemCount
         {
-            get { return 2; }
+            get { return 1; }
         }
 
         /// <summary>

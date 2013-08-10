@@ -7,7 +7,6 @@
     {
         //Europa,
         OSM,
-        OSMCycle,
         ESRI, 
         BingRoad, BingAerial, BingHybrid, 
         TMS, 

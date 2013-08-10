@@ -23,10 +23,6 @@ namespace BruTileArcGIS
             {
                 result= new OsmTileSource();
             }
-            else if (osmMapType == OsmMapType.Cycle)
-            {
-                result = new OsmCycleTileSource();
-            }
 
             return result;
         }

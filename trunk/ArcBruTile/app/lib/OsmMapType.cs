@@ -7,7 +7,6 @@ namespace BruTileArcGIS
 {
     public enum OsmMapType
     {
-        Default = 0,
-        Cycle = 2
+        Default = 0
     }
 }

@@ -172,7 +172,6 @@
     <Compile Include="commands\AddBingAerialLayerCommand.cs" />
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingRoadLayerCommand.cs" />
-    <Compile Include="commands\AddOsmCycleLayerCommand.cs" />
     <Compile Include="commands\AddServicesCommand.cs" />
     <Compile Include="commands\AddFusionLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />

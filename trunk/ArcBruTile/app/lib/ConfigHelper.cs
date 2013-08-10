@@ -47,10 +47,6 @@ namespace BruTileArcGIS
             {
                 result = new ConfigOsm(OsmMapType.Default);
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.OSMCycle)
-            {
-                result = new ConfigOsm(OsmMapType.Cycle);
-            }
             else if (enumBruTileLayer == EnumBruTileLayer.BingRoad)
             {
                 result = new ConfigBing(BingMapType.Roads);
