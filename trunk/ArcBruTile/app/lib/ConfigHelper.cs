@@ -47,10 +47,6 @@ namespace BruTileArcGIS
             {
                 result = new ConfigOsm(OsmMapType.Default);
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.OSMMapnik)
-            {
-                result = new ConfigOsm(OsmMapType.Mapnik);
-            }
             else if (enumBruTileLayer == EnumBruTileLayer.OSMCycle)
             {
                 result = new ConfigOsm(OsmMapType.Cycle);

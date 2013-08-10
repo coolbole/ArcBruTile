@@ -212,7 +212,6 @@
     <Compile Include="forms\FormPreCacheStatus.designer.cs">
       <DependentUpon>FormPreCacheStatus.cs</DependentUpon>
     </Compile>
-    <Compile Include="commands\AddOsmTilesAtHomeLayerCommand.cs" />
     <Compile Include="lib\ArcMapWindow.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
@@ -240,7 +239,6 @@
     <Compile Include="lib\KMLWebRequestStateObject.cs" />
     <Compile Include="lib\MultipleThreadResetEvent.cs" />
     <Compile Include="lib\OsmCycleTileSource.cs" />
-    <Compile Include="lib\OsmMapnikTileSource.cs" />
     <Compile Include="lib\OsmMapType.cs" />
     <Compile Include="lib\Precache.cs" />
     <Compile Include="lib\ProjectInfo.cs" />
