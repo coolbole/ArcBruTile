@@ -226,7 +226,7 @@ namespace BruTileArcGIS
                 // http://arcbrutile.codeplex.com/workitem/11207
                 var image = new Bitmap(file, true);
                 var format = image.PixelFormat;
-                if (format == PixelFormat.Format24bppRgb || format == PixelFormat.Format32bppRgb)
+                if (format == PixelFormat.Format24bppRgb || format == PixelFormat.Format32bppArgb || format == PixelFormat.Format32bppRgb)
                 {
                     var rasterRGBRenderer = new RasterRGBRendererClass();
                     ((IRasterStretch2)rasterRGBRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
