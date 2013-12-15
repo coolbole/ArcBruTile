@@ -17,6 +17,7 @@ using ESRI.ArcGIS.Display;
 using BrutileArcGIS;
 using log4net;
 using ESRI.ArcGIS.ADF.COMSupport;
+using System.Drawing.Imaging;
 
 namespace BruTileArcGIS
 {
@@ -219,7 +220,19 @@ namespace BruTileArcGIS
                 rasterProps.Height = schema.Height;
                 rasterProps.Width = schema.Width;
 
-                // Improve rendering quality with RSP_BilinearInterpolation
+                // Fix for issue "Each 256x256 tile rendering differently causing blockly effect."
+                // In 10.1 the StrecthType for rasters seems to have changed from esriRasterStretch_NONE to "Percent Clip",
+                // giving color problems with 24 or 32 bits tiles.
+                // http://arcbrutile.codeplex.com/workitem/11207
+                var image = new Bitmap(file, true);
+                var format = image.PixelFormat;
+                if (format == PixelFormat.Format24bppRgb || format == PixelFormat.Format32bppRgb)
+                {
+                    var rasterRGBRenderer = new RasterRGBRendererClass();
+                    ((IRasterStretch2)rasterRGBRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
+                    rl.Renderer = rasterRGBRenderer;
+                }
+
                 rl.Renderer.ResamplingType = rstResamplingTypes.RSP_BilinearInterpolation;
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
