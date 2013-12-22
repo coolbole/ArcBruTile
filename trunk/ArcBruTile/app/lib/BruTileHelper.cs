@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Carto;
@@ -37,7 +38,7 @@ namespace BruTileArcGIS
         private static FileCache fileCache;
         private static ITileSource tileSource;
         bool needReproject = false;
-        IList<TileInfo> tiles=null;
+        List<TileInfo> tiles=null;
         private IDisplay display;
 
         //!!!static ManualResetEvent[] doneEvents;
@@ -84,10 +85,10 @@ namespace BruTileArcGIS
                 currentLevel = _currentLevel;
                 logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
 
-                if (tiles.Count > 0)
+                if (tiles.ToList().Count > 0)
                 {
                     application.StatusBar.ProgressBar.MinRange = 0;
-                    application.StatusBar.ProgressBar.MaxRange = tiles.Count;
+                    application.StatusBar.ProgressBar.MaxRange = tiles.ToList().Count;
                     application.StatusBar.ProgressBar.Show();
 
                     var downloadFinished = new ManualResetEvent(false);
@@ -132,7 +133,7 @@ namespace BruTileArcGIS
                     logger.Debug("No tiles to retrieve or draw");
                 }
 
-                logger.Debug("End drawing tiles: " + tiles.Count.ToString());
+                logger.Debug("End drawing tiles: " + tiles.ToList().Count.ToString());
             }
         }
 
@@ -142,7 +143,7 @@ namespace BruTileArcGIS
 
             // Loop through the tiles, and filter tiles that are already on disk.
             IList<TileInfo> downloadTiles=new List<TileInfo>();
-            for (int i = 0; i < tiles.Count; i++)
+            for (int i = 0; i < tiles.ToList().Count; i++)
             {
                 if (!fileCache.Exists(tiles[i].Index))
                 {
@@ -176,7 +177,7 @@ namespace BruTileArcGIS
                     //!!!doneEvents[i] = new ManualResetEvent(false);
 
                     object o = new object[] { downloadTiles[i], doneEvents};
-                    ThreadPool.SetMaxThreads(5, 5); 
+                    ThreadPool.SetMaxThreads(25, 25); 
                     ThreadPool.QueueUserWorkItem(new WaitCallback(downloadTile),o);
                 }
 
@@ -405,7 +406,7 @@ namespace BruTileArcGIS
             return bytes;
         }
 
-        private IList<TileInfo> GetTiles(IActiveView activeView, IConfig config)
+        private List<TileInfo> GetTiles(IActiveView activeView, IConfig config)
         {
             ITileSchema schema = tileSource.Schema;
             IEnvelope env = Projector.ProjectEnvelope(activeView.Extent, schema.Srs);
@@ -429,9 +430,9 @@ namespace BruTileArcGIS
 
             _currentLevel = level;
 
-            IList<TileInfo> tiles = schema.GetTilesInView(transform.Extent, level);
+            IEnumerable<TileInfo> tiles = schema.GetTilesInView(transform.Extent, level);
 
-            return tiles;
+            return tiles.ToList();
         }
 
 

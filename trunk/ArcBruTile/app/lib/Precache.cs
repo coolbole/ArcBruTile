@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using BruTile;
 using ESRI.ArcGIS.Geometry;
@@ -132,7 +133,7 @@ namespace BruTileArcGIS
             //start the actual precache process
             for (int i = 0; i < t.Schema.Resolutions.Count; i++)
             {
-                IList<TileInfo> tiles = null;
+                IEnumerable<TileInfo> tiles = null;
                 string message = string.Empty;
                 try
                 {
@@ -159,7 +160,7 @@ namespace BruTileArcGIS
                             byte[] bytes = RequestHelper.FetchImage(url);
                             t.FileCache.Add(info.Index, bytes);
 
-                            message = string.Format("Level {0}, processing tile {1} from {2}", (i + 1), counter, tiles.Count);
+                            message = string.Format("Level {0}, processing tile {1} from {2}", (i + 1), counter, tiles.ToList().Count);
                         }
                         catch (Exception ex)
                         {
