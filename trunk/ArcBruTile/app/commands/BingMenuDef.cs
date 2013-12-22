@@ -20,12 +20,17 @@ namespace BrutileArcGIS.commands
                     itemDef.ID = "AddBingAerialLayerCommand";
                     itemDef.Group = false;
                     break;
+                case 2:
+                    itemDef.ID = "AddBingHybridLayerCommand";
+                    itemDef.Group = false;
+                    break;
+
             }
         }
 
         public int ItemCount
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         public string Name

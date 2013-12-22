@@ -13,8 +13,6 @@ using BruTile;
 
 namespace BruTileArcGIS
 {
-    [Guid("EF0A28AE-946B-46B8-BB5F-1BA116076E78")]
-    [ClassInterface(ClassInterfaceType.None)]
     [ProgId("AddWmsCLayerCommand")]
     public sealed class AddWmsCLayerCommand : BaseCommand
     {
@@ -59,22 +57,24 @@ namespace BruTileArcGIS
         {
             try
             {
-                IMxDocument mxdoc = (IMxDocument)_application.Document;
+                var mxdoc = (IMxDocument)_application.Document;
                 map = mxdoc.FocusMap;
 
 
-                AddWmsCForm addWmsCForm = new AddWmsCForm();
-                DialogResult result = addWmsCForm.ShowDialog(new ArcMapWindow(_application));
+                var addWmsCForm = new AddWmsCForm();
+                var result = addWmsCForm.ShowDialog(new ArcMapWindow(_application));
 
                 if (result == DialogResult.OK)
                 {
                     ITileSource tileSource = addWmsCForm.SelectedTileSource;
                     
                     IConfig configWmsC = new ConfigWmsC(tileSource);
-                    BruTileLayer brutileLayer = new BruTileLayer(_application,configWmsC);
-                    brutileLayer.Name=configWmsC.CreateTileSource().Schema.Name;
-                    brutileLayer.Visible = true;
-                    map.AddLayer((ILayer)brutileLayer);
+                    var brutileLayer = new BruTileLayer(_application,configWmsC)
+                    {
+                        Name = configWmsC.CreateTileSource().Schema.Name,
+                        Visible = true
+                    };
+                    map.AddLayer(brutileLayer);
                 }
             }
             catch (Exception ex)
@@ -83,30 +83,5 @@ namespace BruTileArcGIS
             }
         }
 
-        [ComRegisterFunction()]
-        [ComVisible(false)]
-        static void RegisterFunction(Type registerType)
-        {
-           ArcGISCategoryRegistration(registerType);
-        }
-
-        [ComUnregisterFunction()]
-        [ComVisible(false)]
-        static void UnregisterFunction(Type registerType)
-        {
-            ArcGISCategoryUnregistration(registerType);
-       }
-
-        private static void ArcGISCategoryRegistration(Type registerType)
-        {
-            string regKey = string.Format("HKEY_CLASSES_ROOT\\CLSID\\{{{0}}}", registerType.GUID);
-            MxCommands.Register(regKey);
-        }
-
-        private static void ArcGISCategoryUnregistration(Type registerType)
-        {
-            string regKey = string.Format("HKEY_CLASSES_ROOT\\CLSID\\{{{0}}}", registerType.GUID);
-            MxCommands.Unregister(regKey);
-        }
     }
 }
