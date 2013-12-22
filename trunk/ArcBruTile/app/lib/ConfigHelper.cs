@@ -63,16 +63,6 @@ namespace BruTileArcGIS
             {
                 result = new ConfigEsri();
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.TMS)
-            {
-                result = new ConfigGeoserver();
-            }
-            else if (enumBruTileLayer == EnumBruTileLayer.GeoserverWms)
-            {
-                result = new ConfigGeodanGeoserver();
-            }
-
-
             return result;
         }
 

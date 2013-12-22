@@ -166,7 +166,6 @@
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingRoadLayerCommand.cs" />
     <Compile Include="commands\AddServicesCommand.cs" />
-    <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
     <Compile Include="commands\BingMenuDef.cs" />
@@ -189,27 +188,9 @@
     <Compile Include="forms\AddWmsCForm.Designer.cs">
       <DependentUpon>AddWmsCForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="forms\FormPreCache.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\FormPreCache.designer.cs">
-      <DependentUpon>FormPreCache.cs</DependentUpon>
-    </Compile>
-    <Compile Include="forms\FormPreCacheStatus.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="forms\FormPreCacheStatus.designer.cs">
-      <DependentUpon>FormPreCacheStatus.cs</DependentUpon>
-    </Compile>
     <Compile Include="lib\ArcMapWindow.cs" />
     <Compile Include="lib\BruTileHelper.cs" />
     <Compile Include="lib\BruTileLayer.cs" />
-    <Compile Include="controls\BruTilePropertyPageUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="controls\BruTilePropertyPageUserControl.Designer.cs">
-      <DependentUpon>BruTilePropertyPageUserControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="lib\CacheSettings.cs" />
     <Compile Include="lib\ConfigBingHybrid.cs" />
     <Compile Include="lib\ConfigInvertedTMS.cs" />
@@ -222,15 +203,12 @@
     <Compile Include="lib\MultipleThreadResetEvent.cs" />
     <Compile Include="lib\OsmCycleTileSource.cs" />
     <Compile Include="lib\OsmMapType.cs" />
-    <Compile Include="lib\Precache.cs" />
     <Compile Include="lib\ProjectInfo.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
     <Compile Include="lib\ConfigEsri.cs" />
-    <Compile Include="lib\ConfigGeodanGeoserver.cs" />
     <Compile Include="lib\ConfigHelper.cs" />
     <Compile Include="lib\ConfigOsm.cs" />
-    <Compile Include="lib\ConfigGeoserver.cs" />
     <Compile Include="lib\ConfigurationHelper.cs" />
     <Compile Include="lib\EnumBruTileLayer.cs" />
     <Compile Include="lib\IConfig.cs" />
@@ -264,10 +242,6 @@
       <DependentUpon>BruTileAboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="controls\BruTilePropertyPageUserControl.resx">
-      <DependentUpon>BruTilePropertyPageUserControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="forms\AddServicesForm.resx">
       <DependentUpon>AddServicesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -278,14 +252,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="forms\AddWmsCForm.resx">
       <DependentUpon>AddWmsCForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\FormPreCache.resx">
-      <DependentUpon>FormPreCache.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="forms\FormPreCacheStatus.resx">
-      <DependentUpon>FormPreCacheStatus.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -304,7 +270,6 @@
     <None Include="Resources\osm_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="readme.txt" />
     <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
     <Content Include="Resources\download.png" />
     <None Include="Resources\kml.jpg" />

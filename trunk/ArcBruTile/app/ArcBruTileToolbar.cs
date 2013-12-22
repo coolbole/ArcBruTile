@@ -106,10 +106,6 @@ namespace BruTileArcGIS
                     }
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
-                //if (Convert.ToBoolean(config.AppSettings.Settings["useSpatialCloud"].Value)) AddItem("AddSpatialCloudLayerCommand");
-                //if (Convert.ToBoolean(config.AppSettings.Settings["useGeoserver"].Value)) AddItem("AddGeoserverLayerCommand");
-
-                //AddItem("PreCacheBruTileCommand");
             }
             catch (Exception ex)
             {
