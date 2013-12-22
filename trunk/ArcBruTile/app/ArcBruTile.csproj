@@ -121,7 +121,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\SqlServer\Microsoft.ExceptionMessageBox.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="Microsoft.VisualC.STLCLR" />
     <Reference Include="PresentationFramework.Royale" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
@@ -164,10 +163,8 @@
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingRoadLayerCommand.cs" />
     <Compile Include="commands\AddServicesCommand.cs" />
-    <Compile Include="commands\AddFusionLayerCommand.cs" />
     <Compile Include="commands\AddGeoserverLayerCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
-    <Compile Include="commands\AddSpatialCloudLayerCommand.cs" />
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
     <Compile Include="commands\BingMenuDef.cs" />
     <Compile Include="commands\OsmMenuDef.cs" />
@@ -214,19 +211,12 @@
     <Compile Include="lib\CacheSettings.cs" />
     <Compile Include="lib\ConfigBingHybrid.cs" />
     <Compile Include="lib\ConfigInvertedTMS.cs" />
-    <Compile Include="lib\ConfigSpatialCloud.cs" />
     <Compile Include="lib\ConfigTms.cs" />
     <Compile Include="lib\ConfigWmsC.cs" />
     <Compile Include="lib\CustomLayerBase.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="lib\Extent.cs" />
-    <Compile Include="lib\FusionLayer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="lib\KMLIdentifyObject.cs" />
-    <Compile Include="lib\KMLReader.cs" />
-    <Compile Include="lib\KMLWebRequestStateObject.cs" />
     <Compile Include="lib\MultipleThreadResetEvent.cs" />
     <Compile Include="lib\OsmCycleTileSource.cs" />
     <Compile Include="lib\OsmMapType.cs" />
@@ -242,9 +232,6 @@
     <Compile Include="lib\ConfigurationHelper.cs" />
     <Compile Include="lib\EnumBruTileLayer.cs" />
     <Compile Include="lib\IConfig.cs" />
-    <Compile Include="lib\SpatialCloudAuthSign.cs" />
-    <Compile Include="lib\SpatialCloudSchema.cs" />
-    <Compile Include="lib\SpatialCloudTileSource.cs" />
     <Compile Include="lib\SpatialReferences.cs" />
     <Compile Include="lib\TileLoader.cs" />
     <Compile Include="lib\TileMap.cs" />

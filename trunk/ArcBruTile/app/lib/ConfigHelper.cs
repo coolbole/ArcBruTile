@@ -71,10 +71,6 @@ namespace BruTileArcGIS
             {
                 result = new ConfigGeodanGeoserver();
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.SpatialCloud)
-            {
-                result = new ConfigSpatialCloud();
-            }
 
 
             return result;

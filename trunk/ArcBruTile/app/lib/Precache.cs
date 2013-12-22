@@ -9,10 +9,8 @@ using ESRI.ArcGIS.Display;
 using BruTile.Cache;
 using System.Drawing;
 using BruTile.Web;
-using System.IO;
 using System.ComponentModel;
 using log4net;
-using System.Windows.Forms;
 
 namespace BruTileArcGIS
 {
@@ -20,8 +18,6 @@ namespace BruTileArcGIS
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
 
-        private Extent brutileExtent;
-        private IEnvelope esriExtent = null;
         private IActiveView esriActiveView = null;
         private EnumBruTileLayer enumBrutileLayer = EnumBruTileLayer.OSM;
         private ISpatialReference layerSpatialReference = null;

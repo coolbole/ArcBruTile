@@ -59,7 +59,6 @@ namespace BruTileArcGIS
             System.IO.Stream stream = response.GetResponseStream();
             StreamReader reader = new StreamReader(stream);
 
-            bool first = true;
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
@@ -69,8 +68,6 @@ namespace BruTileArcGIS
                 tileMapService.Href = line.Split(',')[1];
                 tileMapService.Version = line.Split(',')[2];
                 providers.Add(tileMapService);
-
-                first = false;
             }
 
             return providers;

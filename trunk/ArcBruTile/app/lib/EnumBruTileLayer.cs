@@ -12,7 +12,6 @@
         TMS, 
         WMSC, 
         GeoserverWms, 
-        SpatialCloud, 
         GoogleMaps, GoogleSatellite, GoogleHybrid,
         InvertedTMS
     }

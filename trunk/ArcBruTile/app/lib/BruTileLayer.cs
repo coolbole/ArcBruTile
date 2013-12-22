@@ -23,7 +23,7 @@ namespace BruTileArcGIS
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
     public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant, ILayer2, IMapLevel,
-        ILayerDrawingProperties, ILayerGeneralProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects
+        ILayerDrawingProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects
         , IDisplayFilterManager
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
@@ -54,8 +54,6 @@ namespace BruTileArcGIS
         private short contrast;
         private bool supportsInteractive = true;
         private short transparency = 0;
-        IScreenDisplay screenDisplay;
-        bool displayChanged = false;
 
         #endregion
 
@@ -539,37 +537,6 @@ namespace BruTileArcGIS
             set
             {
                 drawingPropsDirty = value;
-            }
-        }
-
-        #endregion
-
-        #region ILayerGeneralProperties Members
-        private double lastMaximumScale;
-        private double lastMinimumSchale;
-        private string layerDescription;
-
-
-        public double LastMaximumScale
-        {
-            get { return lastMaximumScale; }
-        }
-
-        public double LastMinimumScale
-        {
-            get { return LastMaximumScale; }
-        }
-
-        public string LayerDescription
-        {
-            get
-            {
-                return layerDescription;
-                throw new NotImplementedException();
-            }
-            set
-            {
-                layerDescription = value;
             }
         }
 

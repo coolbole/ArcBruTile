@@ -38,7 +38,6 @@ namespace BruTileArcGIS
         private static ITileSource tileSource;
         bool needReproject = false;
         IList<TileInfo> tiles=null;
-        IList<TileInfo> oldDrawnTiles = null;
         private IDisplay display;
 
         //!!!static ManualResetEvent[] doneEvents;
