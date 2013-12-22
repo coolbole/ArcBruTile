@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using ESRI.ArcGIS.Framework;
 
-namespace BrutileArcGIS
+namespace BrutileArcGIS.Lib
 {
     /// <summary>
     /// see blog.davebouwman.net[slash]default,date,2007-10-04.aspx
@@ -13,16 +11,16 @@ namespace BrutileArcGIS
     /// </summary>
     public class ArcMapWindow : System.Windows.Forms.IWin32Window
     {
-        private IApplication m_app;
+        private readonly IApplication _app;
 
         public ArcMapWindow(IApplication application)
         {
-            m_app = application;
+            _app = application;
         }
 
-        public System.IntPtr Handle
+        public IntPtr Handle
         {
-            get { return new IntPtr(m_app.hWnd); }
+            get { return new IntPtr(_app.hWnd); }
         }
     }
 }

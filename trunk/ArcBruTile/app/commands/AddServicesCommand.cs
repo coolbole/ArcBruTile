@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using BrutileArcGIS.Lib;
+using BrutileArcGIS.lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
@@ -120,7 +122,7 @@ namespace BruTileArcGIS
 
                 AddServicesForm addServicesForm = new AddServicesForm();
 
-                DialogResult result = addServicesForm.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
+                DialogResult result = addServicesForm.ShowDialog(new ArcMapWindow(application));
                 //DialogResult result = addServicesForm.ShowDialog();
                 if (result == DialogResult.OK)
                 {

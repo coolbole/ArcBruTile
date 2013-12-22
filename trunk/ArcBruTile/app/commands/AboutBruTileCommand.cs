@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
@@ -110,7 +111,7 @@ namespace BruTileArcGIS
         public override void OnClick()
         {
             BruTileAboutBox bruTileAboutBox = new BruTileAboutBox();
-            bruTileAboutBox.ShowDialog(new BrutileArcGIS.ArcMapWindow(application));
+            bruTileAboutBox.ShowDialog(new ArcMapWindow(application));
         }
 
         #endregion

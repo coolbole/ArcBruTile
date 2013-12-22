@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using BruTileArcGIS;
 using log4net;
 
 namespace BruTileArcGIS

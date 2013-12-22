@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml.Linq;
 using System.Xml;
+using BrutileArcGIS.lib;
 
 namespace BruTileArcGIS
 {

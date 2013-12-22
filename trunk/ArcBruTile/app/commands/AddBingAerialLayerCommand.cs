@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using BrutileArcGIS.lib;
 using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;

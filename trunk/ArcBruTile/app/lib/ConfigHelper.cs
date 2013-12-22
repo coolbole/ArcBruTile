@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using BrutileArcGIS;
-using BruTile.Web;
+﻿using BruTile.Web;
+using BrutileArcGIS.lib;
 
 namespace BruTileArcGIS
 {

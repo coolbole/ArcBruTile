@@ -101,7 +101,6 @@
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Provider Description:";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // linkLabel1
             // 
@@ -181,7 +180,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add TMS Provider";
-            this.Load += new System.EventHandler(this.AddProviderForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using BrutileArcGIS.lib;
 using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.esriSystem;
@@ -15,10 +15,9 @@ using System.IO;
 using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.DataSourcesRaster;
 using ESRI.ArcGIS.Display;
-using BrutileArcGIS;
 using log4net;
-using ESRI.ArcGIS.ADF.COMSupport;
 using System.Drawing.Imaging;
+using Extent = BruTile.Extent;
 
 namespace BruTileArcGIS
 {
@@ -40,13 +39,7 @@ namespace BruTileArcGIS
         bool needReproject = false;
         List<TileInfo> tiles=null;
         private IDisplay display;
-
-        //!!!static ManualResetEvent[] doneEvents;
-        //!!!static MultipleThreadResetEvent multipleThreadResetEvent;
         static WebTileProvider tileProvider;
-
-
-        private Random random = new Random((int)DateTime.Now.Ticks);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BruTileHelper"/> class.
@@ -59,11 +52,11 @@ namespace BruTileArcGIS
         }
 
 
-        public void Draw(ESRI.ArcGIS.Framework.IApplication application,
-                         ESRI.ArcGIS.Carto.IActiveView activeView,
+        public void Draw(IApplication application,
+                         IActiveView activeView,
                          IConfig config,
-                         ESRI.ArcGIS.esriSystem.ITrackCancel trackCancel,
-                         ESRI.ArcGIS.Geometry.ISpatialReference layerSpatialReference,
+                         ITrackCancel trackCancel,
+                         ISpatialReference layerSpatialReference,
                          EnumBruTileLayer enumBruTileLayer,
                          ref int currentLevel, ITileSource tileSource, IDisplay display)
         {
@@ -74,7 +67,7 @@ namespace BruTileArcGIS
             BruTileHelper.trackCancel = trackCancel;
             BruTileHelper.layerSpatialReference = layerSpatialReference;
             BruTileHelper.enumBruTileLayer = enumBruTileLayer;
-            this._currentLevel = currentLevel;
+            _currentLevel = currentLevel;
             fileCache = GetFileCache(config);
             tileProvider = (WebTileProvider)tileSource.Provider;
             this.display = display;
@@ -214,11 +207,6 @@ namespace BruTileArcGIS
                     object Missing = Type.Missing;
                     rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
                 }
-
-                // this is needed for ArcGIS 9.2 only
-                IRasterProps rasterProps = (IRasterProps)rl.Raster;
-                rasterProps.Height = schema.Height;
-                rasterProps.Width = schema.Width;
 
                 // Fix for issue "Each 256x256 tile rendering differently causing blockly effect."
                 // In 10.1 the StrecthType for rasters seems to have changed from esriRasterStretch_NONE to "Percent Clip",
@@ -412,25 +400,25 @@ namespace BruTileArcGIS
             IEnvelope env = Projector.ProjectEnvelope(activeView.Extent, schema.Srs);
             logger.Debug("Tilesource schema srs: " + schema.Srs);
             logger.Debug("Projected envelope: xmin:" + env.XMin.ToString() +
-                        ", ymin:" + env.YMin.ToString() +
-                        ", xmax:" + env.YMin.ToString() +
-                        ", ymax:" + env.YMin.ToString()
+                        ", ymin:" + env.YMin +
+                        ", xmax:" + env.YMin +
+                        ", ymax:" + env.YMin
                         );
 
-            int mapWidth = activeView.ExportFrame.right;
-            int mapHeight = activeView.ExportFrame.bottom;
-            float resolution = GetMapResolution(env, mapWidth);
-            logger.Debug("Map resolution: " + resolution.ToString());
+            var mapWidth = activeView.ExportFrame.right;
+            var mapHeight = activeView.ExportFrame.bottom;
+            var resolution = GetMapResolution(env, mapWidth);
+            logger.Debug("Map resolution: " + resolution);
 
-            PointF centerPoint = GetCenterPoint(env);
+            var centerPoint = GetCenterPoint(env);
 
-            Transform transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
-            int level = BruTile.Utilities.GetNearestLevel(schema.Resolutions, (double)transform.Resolution);
-            logger.Debug("Current level: " + level.ToString());
+            var transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
+            var level = Utilities.GetNearestLevel(schema.Resolutions, transform.Resolution);
+            logger.Debug("Current level: " + level);
 
             _currentLevel = level;
 
-            IEnumerable<TileInfo> tiles = schema.GetTilesInView(transform.Extent, level);
+            var tiles = schema.GetTilesInView(transform.Extent, level);
 
             return tiles.ToList();
         }

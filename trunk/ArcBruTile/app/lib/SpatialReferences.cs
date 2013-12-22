@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ESRI.ArcGIS.Geometry;
+﻿using ESRI.ArcGIS.Geometry;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class SpatialReferences
     {
-        public SpatialReferences()
-        {
-
-        }
-
         public ISpatialReference GetSpatialReference(string epsgCode)
         {
             ISpatialReference res=null;

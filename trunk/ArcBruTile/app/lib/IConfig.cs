@@ -1,6 +1,6 @@
 ﻿using BruTile;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public interface IConfig
     {

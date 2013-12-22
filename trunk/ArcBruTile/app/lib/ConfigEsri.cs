@@ -1,6 +1,7 @@
-﻿using System.Linq;
-using BruTile;
+﻿using BruTile;
 using BruTile.Web;
+using BrutileArcGIS.lib;
+using Extent = BruTile.Extent;
 
 namespace BruTileArcGIS
 {

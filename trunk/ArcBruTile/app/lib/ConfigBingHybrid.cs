@@ -1,8 +1,7 @@
-﻿using System;
-using BruTile.Cache;
-using BruTile.Web;
+﻿using BruTile.Web;
 using BruTile;
 using System.Configuration;
+using BrutileArcGIS.lib;
 
 namespace BruTileArcGIS
 {

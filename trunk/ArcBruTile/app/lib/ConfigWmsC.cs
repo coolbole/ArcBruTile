@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BruTile;
 using BruTileArcGIS;
-using BruTile;
-using BruTile.Web;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigWmsC: IConfig
     {
-        private ITileSource tileSource;
+        private readonly ITileSource _tileSource;
+
         public ConfigWmsC(ITileSource tileSource)
         {
-            this.tileSource = tileSource;
+            _tileSource = tileSource;
         }
 
         public ITileSource CreateTileSource()
         {
-            return tileSource;
+            return _tileSource;
         }
-
-
     }
-
 }

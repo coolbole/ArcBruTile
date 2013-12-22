@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.Runtime.InteropServices;
 using System;
+using BrutileArcGIS.lib;
 using log4net;
 using log4net.Config;
 using System.IO;

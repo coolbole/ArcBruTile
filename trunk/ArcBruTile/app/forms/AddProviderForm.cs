@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Net;
-using System.Net.Sockets;
 using System.IO;
 using System.Diagnostics;
-using System.Configuration;
+using BrutileArcGIS.lib;
 
 namespace BruTileArcGIS
 {
@@ -108,11 +104,6 @@ namespace BruTileArcGIS
             }
         }
 
-        private void rdbTMS_CheckedChanged(object sender, EventArgs e)
-        {
-            this.enumBruTileLayer = EnumBruTileLayer.TMS;
-        }
-
         private void tbName_Validating(object sender, CancelEventArgs e)
         {
             if (tbName.Text == String.Empty)
@@ -153,15 +144,6 @@ namespace BruTileArcGIS
             return (Uri.TryCreate(url, UriKind.Absolute, out result));
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void AddProviderForm_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void lbProviders_SelectedIndexChanged(object sender, EventArgs e)
         {

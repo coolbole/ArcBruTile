@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using System.Configuration;
-using System.Reflection;
+using System.IO;
+using BruTileArcGIS;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public static class CacheSettings
     {
@@ -15,7 +13,7 @@ namespace BruTileArcGIS
             string servicesConfigDir = config.AppSettings.Settings["servicesConfigDir"].Value;
             if (servicesConfigDir.Contains("%"))
             {
-                servicesConfigDir = CacheSettings.ReplaceEnvironmentVar(servicesConfigDir);
+                servicesConfigDir = ReplaceEnvironmentVar(servicesConfigDir);
             }
 
             if (!Directory.Exists(servicesConfigDir))
@@ -32,7 +30,7 @@ namespace BruTileArcGIS
             string tileDir = config.AppSettings.Settings["tileDir"].Value;
             if(tileDir.Contains("%"))
             {
-                tileDir = CacheSettings.ReplaceEnvironmentVar(tileDir);
+                tileDir = ReplaceEnvironmentVar(tileDir);
             }
 
             return tileDir;

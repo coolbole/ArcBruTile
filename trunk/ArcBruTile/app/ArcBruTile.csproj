@@ -203,7 +203,6 @@
     <Compile Include="lib\MultipleThreadResetEvent.cs" />
     <Compile Include="lib\OsmCycleTileSource.cs" />
     <Compile Include="lib\OsmMapType.cs" />
-    <Compile Include="lib\ProjectInfo.cs" />
     <Compile Include="lib\Projector.cs" />
     <Compile Include="lib\ConfigBing.cs" />
     <Compile Include="lib\ConfigEsri.cs" />

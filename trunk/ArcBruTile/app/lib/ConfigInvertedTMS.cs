@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BruTile.Web;
-using BruTile.PreDefined;
+﻿using BruTile.PreDefined;
 using BruTile;
 using System.Net;
 using System.IO;
 using BruTile.Web.TmsService;
+using BrutileArcGIS.lib;
 
 namespace BruTileArcGIS
 {

@@ -2,7 +2,7 @@
 using BruTile.PreDefined;
 using BruTile.Web;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class OsmCycleTileSource : TmsTileSource
     {

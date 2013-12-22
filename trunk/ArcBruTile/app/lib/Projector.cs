@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BrutileArcGIS.lib;
 using ESRI.ArcGIS.Geometry;
 using BruTileArcGIS;
 
