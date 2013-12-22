@@ -4,13 +4,6 @@ using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Framework;
-using System.Windows.Forms;
-using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.esriSystem;
-using System.Xml.Serialization;
-using System.IO;
-using System.Reflection;
-using log4net.Core;
 using log4net;
 
 namespace BruTileArcGIS
@@ -83,7 +76,7 @@ namespace BruTileArcGIS
         public AboutBruTileCommand()
         {
             base.m_category = "BruTile";
-            base.m_caption = "&About ArcBruTile!!!...";
+            base.m_caption = "&About ArcBruTile...";
             base.m_message = "About BruTile...";
             base.m_toolTip = base.m_caption;
             base.m_name = "AboutBruTileCommand";
