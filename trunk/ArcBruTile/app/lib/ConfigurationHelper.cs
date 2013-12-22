@@ -2,14 +2,15 @@
 using System.Configuration;
 using System.Reflection;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigurationHelper
     {
         public static Configuration GetConfig()
         {
-            Configuration config = null;
-            string configFileName = Assembly.GetExecutingAssembly().Location + ".config";
+            Configuration config;
+
+            var configFileName = Assembly.GetExecutingAssembly().Location + ".config";
             var fileMap = new ExeConfigurationFileMap();
             try
             {

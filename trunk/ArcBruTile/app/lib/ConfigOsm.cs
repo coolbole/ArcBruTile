@@ -1,8 +1,7 @@
 ﻿using BruTile;
 using BruTile.Web;
-using BrutileArcGIS.lib;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigOsm : IConfig
     {

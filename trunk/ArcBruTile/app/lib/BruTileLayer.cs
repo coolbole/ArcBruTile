@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using BruTile;
-using BrutileArcGIS.lib;
+using BruTileArcGIS;
+using ESRI.ArcGIS.ADF.COMSupport;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Display;
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
-using ESRI.ArcGIS.Geometry;
-using Microsoft.SqlServer.MessageBox;
 using ESRI.ArcGIS.Geodatabase;
-using System.Drawing;
-using ESRI.ArcGIS.ADF.COMSupport;
+using ESRI.ArcGIS.Geometry;
 using log4net;
+using Microsoft.SqlServer.MessageBox;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
-    /// <summary>
-    /// Represents a custom BruTile Layer
-    /// </summary>
     [Guid("1EF3586D-8B42-4921-9958-A73F4833A6FA")]
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
@@ -28,7 +25,6 @@ namespace BruTileArcGIS
         , IDisplayFilterManager
     {
         private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-        #region private members
         private IApplication application;
         private IEnvelope envelope;
         private bool cached=false;
@@ -56,16 +52,6 @@ namespace BruTileArcGIS
         private bool supportsInteractive = true;
         private short transparency = 0;
 
-        #endregion
-
-        #region constructors
-
-        /// <summary>
-        /// Empty constructor. 
-        /// likely this contructor is only called when loading a mxd file so
-        /// we should be able to leave it half contructed at this point and let
-        /// load handle the rest.
-        /// </summary>
         public BruTileLayer()
         {
             Type t = Type.GetTypeFromProgID("esriFramework.AppRef");
@@ -79,17 +65,11 @@ namespace BruTileArcGIS
         {
             config = ConfigHelper.GetConfig(EnumBruTileLayer, TmsUrl, overwriteUrls);
 
-            this.application = app;
-            this.enumBruTileLayer = EnumBruTileLayer;
+            application = app;
+            enumBruTileLayer = EnumBruTileLayer;
             InitializeLayer();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BruTileLayer"/> class.
-        /// </summary>
-        /// <param name="map">The map.</param>
-        /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        /// <param name="cacheDir">The cache dir.</param>
         public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
             config = ConfigHelper.GetConfig(enumBruTileLayer); ;
@@ -110,12 +90,12 @@ namespace BruTileArcGIS
 
         private void InitializeLayer()
         {
-            IMxDocument mxdoc = (IMxDocument)application.Document;
-            this.map = mxdoc.FocusMap;
-            this.cacheDir = CacheSettings.GetCacheFolder();
-            this.tileTimeOut = CacheSettings.GetTileTimeOut();
+            var mxdoc = (IMxDocument)application.Document;
+            map = mxdoc.FocusMap;
+            cacheDir = CacheSettings.GetCacheFolder();
+            tileTimeOut = CacheSettings.GetTileTimeOut();
 
-            SpatialReferences spatialReferences = new SpatialReferences();
+            var spatialReferences = new SpatialReferences();
 
             tileSource=config.CreateTileSource();
             schema = tileSource.Schema;
@@ -139,17 +119,6 @@ namespace BruTileArcGIS
             displayFilter = new TransparencyDisplayFilterClass();
         }
 
-
-        #endregion
-
-        #region public methods
-
-        /// <summary>
-        /// Draws the layer.
-        /// </summary>
-        /// <param name="DrawPhase">The draw phase.</param>
-        /// <param name="Display">The display.</param>
-        /// <param name="TrackCancel">The track cancel.</param>
         public void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
         {
             if (drawPhase == esriDrawPhase.esriDPGeography)
@@ -211,121 +180,74 @@ namespace BruTileArcGIS
 
         private void DrawAttribute()
         {
-            IActiveView activeView = map as IActiveView;
+            var activeView = map as IActiveView;
             // Now draw attribution...
-            IPoint copyrightPoint = new PointClass();
+            var copyrightPoint = new PointClass();
             
             copyrightPoint.SpatialReference = this.layerSpatialReference;
-            copyrightPoint = activeView.Extent.LowerLeft;
+            //copyrightPoint = activeView.Extent.LowerLeft;
             copyrightPoint.X = copyrightPoint.X + (activeView.Extent.LowerRight.X - activeView.Extent.LowerLeft.X) / 15;
             copyrightPoint.Y = copyrightPoint.Y + (activeView.Extent.UpperLeft.Y - activeView.Extent.LowerLeft.Y) / 30;
-            ITextSymbol textSymbol = new TextSymbolClass();
-            System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 12, FontStyle.Bold);
+            var textSymbol = new TextSymbolClass();
+            var drawFont = new Font("Arial", 12, FontStyle.Bold);
             textSymbol.Font = (stdole.IFontDisp)OLE.GetIFontDispFromFont(drawFont);
             activeView.ScreenDisplay.SetSymbol((ISymbol)textSymbol);
             activeView.ScreenDisplay.DrawText(copyrightPoint, "ArcBruTile");
             activeView.PartialRefresh(esriViewDrawPhase.esriViewGraphics, null, activeView.Extent);
         }
 
-        /// <summary>
-        /// Get_s the tip text.
-        /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
-        /// <param name="Tolerance">The tolerance.</param>
-        /// <returns></returns>
         public string get_TipText(double x, double y, double Tolerance)
         {
             return "brutile";
         }
 
-        #endregion
-
-        #region properties
-
-        /// <summary>
-        /// Gets or sets the area of interest.
-        /// </summary>
-        /// <value>The area of interest.</value>
-        public ESRI.ArcGIS.Geometry.IEnvelope AreaOfInterest
+        public IEnvelope AreaOfInterest
         {
-            get{return this.envelope;}
-            set{this.envelope=value;}
+            get{return envelope;}
+            set{envelope=value;}
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="BruTileLayer"/> is cached.
-        /// </summary>
-        /// <value><c>true</c> if cached; otherwise, <c>false</c>.</value>
         public bool Cached
         {
             get{return cached;}
             set{cached = value;}
         }
 
-        /// <summary>
-        /// Gets or sets the EnumBruTile.
-        /// </summary>
-        /// <value>The enum bru tile layer.</value>
         public EnumBruTileLayer EnumBruTileLayer
         {
             get { return enumBruTileLayer; }
             set { enumBruTileLayer = value; }
         }
 
-
-        /// <summary>
-        /// Gets or sets the maximum scale.
-        /// </summary>
-        /// <value>The maximum scale.</value>
         public double MaximumScale
         {
             get{return maximumScale;}
             set{maximumScale = value;}
         }
 
-        /// <summary>
-        /// Gets or sets the minimum scale.
-        /// </summary>
-        /// <value>The minimum scale.</value>
         public double MinimumScale
         {
             get{return minimumScale;}
             set{minimumScale = value;}
         }
 
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        /// <value>The name.</value>
         public string Name
         {
             get{return name;}
             set{name = value;}
         }
 
-        /// <summary>
-        /// Gets a value indicating whether [scale range read only].
-        /// </summary>
-        /// <value><c>true</c> if [scale range read only]; otherwise, <c>false</c>.</value>
         public bool ScaleRangeReadOnly
         {
             get {return scaleRangeReadOnly; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether [show tips].
-        /// </summary>
-        /// <value><c>true</c> if [show tips]; otherwise, <c>false</c>.</value>
         public bool ShowTips
         {
             get{return showTips;}
             set{showTips = value;}
         }
 
-        /// <summary>
-        /// gets or sets the current level
-        /// </summary>
         public int CurrentLevel
         {
             get { return currentLevel; }
@@ -333,38 +255,22 @@ namespace BruTileArcGIS
         }
 
 
-        /// <summary>
-        /// Sets the spatial reference.
-        /// </summary>
-        /// <value>The spatial reference.</value>
-        public ESRI.ArcGIS.Geometry.ISpatialReference SpatialReference
+        public ISpatialReference SpatialReference
         {
             set { layerSpatialReference=value; }
             get { return layerSpatialReference; }
         }
 
-        /// <summary>
-        /// Gets the supported draw phases.
-        /// </summary>
-        /// <value>The supported draw phases.</value>
         public int SupportedDrawPhases
         {
             get { return supportedDrawPhases; }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="BruTileLayer"/> is valid.
-        /// </summary>
-        /// <value><c>true</c> if valid; otherwise, <c>false</c>.</value>
         public bool Valid
         {
             get { return true; }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="BruTileLayer"/> is visible.
-        /// </summary>
-        /// <value><c>true</c> if visible; otherwise, <c>false</c>.</value>
         public bool Visible
         {
             get{return visible;}
@@ -378,14 +284,6 @@ namespace BruTileArcGIS
             }
         }
 
-
-
-
-       #endregion
-        /// <summary>
-        /// Gets the extent.
-        /// </summary>
-        /// <value>The extent.</value>
         private IEnvelope GetDefaultEnvelope()
         {
             BruTile.Extent ext = schema.Extent;
@@ -398,12 +296,6 @@ namespace BruTileArcGIS
             return envelope;
         }
 
-
-        #region IGeoDataset Members
-        /// <summary>
-        /// Gets the extent.
-        /// </summary>
-        /// <value>The extent.</value>
         public IEnvelope Extent
         {
             get 
@@ -411,10 +303,6 @@ namespace BruTileArcGIS
                 return GetDefaultEnvelope();
             }
         }
-
-        #endregion
-
-        #region ILayerPosition Members
 
         public double LayerWeight
         {
@@ -428,9 +316,6 @@ namespace BruTileArcGIS
             }
         }
 
-        #endregion
-
-        #region "IPersistVariant Implementations"
         public UID ID
         {
             get
@@ -504,11 +389,6 @@ namespace BruTileArcGIS
             }
 
         }
-
-
-        #endregion
-
-        #region IMapLevel Members
         private int mapLevel;
 
         public int MapLevel
@@ -523,10 +403,6 @@ namespace BruTileArcGIS
             }
         }
 
-        #endregion
-
-        #region ILayerDrawingProperties Members
-
         private bool drawingPropsDirty;
 
         public bool DrawingPropsDirty
@@ -540,10 +416,6 @@ namespace BruTileArcGIS
                 drawingPropsDirty = value;
             }
         }
-
-        #endregion
-
-        #region IDisplayAdmin2 Members
 
         public bool DoesBlending
         {
@@ -560,9 +432,6 @@ namespace BruTileArcGIS
             get { return true; }
         }
 
-        #endregion
-
-        #region ISymbolLevels Members
         private bool useSymbolLevels;
 
         public bool UseSymbolLevels
@@ -576,10 +445,6 @@ namespace BruTileArcGIS
                 useSymbolLevels = value;
             }
         }
-
-        #endregion
-
-        #region ILayerEffects Members
 
         public short Brightness
         {
@@ -644,9 +509,6 @@ namespace BruTileArcGIS
             }
         }
 
-        #endregion
-
-        #region IDisplayFilterManager Members
         private ITransparencyDisplayFilter displayFilter;
 
         public IDisplayFilter DisplayFilter
@@ -660,7 +522,5 @@ namespace BruTileArcGIS
                 displayFilter = (ITransparencyDisplayFilter) value;
             }
         }
-
-        #endregion
     }
 }

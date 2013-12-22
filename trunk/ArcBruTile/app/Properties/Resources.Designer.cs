@@ -103,29 +103,9 @@ namespace BrutileArcGIS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap kml {
-            get {
-                object obj = ResourceManager.GetObject("kml", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap osm_logo {
             get {
                 object obj = ResourceManager.GetObject("osm_logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SpatialCloud {
-            get {
-                object obj = ResourceManager.GetObject("SpatialCloud", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

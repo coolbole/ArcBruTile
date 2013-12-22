@@ -1,11 +1,10 @@
-﻿using BruTile.PreDefined;
-using BruTile;
+﻿using System.IO;
 using System.Net;
-using System.IO;
+using BruTile;
+using BruTile.PreDefined;
 using BruTile.Web.TmsService;
-using BrutileArcGIS.lib;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigInvertedTMS : IConfig
     {

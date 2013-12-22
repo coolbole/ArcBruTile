@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using BruTileArcGIS;
 
 namespace BrutileArcGIS.lib
 {
@@ -9,8 +8,8 @@ namespace BrutileArcGIS.lib
     {
         public static string GetServicesConfigDir()
         {
-            Configuration config = ConfigurationHelper.GetConfig();
-            string servicesConfigDir = config.AppSettings.Settings["servicesConfigDir"].Value;
+            var config = ConfigurationHelper.GetConfig();
+            var servicesConfigDir = config.AppSettings.Settings["servicesConfigDir"].Value;
             if (servicesConfigDir.Contains("%"))
             {
                 servicesConfigDir = ReplaceEnvironmentVar(servicesConfigDir);
@@ -44,18 +43,12 @@ namespace BrutileArcGIS.lib
 
         }
 
-
-        /// <summary>
-        /// Replaces an environment variable to a string
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         private static string ReplaceEnvironmentVar(string path)
         {
-            int firstIndex = path.IndexOf("%");
-            int lastIndex = path.LastIndexOf("%");
-            string envVar = path.Substring(firstIndex+1, lastIndex - firstIndex-1);
-            string environmentVariable = Environment.GetEnvironmentVariable(envVar);
+            var firstIndex = path.IndexOf("%");
+            var lastIndex = path.LastIndexOf("%");
+            var envVar = path.Substring(firstIndex+1, lastIndex - firstIndex-1);
+            var environmentVariable = Environment.GetEnvironmentVariable(envVar);
             path = path.Replace("%"+envVar+"%", environmentVariable);
             return path;
         }

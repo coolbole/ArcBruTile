@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BruTileArcGIS
+﻿namespace BruTileArcGIS
 {
-    /**
-     * Todo: Use BruTile TileMap? 
-     */ 
     public class TileMap
     {
         public TileMap()

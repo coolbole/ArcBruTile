@@ -1,9 +1,8 @@
-﻿using BruTile.Web;
+﻿using System.Configuration;
 using BruTile;
-using System.Configuration;
-using BrutileArcGIS.lib;
+using BruTile.Web;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigBing : IConfig
     {
@@ -16,13 +15,10 @@ namespace BruTileArcGIS
 
         public ITileSource CreateTileSource()
         {
-            Configuration config = ConfigurationHelper.GetConfig();
+            var config = ConfigurationHelper.GetConfig();
 
-            string bingToken=config.AppSettings.Settings["BingToken"].Value;
-            string bingUrl = config.AppSettings.Settings["BingUrl"].Value;
-            //MapType mapType = MapType.Roads;
-            //string bingMapType = config.AppSettings.Settings["BingMapType"].Value;
-            //MapType mapType = (MapType)Enum.Parse(typeof(MapType), bingMapType,false);
+            var bingToken=config.AppSettings.Settings["BingToken"].Value;
+            var bingUrl = config.AppSettings.Settings["BingUrl"].Value;
 
             return new BingTileSource(
                 bingUrl,bingToken,mapType);

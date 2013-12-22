@@ -1,19 +1,18 @@
-﻿using BruTile.Web;
+﻿using System.Configuration;
 using BruTile;
-using System.Configuration;
-using BrutileArcGIS.lib;
+using BruTile.Web;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigBingHybrid : IConfig
     {
         public ITileSource CreateTileSource()
         {
-            Configuration config = ConfigurationHelper.GetConfig();
+            var config = ConfigurationHelper.GetConfig();
 
-            string bingToken = config.AppSettings.Settings["BingToken"].Value;
-            string bingUrl = config.AppSettings.Settings["BingUrl"].Value;
-            BingMapType mapType = BingMapType.Hybrid;
+            var bingToken = config.AppSettings.Settings["BingToken"].Value;
+            var bingUrl = config.AppSettings.Settings["BingUrl"].Value;
+            const BingMapType mapType = BingMapType.Hybrid;
 
             return new BingTileSource(
                 bingUrl, bingToken, mapType);

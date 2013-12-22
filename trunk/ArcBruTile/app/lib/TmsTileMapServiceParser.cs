@@ -1,48 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Net;
+using System.Text;
 using System.Xml;
+using BruTileArcGIS;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class TmsTileMapServiceParser
     {
-        public static List<TileMap> GetTileMaps(string Url)
+        public static List<TileMap> GetTileMaps(string url)
         {
-            WebClient client = new WebClient();
+            var client = new WebClient();
             // add useragent to request
             client.Headers.Add("user-agent", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14");
 
-            IWebProxy proxy = WebRequest.GetSystemWebProxy();
+            var proxy = WebRequest.GetSystemWebProxy();
             proxy.Credentials = CredentialCache.DefaultCredentials;
             client.Proxy = proxy;
 
-            byte[] theBytes = client.DownloadData(Url);
+            byte[] theBytes = client.DownloadData(url);
             string test = Encoding.UTF8.GetString(theBytes);
             client.Dispose();
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(test);
 
-            XmlNodeList nodes=doc.GetElementsByTagName("TileMap");
+            var nodes=doc.GetElementsByTagName("TileMap");
             
-            List<TileMap> tilemaps=new List<TileMap>();
+            var tilemaps=new List<TileMap>();
             foreach (XmlNode node in nodes)
             {
-                TileMap tileMap=new TileMap();
-                tileMap.Href = node.Attributes["href"].Value;
-                tileMap.Srs = node.Attributes["srs"].Value;
-                tileMap.Profile = node.Attributes["profile"].Value;
-                tileMap.Title= node.Attributes["title"].Value;
-                tileMap.Title = node.Attributes["title"].Value;
-                if (node.Attributes["type"] != null)
+                var tileMap=new TileMap();
+                if (node.Attributes != null)
                 {
-                    tileMap.Type = node.Attributes["type"].Value;
-                }
-                if (node.Attributes["overwriteurls"] != null)
-                {
-                    tileMap.OverwriteUrls = bool.Parse(node.Attributes["overwriteurls"].Value);
+                    tileMap.Href = node.Attributes["href"].Value;
+                    tileMap.Srs = node.Attributes["srs"].Value;
+                    tileMap.Profile = node.Attributes["profile"].Value;
+                    tileMap.Title= node.Attributes["title"].Value;
+                    tileMap.Title = node.Attributes["title"].Value;
+                    if (node.Attributes["type"] != null)
+                    {
+                        tileMap.Type = node.Attributes["type"].Value;
+                    }
+                    if (node.Attributes["overwriteurls"] != null)
+                    {
+                        tileMap.OverwriteUrls = bool.Parse(node.Attributes["overwriteurls"].Value);
+                    }
                 }
 
 

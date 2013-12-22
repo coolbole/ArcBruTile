@@ -269,10 +269,7 @@
     <None Include="Resources\osm_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\AddGeoserverLayerCommand.bmp" />
     <Content Include="Resources\download.png" />
-    <None Include="Resources\kml.jpg" />
-    <Content Include="Resources\SpatialCloud.png" />
     <Content Include="Resources\tms.jpg" />
     <Content Include="services\arcbrutile_sample_services.xml">
       <SubType>Designer</SubType>

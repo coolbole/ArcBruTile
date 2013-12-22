@@ -1,5 +1,4 @@
 ﻿using BruTile;
-using BruTileArcGIS;
 
 namespace BrutileArcGIS.lib
 {

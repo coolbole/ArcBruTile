@@ -1,63 +1,13 @@
-﻿// Copyright 2008 - Paul den Dulk (Geodan)
-// 
-// This file is part of SharpMap.
-// SharpMap is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-// 
-// SharpMap is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-
-// You should have received a copy of the GNU Lesser General Public License
-// along with SharpMap; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-
-using System;
+﻿using System;
+using BruTileArcGIS;
 using ESRI.ArcGIS.Framework;
-using ESRI.ArcGIS.esriSystem;
-using ESRI.ArcGIS.ArcMapUI;
-using ESRI.ArcGIS.CartoUI;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     static class Util
     {
-
-        /// <summary>
-        /// Sets the property page.
-        /// </summary>
-        /// <param name="layer">The layer.</param>
         public static void SetBruTilePropertyPage(IApplication application, BruTileLayer layer)
         {
-
-            //IBasicDocument basicDocument = application.Document as IBasicDocument;
-
-            //ISet propertyObjects = new SetClass();
-            //propertyObjects.Add(basicDocument.ActiveView);
-            //propertyObjects.Add(layer); //or check ContextItem is a layer?
-           // propertyObjects.Add(application); //optional?
-
-            //IComPropertySheet propertySheet = new ComPropertySheetClass();
-            //propertySheet.Title = "BruTile Property sheet";
-            //propertySheet.HideHelpButton = true;
-            //propertySheet.ClearCategoryIDs();
-            //propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
-            //propertySheet.AddPage(new BruTilePropertyPageUserControl()); //my custom page
-            //LayerDrawingPropertyPage layerDrawingPropertyPage = new LayerDrawingPropertyPageClass();
-            //propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
-            //propertySheet.AddPage(layerDrawingPropertyPage);
-
-            //FeatureLayerDisplayPropertyPageClass displayPropertyPage = new FeatureLayerDisplayPropertyPageClass();
-            //propertySheet.AddCategoryID(new UIDClass()); //a dummy empty UID
-            //propertySheet.AddPage(displayPropertyPage);
-            
-            //Pass in layer, active view and the application
-            //propertyObjects.Add(layer);
-            //propertyObjects.Reset();
-            //propertySheet.EditProperties(propertyObjects, application.hWnd);
         }
 
         public static string GetAppDir()
@@ -73,18 +23,13 @@ namespace BruTileArcGIS
 
         public static string AppName
         {
-            get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Name.ToString(); }
+            get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Name; }
         }
 
         public static string DefaultCacheDir
         {
             get { return "c:\\TileCache"; }
         }
-
-        //public static Extent ToExtent(Rect rect)
-        //{
-        //    return new Extent(rect.Left, rect.Top, rect.Right, rect.Bottom);
-        //}
 
     }
 }

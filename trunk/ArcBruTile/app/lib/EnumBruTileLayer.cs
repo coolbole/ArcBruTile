@@ -7,8 +7,6 @@
         BingRoad, BingAerial, BingHybrid, 
         TMS, 
         WMSC, 
-        GeoserverWms, 
-        GoogleMaps, GoogleSatellite, GoogleHybrid,
         InvertedTMS
     }
 }

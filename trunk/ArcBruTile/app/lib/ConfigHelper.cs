@@ -1,7 +1,7 @@
 ﻿using BruTile.Web;
-using BrutileArcGIS.lib;
+using BruTileArcGIS;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class ConfigHelper
     {

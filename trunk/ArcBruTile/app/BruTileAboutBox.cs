@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Net;
 using System.Diagnostics;
 
 namespace BruTileArcGIS
@@ -14,12 +10,10 @@ namespace BruTileArcGIS
         public BruTileAboutBox()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", AssemblyTitle);
-            this.labelProductName.Text = AssemblyProduct;
-            this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
+            Text = String.Format("About {0}", AssemblyTitle);
+            labelProductName.Text = AssemblyProduct;
+            labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
         }
-
-        #region Assembly Attribute Accessors
 
         public string AssemblyTitle
         {
@@ -97,7 +91,6 @@ namespace BruTileArcGIS
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
             }
         }
-        #endregion
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
