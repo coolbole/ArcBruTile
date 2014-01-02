@@ -5,7 +5,7 @@ using BruTile;
 using BruTile.PreDefined;
 using BruTile.Web.TmsService;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class ConfigInvertedTMS : IConfig
     {

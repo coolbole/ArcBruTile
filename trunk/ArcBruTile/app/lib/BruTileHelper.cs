@@ -18,7 +18,7 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class BruTileHelper
     {

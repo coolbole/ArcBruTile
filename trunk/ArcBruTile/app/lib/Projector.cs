@@ -1,6 +1,6 @@
 ﻿using ESRI.ArcGIS.Geometry;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class Projector
     {

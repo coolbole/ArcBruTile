@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using BruTile;
 using BruTileArcGIS;
 using BrutileArcGIS.Lib;
-using BrutileArcGIS.lib;
 using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
@@ -13,7 +11,7 @@ using ESRI.ArcGIS.Framework;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AddWmsCLayerCommand")]
+    [ProgId("AddWmscCommand")]
     public sealed class AddWmsCLayerCommand : BaseCommand
     {
         private IMap _map;
@@ -65,7 +63,7 @@ namespace BrutileArcGIS.commands
 
                 if (result == DialogResult.OK)
                 {
-                    ITileSource tileSource = addWmsCForm.SelectedTileSource;
+                    var tileSource = addWmsCForm.SelectedTileSource;
                     
                     IConfig configWmsC = new ConfigWmsC(tileSource);
                     var brutileLayer = new BruTileLayer(_application,configWmsC)

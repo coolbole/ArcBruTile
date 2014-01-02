@@ -2,7 +2,7 @@
 using BruTile;
 using BruTile.Web;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class ConfigEsri : IConfig
     {

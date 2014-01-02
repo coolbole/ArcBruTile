@@ -3,7 +3,7 @@ using System.Net;
 using BruTile;
 using BruTile.Web.TmsService;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class ConfigTms: IConfig
     {

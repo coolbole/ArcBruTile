@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class MultipleThreadResetEvent : IDisposable
     {

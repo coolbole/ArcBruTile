@@ -18,7 +18,7 @@ namespace BruTileArcGIS
                     itemDef.Group = false;
                     break;
                 case 1:
-                    itemDef.ID = "AddWmsCLayerCommand";
+                    itemDef.ID = "AddWmscCommand";
                     itemDef.Group = false;
                     break;
                 case 2:

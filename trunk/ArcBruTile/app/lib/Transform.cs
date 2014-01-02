@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class Transform
     {

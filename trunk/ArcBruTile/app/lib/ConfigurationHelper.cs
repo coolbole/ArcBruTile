@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Reflection;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class ConfigurationHelper
     {

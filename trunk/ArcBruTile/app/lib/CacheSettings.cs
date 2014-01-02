@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.IO;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public static class CacheSettings
     {

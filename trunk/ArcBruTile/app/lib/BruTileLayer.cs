@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using BruTile;
-using BruTileArcGIS;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Display;
@@ -13,7 +12,7 @@ using ESRI.ArcGIS.Geometry;
 using log4net;
 using Microsoft.SqlServer.MessageBox;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     [Guid("1EF3586D-8B42-4921-9958-A73F4833A6FA")]
     [ClassInterface(ClassInterfaceType.None)]
@@ -42,18 +41,7 @@ namespace BrutileArcGIS.lib
         private bool _supportsInteractive = true;
         private short _transparency;
 
-        public BruTileLayer()
-        {
-            ShowTips = false;
-            Name = "BruTile";
-            Cached = false;
-            var t = Type.GetTypeFromProgID("esriFramework.AppRef");
-            var obj = Activator.CreateInstance(t);
-            var pApp = obj as IApplication;
-            _application = pApp;
-        }
-
-
+        // used in the add services dialog
         public BruTileLayer(IApplication app, EnumBruTileLayer enumBruTileLayer, string tmsUrl, bool overwriteUrls)
         {
             ShowTips = false;
@@ -66,6 +54,7 @@ namespace BrutileArcGIS.lib
             InitializeLayer();
         }
 
+        // used by bing initializer
         public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
             ShowTips = false;
@@ -77,7 +66,7 @@ namespace BrutileArcGIS.lib
             InitializeLayer();
         }
 
-        // used for WmsC???
+        // used by WmsC
         public BruTileLayer(IApplication application, IConfig config)
         {
             ShowTips = false;

@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using BruTileArcGIS;
 
-namespace BrutileArcGIS.lib
+namespace BrutileArcGIS.Lib
 {
     public class TmsTileMapServiceParser
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Configuration.Install;
 using System;
-using BrutileArcGIS.lib;
+using BrutileArcGIS.Lib;
 using log4net;
 using log4net.Config;
 using System.IO;
