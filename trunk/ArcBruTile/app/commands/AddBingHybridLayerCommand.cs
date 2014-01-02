@@ -59,7 +59,6 @@ namespace BrutileArcGIS.commands
                 };
 
                 map.AddLayer(brutileLayer);
-                Util.SetBruTilePropertyPage(_application, brutileLayer);
             }
             catch (Exception ex)
             {

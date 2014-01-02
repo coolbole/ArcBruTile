@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using BruTile;
+using BruTileArcGIS;
 using BrutileArcGIS.Lib;
 using BrutileArcGIS.lib;
+using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
-using ESRI.ArcGIS.ADF.CATIDs;
+using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
-using ESRI.ArcGIS.ArcMapUI;
-using System.Windows.Forms;
-using BrutileArcGIS.Properties;
-using BruTile;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.commands
 {
     [ProgId("AddWmsCLayerCommand")]
     public sealed class AddWmsCLayerCommand : BaseCommand
     {
-        private IMap map;
+        private IMap _map;
         private IApplication _application;
 
         public AddWmsCLayerCommand()
@@ -24,7 +24,7 @@ namespace BruTileArcGIS
             m_category = "BruTile";
             m_caption = "Add &WMS-C service...";
             m_message = "Add WMS-C Layer";
-            m_toolTip = base.m_message;
+            m_toolTip = m_message;
             m_name = "AddWmsCLayer";
             m_bitmap = Resources.WMS_icon;
         }
@@ -38,11 +38,10 @@ namespace BruTileArcGIS
 
             //Disable if it is not ArcMap
             if (hook is IMxApplication)
-                base.m_enabled = true;
+                m_enabled = true;
             else
-                base.m_enabled = false;
+                m_enabled = false;
 
-            // TODO:  Add other initialization code
         }
 
         public override bool Enabled
@@ -58,7 +57,7 @@ namespace BruTileArcGIS
             try
             {
                 var mxdoc = (IMxDocument)_application.Document;
-                map = mxdoc.FocusMap;
+                _map = mxdoc.FocusMap;
 
 
                 var addWmsCForm = new AddWmsCForm();
@@ -74,7 +73,7 @@ namespace BruTileArcGIS
                         Name = configWmsC.CreateTileSource().Schema.Name,
                         Visible = true
                     };
-                    map.AddLayer(brutileLayer);
+                    _map.AddLayer(brutileLayer);
                 }
             }
             catch (Exception ex)

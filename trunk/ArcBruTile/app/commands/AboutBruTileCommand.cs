@@ -4,14 +4,12 @@ using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Framework;
-using log4net;
 
 namespace BrutileArcGIS.commands
 {
     [ProgId("AboutBruTileCommand")]
     public sealed class AboutBruTileCommand : BaseCommand
     {
-        private static readonly ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         private IApplication _application;
 
         public AboutBruTileCommand()

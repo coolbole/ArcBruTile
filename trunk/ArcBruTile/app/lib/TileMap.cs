@@ -4,7 +4,7 @@
     {
         public TileMap()
         {
-            this.OverwriteUrls = true;
+            OverwriteUrls = true;
         }
 
         public string Href { get; set; }

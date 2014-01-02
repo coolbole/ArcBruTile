@@ -29,12 +29,6 @@ namespace BrutileArcGIS.lib
             return result;
         }
 
-
-        /// <summary>
-        /// Gets the config.
-        /// </summary>
-        /// <param name="enumBruTileLayer">The enum bru tile layer.</param>
-        /// <returns></returns>
         public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer)
         {
             IConfig result = new ConfigOsm(OsmMapType.Default);
@@ -61,7 +55,5 @@ namespace BrutileArcGIS.lib
             }
             return result;
         }
-
-
     }
 }

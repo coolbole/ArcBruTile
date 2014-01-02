@@ -59,11 +59,10 @@ namespace BruTileArcGIS
 
                 brutileLayer.Visible = true;
                 map.AddLayer(brutileLayer);
-                Util.SetBruTilePropertyPage(application, brutileLayer);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString()+", "+ex.StackTrace);
+                MessageBox.Show(string.Format("{0}, {1}", ex, ex.StackTrace));
             }
         }
     }

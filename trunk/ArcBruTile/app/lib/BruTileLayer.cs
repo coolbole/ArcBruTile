@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using BruTile;
 using BruTileArcGIS;
-using ESRI.ArcGIS.ADF.COMSupport;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Display;
@@ -21,245 +19,209 @@ namespace BrutileArcGIS.lib
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BruTileArcGIS.BruTileLayer")]
     public class BruTileLayer : ILayer, ILayerPosition, IGeoDataset, IPersistVariant, ILayer2, IMapLevel,
-        ILayerDrawingProperties, IDisplayAdmin2, ISymbolLevels, IDisplayAdmin, ILayerEffects
+        ILayerDrawingProperties, IDisplayAdmin2, ISymbolLevels, ILayerEffects
         , IDisplayFilterManager
     {
-        private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-        private IApplication application;
-        private IEnvelope envelope;
-        private bool cached=false;
-        private double maximumScale;
-        private double minimumScale;
-        private string name="BruTile";
-        private bool scaleRangeReadOnly=true;
-        private bool showTips=false;
-        private int supportedDrawPhases = -1;
-        private ISpatialReference layerSpatialReference;
-        private ISpatialReference dataSpatialReference = null;
-        private bool visible=false;
-        private IMap map;
-        private EnumBruTileLayer enumBruTileLayer;
-        private string cacheDir;
-        private int tileTimeOut;
-        private double layerWeight=101;
-        private IConfig config;
-        public const string GUID = "1EF3586D-8B42-4921-9958-A73F4833A6FA";
-        private int currentLevel;
-        private ITileSchema schema;
-        private ITileSource tileSource;
-        private short brightness;
-        private short contrast;
-        private bool supportsInteractive = true;
-        private short transparency = 0;
+        private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
+        private readonly IApplication _application;
+        private IEnvelope _envelope;
+        private const bool scaleRangeReadOnly = true;
+        private const int supportedDrawPhases = -1;
+        private ISpatialReference _dataSpatialReference;
+        private bool _visible=false;
+        private IMap _map;
+        private EnumBruTileLayer _enumBruTileLayer;
+        private string _cacheDir;
+        private int _tileTimeOut;
+        private double _layerWeight=101;
+        private IConfig _config;
+        public const string Guid = "1EF3586D-8B42-4921-9958-A73F4833A6FA";
+        private int _currentLevel;
+        private ITileSchema _schema;
+        private ITileSource _tileSource;
+        private bool _supportsInteractive = true;
+        private short _transparency;
 
         public BruTileLayer()
         {
-            Type t = Type.GetTypeFromProgID("esriFramework.AppRef");
-            System.Object obj = Activator.CreateInstance(t);
-            IApplication pApp = obj as ESRI.ArcGIS.Framework.IApplication;
-            this.application = pApp;
+            ShowTips = false;
+            Name = "BruTile";
+            Cached = false;
+            var t = Type.GetTypeFromProgID("esriFramework.AppRef");
+            var obj = Activator.CreateInstance(t);
+            var pApp = obj as IApplication;
+            _application = pApp;
         }
 
 
-        public BruTileLayer(IApplication app, EnumBruTileLayer EnumBruTileLayer, string TmsUrl, bool overwriteUrls)
+        public BruTileLayer(IApplication app, EnumBruTileLayer enumBruTileLayer, string tmsUrl, bool overwriteUrls)
         {
-            config = ConfigHelper.GetConfig(EnumBruTileLayer, TmsUrl, overwriteUrls);
+            ShowTips = false;
+            Name = "BruTile";
+            Cached = false;
+            _config = ConfigHelper.GetConfig(enumBruTileLayer, tmsUrl, overwriteUrls);
 
-            application = app;
-            enumBruTileLayer = EnumBruTileLayer;
+            _application = app;
+            _enumBruTileLayer = enumBruTileLayer;
             InitializeLayer();
         }
 
         public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
-            config = ConfigHelper.GetConfig(enumBruTileLayer); ;
-            this.application = application;
-            this.enumBruTileLayer = enumBruTileLayer;
+            ShowTips = false;
+            Name = "BruTile";
+            Cached = false;
+            _config = ConfigHelper.GetConfig(enumBruTileLayer);
+            _application = application;
+            _enumBruTileLayer = enumBruTileLayer;
             InitializeLayer();
         }
 
         // used for WmsC???
         public BruTileLayer(IApplication application, IConfig config)
         {
-            this.application = application;
-            this.config = config;
-            this.enumBruTileLayer = EnumBruTileLayer.WMSC;
-            //this.enumBruTileLayer = EnumBruTileLayer.TMS;
+            ShowTips = false;
+            Name = "BruTile";
+            Cached = false;
+            _application = application;
+            _config = config;
+            _enumBruTileLayer = EnumBruTileLayer.WMSC;
             InitializeLayer();
         }
 
         private void InitializeLayer()
         {
-            var mxdoc = (IMxDocument)application.Document;
-            map = mxdoc.FocusMap;
-            cacheDir = CacheSettings.GetCacheFolder();
-            tileTimeOut = CacheSettings.GetTileTimeOut();
+            var mxdoc = (IMxDocument)_application.Document;
+            _map = mxdoc.FocusMap;
+            _cacheDir = CacheSettings.GetCacheFolder();
+            _tileTimeOut = CacheSettings.GetTileTimeOut();
 
             var spatialReferences = new SpatialReferences();
 
-            tileSource=config.CreateTileSource();
-            schema = tileSource.Schema;
-            this.dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
-            this.envelope = GetDefaultEnvelope();
+            _tileSource=_config.CreateTileSource();
+            _schema = _tileSource.Schema;
+            _dataSpatialReference = spatialReferences.GetSpatialReference(_schema.Srs);
+            _envelope = GetDefaultEnvelope();
 
-            if (map.SpatialReference == null)
+            if (_map.SpatialReference == null)
             {
                 // zet dan de spatial ref...
-                map.SpatialReference = dataSpatialReference;
+                _map.SpatialReference = _dataSpatialReference;
             }
 
             // If there is only one layer in the TOC zoom to this layer...
-            if (map.LayerCount == 0)
+            if (_map.LayerCount == 0)
             {
                 //envelope.Expand(-0.1, -0.1, true);
-                envelope.Project(map.SpatialReference);
-                ((IActiveView)map).Extent = envelope;
+                _envelope.Project(_map.SpatialReference);
+                ((IActiveView)_map).Extent = _envelope;
             }
 
-            displayFilter = new TransparencyDisplayFilterClass();
+            _displayFilter = new TransparencyDisplayFilterClass();
         }
 
         public void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
         {
-            if (drawPhase == esriDrawPhase.esriDPGeography)
+            switch (drawPhase)
             {
-                if (this.Valid)
-                {
-                    if (this.Visible)
+                case esriDrawPhase.esriDPGeography:
+                    if (Valid)
                     {
-                        try
+                        if (Visible)
                         {
-                            // when loading from a file the active map doesn't exist yet 
-                            // so just deal with it here.
-                            if (map == null)
+                            try
                             {
-                                IMxDocument mxdoc = (IMxDocument)application.Document;
-                                this.map = mxdoc.FocusMap;
-                            }
+                                // when loading from a file the active map doesn't exist yet 
+                                // so just deal with it here.
+                                if (_map == null)
+                                {
+                                    var mxdoc = (IMxDocument)_application.Document;
+                                    _map = mxdoc.FocusMap;
+                                }
 
-                            Debug.WriteLine("Draw event");
-                            IActiveView activeView = map as IActiveView;
-                            logger.Debug("Layer name: " + this.Name);
+                                Debug.WriteLine("Draw event");
+                                var activeView = _map as IActiveView;
+                                Logger.Debug("Layer name: " + Name);
 
-                            envelope = activeView.Extent;
-                            logger.Debug("Draw extent: xmin:" + envelope.XMin.ToString() + 
-                                ", ymin:" + envelope.YMin.ToString() +
-                                ", xmax:" + envelope.YMin.ToString() +
-                                ", ymax:" + envelope.YMin.ToString()
-                                );
-                            if (layerSpatialReference != null)
-                            {
-                                logger.Debug("Layer spatial reference: " + layerSpatialReference.FactoryCode.ToString());
-                            }
-                            if (map.SpatialReference != null)
-                            {
-                                logger.Debug("Map spatial reference: " + map.SpatialReference.FactoryCode.ToString());
-                            }
+                                if (activeView != null)
+                                {
+                                    _envelope = activeView.Extent;
+                                    Logger.Debug("Draw extent: xmin:" + _envelope.XMin + 
+                                                 ", ymin:" + _envelope.YMin +
+                                                 ", xmax:" + _envelope.YMin +
+                                                 ", ymax:" + _envelope.YMin
+                                        );
+                                    if (SpatialReference != null)
+                                    {
+                                        Logger.Debug("Layer spatial reference: " + SpatialReference.FactoryCode);
+                                    }
+                                    if (_map.SpatialReference != null)
+                                    {
+                                        Logger.Debug("Map spatial reference: " + _map.SpatialReference.FactoryCode);
+                                    }
 
-                            BruTileHelper bruTileHelper = new BruTileHelper(cacheDir, tileTimeOut);
-                            displayFilter.Transparency = (short)(255 - ((transparency * 255) / 100));
-                            if (display.Filter == null)
-                            {
-                                // display.Filter = displayFilter;
+                                    var bruTileHelper = new BruTileHelper(_cacheDir, _tileTimeOut);
+                                    _displayFilter.Transparency = (short)(255 - ((_transparency * 255) / 100));
+                                    if (display.Filter == null)
+                                    {
+                                        // display.Filter = displayFilter;
+                                    }
+                                    bruTileHelper.Draw(_application, activeView, _config, trackCancel, SpatialReference, _enumBruTileLayer, ref _currentLevel, _tileSource, display);
+                                }
                             }
-                            bruTileHelper.Draw(application, activeView, config, trackCancel, layerSpatialReference, enumBruTileLayer, ref currentLevel, tileSource, display);
-                        }
-                        catch (Exception ex)
-                        {
-                            ExceptionMessageBox mbox = new ExceptionMessageBox(ex);
-                            mbox.Show(null);
-                        }
-                    } // isVisible
-                }  // isValid
-            }  //drawphase
-            else if (drawPhase == esriDrawPhase.esriDPAnnotation)
-            {
-                //DrawAttribute();
+                            catch (Exception ex)
+                            {
+                                var mbox = new ExceptionMessageBox(ex);
+                                mbox.Show(null);
+                            }
+                        } // isVisible
+                    }  // isValid
+                    break;
+                case esriDrawPhase.esriDPAnnotation:
+                    break;
             }
         }
 
-        private void DrawAttribute()
-        {
-            var activeView = map as IActiveView;
-            // Now draw attribution...
-            var copyrightPoint = new PointClass();
-            
-            copyrightPoint.SpatialReference = this.layerSpatialReference;
-            //copyrightPoint = activeView.Extent.LowerLeft;
-            copyrightPoint.X = copyrightPoint.X + (activeView.Extent.LowerRight.X - activeView.Extent.LowerLeft.X) / 15;
-            copyrightPoint.Y = copyrightPoint.Y + (activeView.Extent.UpperLeft.Y - activeView.Extent.LowerLeft.Y) / 30;
-            var textSymbol = new TextSymbolClass();
-            var drawFont = new Font("Arial", 12, FontStyle.Bold);
-            textSymbol.Font = (stdole.IFontDisp)OLE.GetIFontDispFromFont(drawFont);
-            activeView.ScreenDisplay.SetSymbol((ISymbol)textSymbol);
-            activeView.ScreenDisplay.DrawText(copyrightPoint, "ArcBruTile");
-            activeView.PartialRefresh(esriViewDrawPhase.esriViewGraphics, null, activeView.Extent);
-        }
-
-        public string get_TipText(double x, double y, double Tolerance)
+        public string get_TipText(double x, double y, double tolerance)
         {
             return "brutile";
         }
 
         public IEnvelope AreaOfInterest
         {
-            get{return envelope;}
-            set{envelope=value;}
+            get{return _envelope;}
+            set{_envelope=value;}
         }
 
-        public bool Cached
-        {
-            get{return cached;}
-            set{cached = value;}
-        }
+        public bool Cached { get; set; }
 
         public EnumBruTileLayer EnumBruTileLayer
         {
-            get { return enumBruTileLayer; }
-            set { enumBruTileLayer = value; }
+            get { return _enumBruTileLayer; }
+            set { _enumBruTileLayer = value; }
         }
 
-        public double MaximumScale
-        {
-            get{return maximumScale;}
-            set{maximumScale = value;}
-        }
+        public double MaximumScale { get; set; }
 
-        public double MinimumScale
-        {
-            get{return minimumScale;}
-            set{minimumScale = value;}
-        }
+        public double MinimumScale { get; set; }
 
-        public string Name
-        {
-            get{return name;}
-            set{name = value;}
-        }
+        public string Name { get; set; }
 
         public bool ScaleRangeReadOnly
         {
             get {return scaleRangeReadOnly; }
         }
 
-        public bool ShowTips
-        {
-            get{return showTips;}
-            set{showTips = value;}
-        }
+        public bool ShowTips { get; set; }
 
         public int CurrentLevel
         {
-            get { return currentLevel; }
-            set { currentLevel = value; }
+            get { return _currentLevel; }
+            set { _currentLevel = value; }
         }
 
 
-        public ISpatialReference SpatialReference
-        {
-            set { layerSpatialReference=value; }
-            get { return layerSpatialReference; }
-        }
+        public ISpatialReference SpatialReference { get; set; }
 
         public int SupportedDrawPhases
         {
@@ -273,26 +235,28 @@ namespace BrutileArcGIS.lib
 
         public bool Visible
         {
-            get{return visible;}
+            get{return _visible;}
             set
             {
-                visible = value;
-                if (!visible)
+                _visible = value;
+                if (!_visible)
                 {
-                    ((IGraphicsContainer)map).DeleteAllElements();
+                    ((IGraphicsContainer)_map).DeleteAllElements();
                 }
             }
         }
 
         private IEnvelope GetDefaultEnvelope()
         {
-            BruTile.Extent ext = schema.Extent;
-            IEnvelope envelope = new EnvelopeClass();
-            envelope.XMin = ext.MinX;
-            envelope.XMax = ext.MaxX;
-            envelope.YMin = ext.MinY;
-            envelope.YMax = ext.MaxY;
-            envelope.SpatialReference = dataSpatialReference;
+            var ext = _schema.Extent;
+            var envelope = new EnvelopeClass
+            {
+                XMin = ext.MinX,
+                XMax = ext.MaxX,
+                YMin = ext.MinY,
+                YMax = ext.MaxY,
+                SpatialReference = _dataSpatialReference
+            };
             return envelope;
         }
 
@@ -308,11 +272,11 @@ namespace BrutileArcGIS.lib
         {
             get
             {
-                return layerWeight;
+                return _layerWeight;
             }
             set
             {
-                layerWeight = value;
+                _layerWeight = value;
             }
         }
 
@@ -321,101 +285,71 @@ namespace BrutileArcGIS.lib
             get
             {
                 UID uid = new UIDClass();
-                uid.Value = "{" + BruTileLayer.GUID + "}";
+                uid.Value = "{" + Guid + "}";
                 return uid;
             }
         }
 
-        public void Load(IVariantStream Stream)
+        public void Load(IVariantStream stream)
         {
             try
             {
-                name = (string)Stream.Read();
-                visible = (bool)Stream.Read();
-                enumBruTileLayer = (EnumBruTileLayer)Stream.Read();
+                Name = (string)stream.Read();
+                _visible = (bool)stream.Read();
+                _enumBruTileLayer = (EnumBruTileLayer)stream.Read();
 
-                logger.Debug("Load layer " + name + ", type: " + enumBruTileLayer.ToString());
+                Logger.Debug("Load layer " + Name + ", type: " + _enumBruTileLayer.ToString());
 
-                switch (enumBruTileLayer)
+                switch (_enumBruTileLayer)
                 {
                     case EnumBruTileLayer.TMS:
-                        string url = (string)Stream.Read();
-                        // Todo: fix this hardcoded value...
-                        config = ConfigHelper.GetTmsConfig(url, true);
-                        logger.Debug("Url: " + url);
+                        var url = (string)stream.Read();
+                        _config = ConfigHelper.GetTmsConfig(url, true);
+                        Logger.Debug("Url: " + url);
                         break;
                     case EnumBruTileLayer.InvertedTMS:
-                        string urlInverted = (string)Stream.Read();
-                        // Todo: fix this hardcoded value...
-                        logger.Debug("Url: " + urlInverted);
-                        config = ConfigHelper.GetConfig(EnumBruTileLayer.InvertedTMS, urlInverted, true);
+                        var urlInverted = (string)stream.Read();
+                        Logger.Debug("Url: " + urlInverted);
+                        _config = ConfigHelper.GetConfig(EnumBruTileLayer.InvertedTMS, urlInverted, true);
                         break;
 
                     default:
-                        config = ConfigHelper.GetConfig(enumBruTileLayer);
+                        _config = ConfigHelper.GetConfig(_enumBruTileLayer);
                         break;
                 }
 
                 InitializeLayer();
                 // get the active map later when 
-                map = null;
-                Util.SetBruTilePropertyPage(application, this);
+                _map = null;
             }
             catch (Exception ex)
             {
-                logger.Debug("Error loading custom layer: " + ex.Message);
+                Logger.Debug("Error loading custom layer: " + ex.Message);
             }
         }
 
-        public void Save(IVariantStream Stream)
+        public void Save(IVariantStream stream)
         {
-            Stream.Write(name);
-            Stream.Write(visible);
-            Stream.Write(this.enumBruTileLayer);
-            //Stream.Write(config);
+            stream.Write(Name);
+            stream.Write(_visible);
+            stream.Write(_enumBruTileLayer);
 
-            switch (enumBruTileLayer)
+            switch (_enumBruTileLayer)
             {
                 case EnumBruTileLayer.TMS:
-                    ConfigTms tms = config as ConfigTms;
-                    Stream.Write(tms.Url);
+                    var tms = _config as ConfigTms;
+                    if (tms != null) stream.Write(tms.Url);
                     break;
                 case EnumBruTileLayer.InvertedTMS:
-                    ConfigInvertedTMS invertedtms = config as ConfigInvertedTMS;
-                    Stream.Write(invertedtms.Url);
-                    break;
-                default:
+                    var invertedtms = _config as ConfigInvertedTMS;
+                    if (invertedtms != null) stream.Write(invertedtms.Url);
                     break;
             }
 
         }
-        private int mapLevel;
 
-        public int MapLevel
-        {
-            get
-            {
-                return this.mapLevel;
-            }
-            set
-            {
-                this.mapLevel = value;
-            }
-        }
-
-        private bool drawingPropsDirty;
-
-        public bool DrawingPropsDirty
-        {
-            get
-            {
-                return drawingPropsDirty;
-            }
-            set
-            {
-                drawingPropsDirty = value;
-            }
-        }
+        public int MapLevel { get; set; }
+        public bool DrawingPropsDirty { get; set; }
 
         public bool DoesBlending
         {
@@ -432,43 +366,11 @@ namespace BrutileArcGIS.lib
             get { return true; }
         }
 
-        private bool useSymbolLevels;
+        public bool UseSymbolLevels { get; set; }
 
-        public bool UseSymbolLevels
-        {
-            get
-            {
-                return useSymbolLevels;
-            }
-            set
-            {
-                useSymbolLevels = value;
-            }
-        }
+        public short Brightness { get; set; }
 
-        public short Brightness
-        {
-            get
-            {
-                return brightness;
-            }
-            set
-            {
-                brightness = value;
-            }
-        }
-
-        public short Contrast
-        {
-            get
-            {
-                return contrast;
-            }
-            set
-            {
-                contrast = value;
-            }
-        }
+        public short Contrast { get; set; }
 
         public bool SupportsBrightnessChange
         {
@@ -484,11 +386,11 @@ namespace BrutileArcGIS.lib
         {
             get
             {
-                return supportsInteractive;
+                return _supportsInteractive;
             }
             set
             {
-                supportsInteractive = value;
+                _supportsInteractive = value;
             }
         }
 
@@ -501,25 +403,25 @@ namespace BrutileArcGIS.lib
         {
             get
             {
-                return transparency;
+                return _transparency;
             }
             set
             {
-                transparency = value;
+                _transparency = value;
             }
         }
 
-        private ITransparencyDisplayFilter displayFilter;
+        private ITransparencyDisplayFilter _displayFilter;
 
         public IDisplayFilter DisplayFilter
         {
             get
             {
-                return displayFilter;
+                return _displayFilter;
             }
             set
             {
-                displayFilter = (ITransparencyDisplayFilter) value;
+                _displayFilter = (ITransparencyDisplayFilter) value;
             }
         }
     }

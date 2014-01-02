@@ -17,15 +17,13 @@ namespace BrutileArcGIS.lib
             // Handle non official EPSG codes...
             if (code == 900913 | code==41001 ) code = 102113;
 
-            //if(code == 3857.3857
-
-            if(this.isProjectedSpatialReference(code))
+            if(isProjectedSpatialReference(code))
             {
-                res = this.GetProjectedSpatialReference(code);
+                res = GetProjectedSpatialReference(code);
             }
-            else if(this.isGeographicSpatialReference(code))
+            else if(isGeographicSpatialReference(code))
             {
-                res = this.GetGeographicSpatialReference(code);
+                res = GetGeographicSpatialReference(code);
             }
 
             return res;
@@ -36,9 +34,9 @@ namespace BrutileArcGIS.lib
         {
             try
             {
-                ISpatialReferenceFactory pSRF = new SpatialReferenceEnvironmentClass();
-                IGeographicCoordinateSystem geographicCoordinateSystem = pSRF.CreateGeographicCoordinateSystem(gcsType);
-                ISpatialReference spatialReference = (ISpatialReference)geographicCoordinateSystem;
+                var pSRF = new SpatialReferenceEnvironmentClass();
+                var geographicCoordinateSystem = pSRF.CreateGeographicCoordinateSystem(gcsType);
+                var spatialReference = (ISpatialReference)geographicCoordinateSystem;
                 return true;
             }
             catch
@@ -52,9 +50,9 @@ namespace BrutileArcGIS.lib
         {
             try
             {
-                ISpatialReferenceFactory pSRF = new SpatialReferenceEnvironmentClass();
-                IProjectedCoordinateSystem m_ProjectedCoordinateSystem = pSRF.CreateProjectedCoordinateSystem(pcsType);
-                ISpatialReference spatialReference = (ISpatialReference)m_ProjectedCoordinateSystem;
+                var pSRF = new SpatialReferenceEnvironmentClass();
+                var mProjectedCoordinateSystem = pSRF.CreateProjectedCoordinateSystem(pcsType);
+                var spatialReference = (ISpatialReference)mProjectedCoordinateSystem;
                 return true;
             }
             catch
@@ -64,20 +62,20 @@ namespace BrutileArcGIS.lib
         }
 
 
-        private ISpatialReference GetGeographicSpatialReference(int gcsType)
+        protected ISpatialReference GetGeographicSpatialReference(int gcsType)
         {
-            ISpatialReferenceFactory pSRF = new SpatialReferenceEnvironmentClass();
-            IGeographicCoordinateSystem geographicCoordinateSystem = pSRF.CreateGeographicCoordinateSystem(gcsType);
-            ISpatialReference spatialReference = (ISpatialReference)geographicCoordinateSystem;
+            var pSRF = new SpatialReferenceEnvironmentClass();
+            var geographicCoordinateSystem = pSRF.CreateGeographicCoordinateSystem(gcsType);
+            var spatialReference = (ISpatialReference)geographicCoordinateSystem;
             return spatialReference;
         }
 
 
-        private ISpatialReference GetProjectedSpatialReference(int pcsType)
+        protected ISpatialReference GetProjectedSpatialReference(int pcsType)
         {
-            ISpatialReferenceFactory pSRF = new SpatialReferenceEnvironmentClass();
-            IProjectedCoordinateSystem m_ProjectedCoordinateSystem = pSRF.CreateProjectedCoordinateSystem(pcsType);
-            ISpatialReference spatialReference = (ISpatialReference)m_ProjectedCoordinateSystem;
+            var pSRF = new SpatialReferenceEnvironmentClass();
+            var projectedCoordinateSystem = pSRF.CreateProjectedCoordinateSystem(pcsType);
+            var spatialReference = (ISpatialReference)projectedCoordinateSystem;
             return spatialReference;
         }
 

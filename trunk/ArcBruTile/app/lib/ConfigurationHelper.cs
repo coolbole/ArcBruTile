@@ -20,7 +20,7 @@ namespace BrutileArcGIS.lib
             }
             catch
             {
-                string msg = string.Format("Can not find ({0})", configFileName);
+                var msg = string.Format("Can not find ({0})", configFileName);
                 throw new ApplicationException(msg);
             }
 

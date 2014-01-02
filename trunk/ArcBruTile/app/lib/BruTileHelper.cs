@@ -1,54 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using BrutileArcGIS.lib;
-using ESRI.ArcGIS.Framework;
-using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.esriSystem;
-using ESRI.ArcGIS.Geometry;
-using BruTile;
 using System.Drawing;
-using System.Threading;
-using BruTile.Web;
-using BruTile.Cache;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
-using ESRI.ArcGIS.Geodatabase;
+using System.Linq;
+using System.Threading;
+using BruTile;
+using BruTile.Cache;
+using BruTile.Web;
+using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.DataSourcesRaster;
 using ESRI.ArcGIS.Display;
+using ESRI.ArcGIS.esriSystem;
+using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.Geodatabase;
+using ESRI.ArcGIS.Geometry;
 using log4net;
-using System.Drawing.Imaging;
-using Extent = BruTile.Extent;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.lib
 {
     public class BruTileHelper
     {
-        private static readonly log4net.ILog logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-        private static string cacheDir;
-        private static int tileTimeOut;
-        private IApplication application;
-        private IActiveView activeView;
-        private IConfig config;
-        private static ITrackCancel trackCancel;
-        private static ISpatialReference layerSpatialReference;
-        private static ISpatialReference dataSpatialReference;
-        private static EnumBruTileLayer enumBruTileLayer;
+        private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
+        private static string _cacheDir;
+        private static int _tileTimeOut;
+        private static ITrackCancel _trackCancel;
+        private static ISpatialReference _layerSpatialReference;
+        private static ISpatialReference _dataSpatialReference;
+        private static EnumBruTileLayer _enumBruTileLayer;
         private int _currentLevel;
-        private static FileCache fileCache;
-        private static ITileSource tileSource;
-        bool needReproject = false;
-        List<TileInfo> tiles=null;
-        private IDisplay display;
-        static WebTileProvider tileProvider;
+        private static FileCache _fileCache;
+        private static ITileSource _tileSource;
+        bool _needReproject;
+        List<TileInfo> _tiles;
+        private IDisplay _display;
+        static WebTileProvider _tileProvider;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BruTileHelper"/> class.
-        /// </summary>
-        /// <param name="cacheDir">The cache dir.</param>
         public BruTileHelper(string cacheDir, int tileTimeOut)
         {
-            BruTileHelper.cacheDir = cacheDir;
-            BruTileHelper.tileTimeOut = tileTimeOut;
+            _cacheDir = cacheDir;
+            _tileTimeOut = tileTimeOut;
         }
 
 
@@ -60,28 +52,25 @@ namespace BruTileArcGIS
                          EnumBruTileLayer enumBruTileLayer,
                          ref int currentLevel, ITileSource tileSource, IDisplay display)
         {
-            this.application = application;
-            this.activeView = activeView;
-            this.config = config;
-            BruTileHelper.tileSource = tileSource;
-            BruTileHelper.trackCancel = trackCancel;
-            BruTileHelper.layerSpatialReference = layerSpatialReference;
-            BruTileHelper.enumBruTileLayer = enumBruTileLayer;
+            _tileSource = tileSource;
+            _trackCancel = trackCancel;
+            _layerSpatialReference = layerSpatialReference;
+            _enumBruTileLayer = enumBruTileLayer;
             _currentLevel = currentLevel;
-            fileCache = GetFileCache(config);
-            tileProvider = (WebTileProvider)tileSource.Provider;
-            this.display = display;
+            _fileCache = GetFileCache(config);
+            _tileProvider = (WebTileProvider)tileSource.Provider;
+            _display = display;
 
             if (!activeView.Extent.IsEmpty)
             {
-                tiles = this.GetTiles(activeView, config);
+                _tiles = GetTiles(activeView);
                 currentLevel = _currentLevel;
-                logger.Debug("Number of tiles to draw: " + tiles.Count.ToString());
+                Logger.Debug("Number of tiles to draw: " + _tiles.Count);
 
-                if (tiles.ToList().Count > 0)
+                if (_tiles.ToList().Count > 0)
                 {
                     application.StatusBar.ProgressBar.MinRange = 0;
-                    application.StatusBar.ProgressBar.MaxRange = tiles.ToList().Count;
+                    application.StatusBar.ProgressBar.MaxRange = _tiles.ToList().Count;
                     application.StatusBar.ProgressBar.Show();
 
                     var downloadFinished = new ManualResetEvent(false);
@@ -89,7 +78,7 @@ namespace BruTileArcGIS
                     // this is a hack, otherwise we get error message...
                     // "WaitAll for multiple handles on a STA thread is not supported. (mscorlib)"
                     // so lets start a thread first...
-                    Thread t = new Thread(new ParameterizedThreadStart(DownloadTiles));
+                    var t = new Thread(DownloadTiles);
                     t.Start(downloadFinished);
 
                     // wait till finished
@@ -97,25 +86,23 @@ namespace BruTileArcGIS
 
                     // 3. Now draw all tiles...
 
-                    if (layerSpatialReference != null && dataSpatialReference!=null)
+                    if (layerSpatialReference != null && _dataSpatialReference!=null)
                     {
-                        needReproject = (layerSpatialReference.FactoryCode != dataSpatialReference.FactoryCode);
+                        _needReproject = (layerSpatialReference.FactoryCode != _dataSpatialReference.FactoryCode);
                     }
-                    logger.Debug("Need reproject tile: " + needReproject.ToString());
+                    Logger.Debug("Need reproject tile: " + _needReproject.ToString());
 
-                    foreach (TileInfo tile in tiles)
+                    foreach (var tile in _tiles)
                     {
                         application.StatusBar.ProgressBar.Step();
 
                         if (tile != null)
                         {
-                            String name = fileCache.GetFileName(tile.Index);
+                            var name = _fileCache.GetFileName(tile.Index);
 
-                            if (File.Exists(name))
-                            {
-                                IEnvelope envelope = this.GetEnv(tile.Extent);
-                                DrawRaster(name, envelope, trackCancel);
-                            }
+                            if (!File.Exists(name)) continue;
+                            var envelope = GetEnvelope(tile.Extent);
+                            DrawRaster(name, envelope, trackCancel);
                         }
                     }
 
@@ -123,10 +110,10 @@ namespace BruTileArcGIS
                 }
                 else
                 {
-                    logger.Debug("No tiles to retrieve or draw");
+                    Logger.Debug("No tiles to retrieve or draw");
                 }
 
-                logger.Debug("End drawing tiles: " + tiles.ToList().Count.ToString());
+                Logger.Debug("End drawing tiles: " + _tiles.ToList().Count);
             }
         }
 
@@ -135,29 +122,27 @@ namespace BruTileArcGIS
             var downloadFinished = args as ManualResetEvent;
 
             // Loop through the tiles, and filter tiles that are already on disk.
-            IList<TileInfo> downloadTiles=new List<TileInfo>();
-            for (int i = 0; i < tiles.ToList().Count; i++)
+            var downloadTiles=new List<TileInfo>();
+            for (var i = 0; i < _tiles.ToList().Count; i++)
             {
-                if (!fileCache.Exists(tiles[i].Index))
+                if (!_fileCache.Exists(_tiles[i].Index))
                 {
-                    downloadTiles.Add(tiles[i]);
+                    downloadTiles.Add(_tiles[i]);
                 }
                 else
                 {
                     // Read tiles from disk
-                    string name = fileCache.GetFileName(tiles[i].Index);
+                    var name = _fileCache.GetFileName(_tiles[i].Index);
 
                     // Determine age of tile...
-                    FileInfo fi = new FileInfo(name);
-                    if ((DateTime.Now - fi.LastWriteTime).Days > tileTimeOut)
-                    {
-                        File.Delete(name);
-                        downloadTiles.Add(tiles[i]);
-                    }
+                    var fi = new FileInfo(name);
+                    if ((DateTime.Now - fi.LastWriteTime).Days <= _tileTimeOut) continue;
+                    File.Delete(name);
+                    downloadTiles.Add(_tiles[i]);
                 }
             }
 
-            logger.Debug("Number of download tiles:" + downloadTiles.Count.ToString());
+            Logger.Debug("Number of download tiles:" + downloadTiles.Count);
 
             if (downloadTiles.Count > 0)
             {
@@ -165,47 +150,37 @@ namespace BruTileArcGIS
                 //var doneEvents = new ManualResetEvent[downloadTiles.Count];
                 var doneEvents = new MultipleThreadResetEvent(downloadTiles.Count);
 
-                for (int i = 0; i < downloadTiles.Count; i++)
+                foreach (var t in downloadTiles)
                 {
                     //!!!doneEvents[i] = new ManualResetEvent(false);
-
-                    object o = new object[] { downloadTiles[i], doneEvents};
-                    ThreadPool.SetMaxThreads(25, 25); 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(downloadTile),o);
+                    object o = new object[] {t, doneEvents};
+                    ThreadPool.SetMaxThreads(25, 25);
+                    ThreadPool.QueueUserWorkItem(DownloadTile, o);
                 }
 
                 //WaitHandle.WaitAll(doneEvents);
                 doneEvents.WaitAll();
-                logger.Debug("End waiting for remote tiles...");
+                Logger.Debug("End waiting for remote tiles...");
             }
-            downloadFinished.Set();
+            if (downloadFinished != null) downloadFinished.Set();
         }
 
 
-        /// <summary>
-        /// Draws the layer.
-        /// </summary>
-        /// <param name="file">The file.</param>
-        private void DrawRaster(string file, IEnvelope env, ITrackCancel trackCancel)
+        private void DrawRaster(string file, IEnvelope envelope, ITrackCancel trackCancel)
         {
             try
             {
-                logger.Debug("Start drawing tile" + file + "...");
-
-                ITileSchema schema = tileSource.Schema;
+                Logger.Debug("Start drawing tile" + file + "...");
                 IRasterLayer rl = new RasterLayerClass();
                 rl.CreateFromFilePath(file);
-                IRasterProps props=(IRasterProps)rl.Raster;
-                SpatialReferences sp=new SpatialReferences();
-                
-                //props.Extent = env;
-                props.SpatialReference = dataSpatialReference;
+                var props=(IRasterProps)rl.Raster;
+                props.SpatialReference = _dataSpatialReference;
 
-                if (needReproject)
+                if (_needReproject)
                 {
                     IRasterGeometryProc rasterGeometryProc = new RasterGeometryProcClass();
-                    object Missing = Type.Missing;
-                    rasterGeometryProc.ProjectFast(layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref Missing, rl.Raster);
+                    var missing = Type.Missing;
+                    rasterGeometryProc.ProjectFast(_layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref missing, rl.Raster);
                 }
 
                 // Fix for issue "Each 256x256 tile rendering differently causing blockly effect."
@@ -224,14 +199,14 @@ namespace BruTileArcGIS
                 rl.Renderer.ResamplingType = rstResamplingTypes.RSP_BilinearInterpolation;
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
-                rl.SpatialReference = layerSpatialReference;
+                rl.SpatialReference = _layerSpatialReference;
                 //rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
-                rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, display, null);
+                rl.Draw(esriDrawPhase.esriDPGeography, _display, null);
                 //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, trackCancel, env);
-                logger.Debug("End drawing tile.");
+                Logger.Debug("End drawing tile.");
 
             }
-            catch
+            catch (Exception)
             {
                 // what to do now...
                 // just try to load next tile...
@@ -239,12 +214,7 @@ namespace BruTileArcGIS
         }
 
 
-        /// <summary>
-        /// Gets the env.
-        /// </summary>
-        /// <param name="extent">The extent.</param>
-        /// <returns></returns>
-        private IEnvelope GetEnv(Extent extent)
+        protected IEnvelope GetEnvelope(BruTile.Extent extent)
         {
             IEnvelope envelope = new EnvelopeClass();
             envelope.XMin = extent.MinX;
@@ -258,13 +228,13 @@ namespace BruTileArcGIS
 
         private static FileCache GetFileCache(IConfig config)
         {
-            ITileSchema schema = tileSource.Schema;
-            SpatialReferences spatialReferences = new SpatialReferences();
-            dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
+            var schema = _tileSource.Schema;
+            var spatialReferences = new SpatialReferences();
+            _dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
 
-            string cacheDirType = GetCacheDirectory(config, enumBruTileLayer);
+            var cacheDirType = GetCacheDirectory(config, _enumBruTileLayer);
 
-            string format = schema.Format;
+            var format = schema.Format;
 
             if (format.Contains(@"image/"))
             {
@@ -274,7 +244,7 @@ namespace BruTileArcGIS
             {
                 format = format.Replace("png8", "png");
             }
-            FileCache fileCache = new FileCache(cacheDirType, format);
+            var fileCache = new FileCache(cacheDirType, format);
 
             return fileCache;
 
@@ -282,11 +252,11 @@ namespace BruTileArcGIS
 
         private static string GetCacheDirectory(IConfig config, EnumBruTileLayer layerType)
         {
-            string cacheDirectory = String.Format("{0}{1}{2}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString());
+            string cacheDirectory = String.Format("{0}{1}{2}", _cacheDir, System.IO.Path.DirectorySeparatorChar, layerType);
 
-            if (enumBruTileLayer == EnumBruTileLayer.TMS || enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
+            if (_enumBruTileLayer == EnumBruTileLayer.TMS || _enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
             {
-                string url=(enumBruTileLayer == EnumBruTileLayer.TMS? ((ConfigTms)config).Url: ((ConfigInvertedTMS)config).Url);
+                string url=(_enumBruTileLayer == EnumBruTileLayer.TMS? ((ConfigTms)config).Url: ((ConfigInvertedTMS)config).Url);
 
                 string service = url.Substring(7, url.Length - 7);
                 service = service.Replace(@"/", "-");
@@ -296,87 +266,61 @@ namespace BruTileArcGIS
                 {
                     service = service.Substring(0, service.Length - 1);
                 }
-                cacheDirectory = String.Format("{0}{1}{2}{3}{4}", cacheDir, System.IO.Path.DirectorySeparatorChar, layerType.ToString(), System.IO.Path.DirectorySeparatorChar, service);
+                cacheDirectory = String.Format("{0}{1}{2}{3}{4}", _cacheDir, System.IO.Path.DirectorySeparatorChar, layerType, System.IO.Path.DirectorySeparatorChar, service);
             }
 
             return cacheDirectory;
         }
 
 
-        private static void downloadTile(object tile)
+        private static void DownloadTile(object tile)
         {
-            object[] parameters = (object[])tile;
+            var parameters = (object[])tile;
             if (parameters.Length != 2) throw new ArgumentException("Two parameters expected");
-            TileInfo tileInfo = (TileInfo)parameters[0];
+            var tileInfo = (TileInfo)parameters[0];
             var doneEvent = (MultipleThreadResetEvent)parameters[1];
 
-            if (!trackCancel.Continue())
+            if (!_trackCancel.Continue())
             {
                 doneEvent.SetOne();
                 //!!!multipleThreadResetEvent.SetOne();
                 return;
             }
             
-            Uri url = tileProvider.Request.GetUri(tileInfo);
-            logger.Debug("Url: " + url.ToString());
-            /**if (tileSource is SpatialCloudTileSource)
-            {
-                string hash = SpatialCloudAuthSign.GetMD5Hash(
-                    tileInfo.Index.Level.ToString(),
-                    tileInfo.Index.Col.ToString(),
-                    tileInfo.Index.Row.ToString(),
-                    "jpg",
-                    ((SpatialCloudTileSource)tileSource).LoginId,
-                    ((SpatialCloudTileSource)tileSource).Password);
-
-                url = new Uri(url.AbsoluteUri + "&authSign=" + hash);
-            }*/
-
-            byte[] bytes = GetBitmap(url);
+            var url = _tileProvider.Request.GetUri(tileInfo);
+            Logger.Debug("Url: " + url);
+            var bytes = GetBitmap(url);
 
             try
             {
                 if (bytes != null)
                 {
-                    string name = fileCache.GetFileName(tileInfo.Index);
-                    fileCache.Add(tileInfo.Index, bytes);
-                    CreateRaster(tileInfo, bytes, name);
-                    logger.Debug("Tile retrieved: " + url.AbsoluteUri);
+                    var name = _fileCache.GetFileName(tileInfo.Index);
+                    _fileCache.Add(tileInfo.Index, bytes);
+                    CreateRaster(tileInfo, name);
+                    Logger.Debug("Tile retrieved: " + url.AbsoluteUri);
                 }
             }
             catch (Exception)
             {
-                //Console.WriteLine("soep");
             }
             doneEvent.SetOne();
-            //doneEvent.Set();
         }
 
 
-        /// <summary>
-        /// Creates the raster.
-        /// </summary>
-        /// <param name="tile">The tile.</param>
-        /// <param name="requestBuilder">The request builder.</param>
-        /// <param name="name">The name.</param>
-        private static bool CreateRaster(TileInfo tile, byte[] bytes, string name)
+        private static void CreateRaster(TileInfo tile, string name)
         {
-            ITileSchema schema = tileSource.Schema;
-
-            FileInfo fi = new FileInfo(name);
-            string tfwFile = name.Replace(fi.Extension, "." + GetWorldFile(schema.Format));
+            var schema = _tileSource.Schema;
+            var fi = new FileInfo(name);
+            var tfwFile = name.Replace(fi.Extension, "." + GetWorldFile(schema.Format));
             WriteWorldFile(tfwFile, tile.Extent, schema);
-
-            //bool result = AddSpatialReferenceSchemaEdit(fileCache.GetFileName(tile.Index), dataSpatialReference);
-            return true;
-
         }
 
         public static byte[] GetBitmap(Uri uri)
         {
             byte[] bytes = null;
-            string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
-            string referer = String.Empty;// "http://maps.google.com/maps";
+            const string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
+            var referer = String.Empty;// "http://maps.google.com/maps";
 
             try
             {
@@ -389,17 +333,17 @@ namespace BruTileArcGIS
                 // if there is an error loading the tile
                 // like tile doesn't exist on server (404)
                 // just log a message and go on
-                logger.Error("Error loading tile webException: " + webException.Message + ". url: " + uri.AbsoluteUri);
+                Logger.Error("Error loading tile webException: " + webException.Message + ". url: " + uri.AbsoluteUri);
             }
             return bytes;
         }
 
-        private List<TileInfo> GetTiles(IActiveView activeView, IConfig config)
+        private List<TileInfo> GetTiles(IActiveView activeView)
         {
-            ITileSchema schema = tileSource.Schema;
-            IEnvelope env = Projector.ProjectEnvelope(activeView.Extent, schema.Srs);
-            logger.Debug("Tilesource schema srs: " + schema.Srs);
-            logger.Debug("Projected envelope: xmin:" + env.XMin.ToString() +
+            var schema = _tileSource.Schema;
+            var env = Projector.ProjectEnvelope(activeView.Extent, schema.Srs);
+            Logger.Debug("Tilesource schema srs: " + schema.Srs);
+            Logger.Debug("Projected envelope: xmin:" + env.XMin +
                         ", ymin:" + env.YMin +
                         ", xmax:" + env.YMin +
                         ", ymax:" + env.YMin
@@ -408,13 +352,13 @@ namespace BruTileArcGIS
             var mapWidth = activeView.ExportFrame.right;
             var mapHeight = activeView.ExportFrame.bottom;
             var resolution = GetMapResolution(env, mapWidth);
-            logger.Debug("Map resolution: " + resolution);
+            Logger.Debug("Map resolution: " + resolution);
 
             var centerPoint = GetCenterPoint(env);
 
             var transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
             var level = Utilities.GetNearestLevel(schema.Resolutions, transform.Resolution);
-            logger.Debug("Current level: " + level);
+            Logger.Debug("Current level: " + level);
 
             _currentLevel = level;
 
@@ -424,27 +368,16 @@ namespace BruTileArcGIS
         }
 
 
-        /// <summary>
-        /// Gets the map resolution.
-        /// </summary>
-        /// <param name="env">The env.</param>
-        /// <param name="mapWidth">Width of the map.</param>
-        /// <returns></returns>
-        private float GetMapResolution(IEnvelope env, int mapWidth)
+        protected float GetMapResolution(IEnvelope env, int mapWidth)
         {
-            double dx = env.XMax - env.XMin;
-            float res = Convert.ToSingle(dx / mapWidth);
+            var dx = env.XMax - env.XMin;
+            var res = Convert.ToSingle(dx / mapWidth);
             return res;
         }
 
-        /// <summary>
-        /// Gets the world file based on a format 
-        /// </summary>
-        /// <param name="format"></param>
-        /// <returns></returns>
         private static string GetWorldFile(string format)
         {
-            string res = String.Empty;
+            var res = String.Empty;
 
             format = (format.Contains(@"image/") ? format.Substring(6, format.Length - 6) : format);
 
@@ -473,84 +406,33 @@ namespace BruTileArcGIS
             return res;
 
         }
-        /// <summary>
-        /// Writes the world file.
-        /// </summary>
-        /// <param name="f">The f.</param>
-        /// <param name="extent">The extent.</param>
-        /// <param name="schema">The schema.</param>
-        private static void WriteWorldFile(string f, Extent extent, ITileSchema schema)
+
+        private static void WriteWorldFile(string f, BruTile.Extent extent, ITileSchema schema)
         {
-            using (StreamWriter sw = new StreamWriter(f))
+            using (var sw = new StreamWriter(f))
             {
-                double resX = (extent.MaxX - extent.MinX) / schema.Width;
-                double resY = (extent.MaxY - extent.MinY) / schema.Height;
-                sw.WriteLine(resX.ToString());
+                var resX = (extent.MaxX - extent.MinX) / schema.Width;
+                var resY = (extent.MaxY - extent.MinY) / schema.Height;
+                sw.WriteLine(resX.ToString(CultureInfo.InvariantCulture));
                 sw.WriteLine("0");
                 sw.WriteLine("0");
-                sw.WriteLine((resY *= -1).ToString());
-                sw.WriteLine(extent.MinX.ToString());
-                sw.WriteLine(extent.MaxY.ToString());
+                sw.WriteLine((resY*-1).ToString(CultureInfo.InvariantCulture));
+                sw.WriteLine(extent.MinX.ToString(CultureInfo.InvariantCulture));
+                sw.WriteLine(extent.MaxY.ToString(CultureInfo.InvariantCulture));
                 sw.Close();
             }
         }
 
 
-        /// <summary>
-        /// Gets the center point.
-        /// </summary>
-        /// <param name="env">The env.</param>
-        /// <returns></returns>
-        private PointF GetCenterPoint(IEnvelope env)
+        protected PointF GetCenterPoint(IEnvelope env)
         {
-            PointF p = new PointF();
-            p.X = Convert.ToSingle(env.XMin + (env.XMax - env.XMin) / 2);
-            p.Y = Convert.ToSingle(env.YMin + (env.YMax - env.YMin) / 2);
+            var p = new PointF
+            {
+                X = Convert.ToSingle(env.XMin + (env.XMax - env.XMin)/2),
+                Y = Convert.ToSingle(env.YMin + (env.YMax - env.YMin)/2)
+            };
             return p;
         }
-
-
     }
 }
 
-
-/**
-/// <summary>
-/// Adds the spatial reference using a schema edit (not used because of more expensive)
-/// </summary>
-/// <param name="file">The file.</param>
-private bool AddSpatialReferenceSchemaEdit(String file, ISpatialReference spatialReference)
-{
-    bool result = false;
-    FileInfo fi = new FileInfo(file);
-    fi.IsReadOnly = false;
-    if (fi.Extension == "jpeg")
-    {
-        string newname = fi.Name.Replace("jpeg", "jpg");
-        fi = new FileInfo(newname);
-    }
-    IWorkspaceFactory rasterWorkspaceFactory = new RasterWorkspaceFactoryClass();
-    IRasterWorkspace rasterWorkSpace = (IRasterWorkspace)rasterWorkspaceFactory.OpenFromFile(fi.DirectoryName, 0);
-
-    try
-    {
-        IRasterDataset rasterDataset = rasterWorkSpace.OpenRasterDataset(fi.Name);
-
-        IGeoDatasetSchemaEdit geoDatasetSchemaEdit = (IGeoDatasetSchemaEdit)rasterDataset;
-
-        if (geoDatasetSchemaEdit.CanAlterSpatialReference)
-        {
-            geoDatasetSchemaEdit.AlterSpatialReference(spatialReference);
-        }
-        result = true;
-    }
-    catch (System.Runtime.InteropServices.COMException comException)
-    {
-        // if there is something wrong with loading the result
-        // like Failed to open raster dataset
-        // just log a message and go on
-        logger.Error("Error loading tile comException: " + comException.Message + ". File: " + fi.DirectoryName + "\\" + fi.Name);
-    }
-    return result;
-}
-*/

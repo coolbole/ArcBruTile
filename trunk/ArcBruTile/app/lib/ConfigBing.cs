@@ -1,16 +1,15 @@
-﻿using System.Configuration;
-using BruTile;
+﻿using BruTile;
 using BruTile.Web;
 
 namespace BrutileArcGIS.lib
 {
     public class ConfigBing : IConfig
     {
-        private BingMapType mapType = BingMapType.Roads;
+        private readonly BingMapType _mapType = BingMapType.Roads;
 
         public ConfigBing(BingMapType mapType)
         {
-            this.mapType = mapType;
+            this._mapType = mapType;
         }
 
         public ITileSource CreateTileSource()
@@ -21,7 +20,7 @@ namespace BrutileArcGIS.lib
             var bingUrl = config.AppSettings.Settings["BingUrl"].Value;
 
             return new BingTileSource(
-                bingUrl,bingToken,mapType);
+                bingUrl,bingToken,_mapType);
         }
     }
 }

@@ -1,14 +1,9 @@
 ﻿using System;
-using BruTileArcGIS;
-using ESRI.ArcGIS.Framework;
 
 namespace BrutileArcGIS.lib
 {
     static class Util
     {
-        public static void SetBruTilePropertyPage(IApplication application, BruTileLayer layer)
-        {
-        }
 
         public static string GetAppDir()
         {

@@ -1,4 +1,5 @@
-﻿using BruTile;
+﻿using System.Globalization;
+using BruTile;
 using BruTile.Web;
 
 namespace BrutileArcGIS.lib
@@ -22,7 +23,7 @@ namespace BrutileArcGIS.lib
         {
             get
             {
-                double[] resoltions = new double[] { 
+                var resolutions = new[] { 
                     0.3515625,
                     0.17578125,
                     0.087890625,
@@ -45,9 +46,9 @@ namespace BrutileArcGIS.lib
                 var schema = new TileSchema();
 
                 var count = 0;
-                foreach (var resolution in resoltions) 
+                foreach (var resolution in resolutions) 
                 {
-                    schema.Resolutions.Add(new Resolution { Id = count.ToString(), UnitsPerPixel = resolution });
+                    schema.Resolutions.Add(new Resolution { Id = count.ToString(CultureInfo.InvariantCulture), UnitsPerPixel = resolution });
                     count++;
                 }
                 
@@ -68,7 +69,7 @@ namespace BrutileArcGIS.lib
         {
             get
             {
-                string url = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer/tile/{0}/{2}/{1}";
+                var url = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer/tile/{0}/{2}/{1}";
                 return new BasicRequest(url);
             }
         }

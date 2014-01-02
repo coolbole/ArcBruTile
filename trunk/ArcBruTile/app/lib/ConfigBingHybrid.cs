@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using BruTile;
+﻿using BruTile;
 using BruTile.Web;
 
 namespace BrutileArcGIS.lib

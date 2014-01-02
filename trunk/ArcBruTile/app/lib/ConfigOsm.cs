@@ -5,11 +5,11 @@ namespace BrutileArcGIS.lib
 {
     public class ConfigOsm : IConfig
     {
-        private readonly OsmMapType osmMapType;
+        private readonly OsmMapType _osmMapType;
 
         public ConfigOsm(OsmMapType maptype)
         {
-            osmMapType = maptype;
+            _osmMapType = maptype;
             
         }
 
@@ -17,7 +17,7 @@ namespace BrutileArcGIS.lib
         {
             ITileSource result = null;
 
-            if (osmMapType == OsmMapType.Default)
+            if (_osmMapType == OsmMapType.Default)
             {
                 result= new OsmTileSource();
             }

@@ -52,11 +52,12 @@ namespace BrutileArcGIS.commands
             {
                 var mxdoc = (IMxDocument)_application.Document;
                 var map = mxdoc.FocusMap;
-                var brutileLayer = new BruTileLayer(_application, EnumBruTileLayer.BingAerial);
-                brutileLayer.Name = "Bing Aerial";
-                brutileLayer.Visible = true;
+                var brutileLayer = new BruTileLayer(_application, EnumBruTileLayer.BingAerial)
+                {
+                    Name = "Bing Aerial",
+                    Visible = true
+                };
                 map.AddLayer(brutileLayer);
-                Util.SetBruTilePropertyPage(_application, brutileLayer);
             }
             catch (Exception ex)
             {
