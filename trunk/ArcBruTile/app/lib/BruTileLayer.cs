@@ -153,7 +153,7 @@ namespace BrutileArcGIS.Lib
                                     _displayFilter.Transparency = (short)(255 - ((_transparency * 255) / 100));
                                     if (display.Filter == null)
                                     {
-                                        // display.Filter = displayFilter;
+                                        display.Filter = _displayFilter;
                                     }
                                     bruTileHelper.Draw(_application, activeView, _config, trackCancel, SpatialReference, _enumBruTileLayer, ref _currentLevel, _tileSource, display);
                                 }
