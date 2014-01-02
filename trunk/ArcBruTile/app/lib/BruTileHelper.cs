@@ -59,6 +59,8 @@ namespace BrutileArcGIS.Lib
             _currentLevel = currentLevel;
             _fileCache = GetFileCache(config);
             _tileProvider = (WebTileProvider)tileSource.Provider;
+            //var fetcher = new FileFetcher<Image>(osmTileSource, fileCache);
+
             _display = display;
 
             if (!activeView.Extent.IsEmpty)
@@ -101,8 +103,7 @@ namespace BrutileArcGIS.Lib
                             var name = _fileCache.GetFileName(tile.Index);
 
                             if (!File.Exists(name)) continue;
-                            var envelope = GetEnvelope(tile.Extent);
-                            DrawRaster(name, envelope, trackCancel);
+                            DrawRaster(name);
                         }
                     }
 
@@ -152,13 +153,11 @@ namespace BrutileArcGIS.Lib
 
                 foreach (var t in downloadTiles)
                 {
-                    //!!!doneEvents[i] = new ManualResetEvent(false);
                     object o = new object[] {t, doneEvents};
                     ThreadPool.SetMaxThreads(25, 25);
                     ThreadPool.QueueUserWorkItem(DownloadTile, o);
                 }
 
-                //WaitHandle.WaitAll(doneEvents);
                 doneEvents.WaitAll();
                 Logger.Debug("End waiting for remote tiles...");
             }
@@ -166,7 +165,7 @@ namespace BrutileArcGIS.Lib
         }
 
 
-        private void DrawRaster(string file, IEnvelope envelope, ITrackCancel trackCancel)
+        private void DrawRaster(string file)
         {
             try
             {
