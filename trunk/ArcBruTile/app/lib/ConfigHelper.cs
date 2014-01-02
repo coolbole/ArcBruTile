@@ -1,5 +1,4 @@
 ﻿using BruTile.Web;
-using BruTileArcGIS;
 
 namespace BrutileArcGIS.lib
 {
@@ -10,17 +9,17 @@ namespace BrutileArcGIS.lib
             return new ConfigTms(url, overwriteUrls);
         }
 
-        public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer, string Url, bool overwriteUrls)
+        public static IConfig GetConfig(EnumBruTileLayer enumBruTileLayer, string url, bool overwriteUrls)
         {
-            IConfig result=null;
+            IConfig result;
 
             if (enumBruTileLayer == EnumBruTileLayer.TMS)
             {
-                result = new ConfigTms(Url, overwriteUrls);
+                result = new ConfigTms(url, overwriteUrls);
             }
             else if (enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
             {
-                result = new ConfigInvertedTMS(Url);
+                result = new ConfigInvertedTMS(url);
             }
             else
             {

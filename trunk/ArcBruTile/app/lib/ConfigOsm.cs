@@ -10,6 +10,7 @@ namespace BrutileArcGIS.lib
         public ConfigOsm(OsmMapType maptype)
         {
             osmMapType = maptype;
+            
         }
 
         public ITileSource CreateTileSource()
