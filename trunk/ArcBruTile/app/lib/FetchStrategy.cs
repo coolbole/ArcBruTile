@@ -7,7 +7,7 @@ namespace BrutileArcGIS.Lib
 {
     interface IFetchStrategy
     {
-        IList<TileInfo> GetTilesWanted(ITileSchema schema, BruTile.Extent extent, int levelId);
+        IList<TileInfo> GetTilesWanted(ITileSchema schema, Extent extent, string levelId);
     }
 
     public class FetchStrategy : IFetchStrategy
@@ -15,7 +15,7 @@ namespace BrutileArcGIS.Lib
         public static HashSet<int> GetPreFetchLevels(int min, int max)
         {
             var preFetchLayers = new HashSet<int>();
-            int level = min;
+            var level = min;
             var step = 1;
             while (level <= max)
             {
@@ -26,18 +26,18 @@ namespace BrutileArcGIS.Lib
             return preFetchLayers;
         }
 
-        public IList<TileInfo> GetTilesWanted(ITileSchema schema, BruTile.Extent extent, int levelId)
+        public IList<TileInfo> GetTilesWanted(ITileSchema schema, Extent extent, string levelId)
         {
             IList<TileInfo> infos = new List<TileInfo>();
             // Iterating through all levels from current to zero. If lower levels are
             // not availeble the renderer can fall back on higher level tiles. 
             var resolution = schema.Resolutions[levelId].UnitsPerPixel;
-            var levels = schema.Resolutions.Where(k => resolution <= k.UnitsPerPixel).OrderByDescending(x => x.UnitsPerPixel);
+            var levels = schema.Resolutions.Where(k => resolution <= k.Value.UnitsPerPixel).OrderByDescending(x => x.Value.UnitsPerPixel);
 
             //var levelCount = levels.Count();
             foreach (var level in levels)
             {
-                var tileInfos = schema.GetTilesInView(extent, (Int32.Parse(level.Id)));
+                var tileInfos = schema.GetTilesInView(extent, (Int32.Parse(level.Value.Id)));
                 tileInfos = SortByPriority(tileInfos, extent.CenterX, extent.CenterY);
 
                 //var count = infosOfLevel.Count();

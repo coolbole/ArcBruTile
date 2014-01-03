@@ -26,7 +26,7 @@ namespace BrutileArcGIS.Lib
         private static ITrackCancel _trackCancel;
         private static ISpatialReference _layerSpatialReference;
         private static ISpatialReference _dataSpatialReference;
-        private int _currentLevel;
+        private string _currentLevel;
         private static FileCache _fileCache;
         private static ITileSource _tileSource;
         bool _needReproject;
@@ -45,7 +45,7 @@ namespace BrutileArcGIS.Lib
                          FileCache fileCache,
                          ITrackCancel trackCancel,
                          ISpatialReference layerSpatialReference,
-                         ref int currentLevel, ITileSource tileSource, IDisplay display)
+                         ref string currentLevel, ITileSource tileSource, IDisplay display)
         {
             _tileSource = tileSource;
             _trackCancel = trackCancel;
@@ -263,7 +263,7 @@ namespace BrutileArcGIS.Lib
             try
             {
                 
-                bytes = RequestHelper.FetchImage(uri, userAgent, referer, false);
+                bytes = RequestHelper.FetchImage(uri);
 
             }
             catch (System.Net.WebException webException)

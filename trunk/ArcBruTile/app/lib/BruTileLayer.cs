@@ -34,7 +34,7 @@ namespace BrutileArcGIS.Lib
         private double _layerWeight=101;
         private IConfig _config;
         public const string Guid = "1EF3586D-8B42-4921-9958-A73F4833A6FA";
-        private int _currentLevel;
+        private string _currentLevel;
         private ITileSchema _schema;
         private ITileSource _tileSource;
         private bool _supportsInteractive = true;
@@ -209,7 +209,7 @@ namespace BrutileArcGIS.Lib
 
         public bool ShowTips { get; set; }
 
-        public int CurrentLevel
+        public string CurrentLevel
         {
             get { return _currentLevel; }
             set { _currentLevel = value; }

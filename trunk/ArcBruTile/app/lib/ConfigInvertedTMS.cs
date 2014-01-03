@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using BruTile;
-using BruTile.PreDefined;
-using BruTile.Web.TmsService;
+using BruTile.Predefined;
+using BruTile.Tms;
+//using BruTile.Web.TmsService;
 
 namespace BrutileArcGIS.Lib
 {

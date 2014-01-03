@@ -44,8 +44,8 @@ namespace BrutileArcGIS.lib
         {
             using (var sw = new StreamWriter(f))
             {
-                var resX = (extent.MaxX - extent.MinX) / schema.Width;
-                var resY = (extent.MaxY - extent.MinY) / schema.Height;
+                var resX = (extent.MaxX - extent.MinX) / schema.GetTileWidth("0");
+                var resY = (extent.MaxY - extent.MinY) / schema.GetTileHeight("0");
                 sw.WriteLine(resX.ToString(CultureInfo.InvariantCulture));
                 sw.WriteLine("0");
                 sw.WriteLine("0");

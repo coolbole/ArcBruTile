@@ -49,10 +49,6 @@ namespace BrutileArcGIS.Lib
             {
                 result = new ConfigBing(BingMapType.Aerial);
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.ESRI)
-            {
-                result = new ConfigEsri();
-            }
             return result;
         }
     }

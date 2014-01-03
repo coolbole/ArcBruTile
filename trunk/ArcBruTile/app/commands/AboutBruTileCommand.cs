@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using BruTile.Web;
 using BruTileArcGIS;
 using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;

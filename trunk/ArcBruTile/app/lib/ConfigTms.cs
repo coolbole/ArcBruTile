@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net;
 using BruTile;
-using BruTile.Web.TmsService;
+using BruTile.Tms;
+//using BruTile.Web.TmsService;
 
 namespace BrutileArcGIS.Lib
 {

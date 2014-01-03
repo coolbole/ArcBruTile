@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using BruTile;
 using BruTile.Web;
+using BruTile.Wmsc;
 
 namespace BrutileArcGIS.forms
 {
@@ -33,7 +34,7 @@ namespace BrutileArcGIS.forms
 
             try
             {
-                _tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
+                _tileSources = WmscTileSource.CreateFromWmscCapabilties(new Uri(url)).ToList();
 
                 var names = _tileSources.Select(t => t.Schema.Name).ToList();
 

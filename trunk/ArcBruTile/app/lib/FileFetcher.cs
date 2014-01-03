@@ -20,7 +20,7 @@ namespace BrutileArcGIS.Lib
         private readonly IFetchStrategy _strategy = new FetchStrategy();
         private double _resolution;
         private readonly Retries _retries = new Retries();
-        private BruTile.Extent _extent;
+        private Extent _extent;
 
 
         public event DataChangedEventHandler<T> DataChanged;
@@ -34,7 +34,7 @@ namespace BrutileArcGIS.Lib
 
         }
 
-        public void ViewChanged(BruTile.Extent newExtent, double newResolution)
+        public void ViewChanged(Extent newExtent, double newResolution)
         {
             _extent = newExtent;
             _resolution = newResolution;
@@ -91,7 +91,7 @@ namespace BrutileArcGIS.Lib
 
 
 
-        public void FetchTiles(BruTile.Extent currentExtent, int level)
+        public void FetchTiles(Extent currentExtent, string level)
         {
             var tilesMissing = GetTilesWanted(_tileSource.Schema, currentExtent, level);
             foreach (var info in tilesMissing)
@@ -105,9 +105,11 @@ namespace BrutileArcGIS.Lib
         {
             // first some checks
             if (_tilesInProgress.Contains(info.Index)) return;
+            if (_retries.ReachedMax(info.Index)) return;
 
             // prepare for request
             lock (_tilesInProgress) { _tilesInProgress.Add(info.Index); }
+            _retries.PlusOne(info.Index);
 
             // now we can go for the request.
             FetchAsync(info);
@@ -135,7 +137,7 @@ namespace BrutileArcGIS.Lib
                             byte[] data = _tileSource.Provider.GetTile(tileInfo);
                             _fileCache.Add(tileInfo.Index, data);
 
-                            _fileCache.AddWorldFile(tileInfo, _tileSource.Schema.Width, _tileSource.Schema.Height,
+                            _fileCache.AddWorldFile(tileInfo, _tileSource.Schema.GetTileHeight("0"), _tileSource.Schema.GetTileHeight("0"),
                                 _tileSource.Schema.Format);
                             tile = new Tile<T> { Data = data, Info = tileInfo };
                         }
@@ -162,24 +164,25 @@ namespace BrutileArcGIS.Lib
         public IList<TileInfo> GetTilesMissing(IEnumerable<TileInfo> tilesWanted, FileCache fileCache, Retries retries)
         {
             return tilesWanted.Where(
-                info => fileCache.Find(info.Index) == null).ToList();
+                info => fileCache.Find(info.Index) == null &&
+                !retries.ReachedMax(info.Index)).ToList();
         }
 
 
-        public IList<TileInfo> GetTilesWanted(ITileSchema schema, BruTile.Extent extent, int levelId)
+        public IList<TileInfo> GetTilesWanted(ITileSchema schema, Extent extent, string levelId)
         {
             IList<TileInfo> infos = new List<TileInfo>();
             // Iterating through all levels from current to zero. If lower levels are
             // not availeble the renderer can fall back on higher level tiles. 
             var resolution = schema.Resolutions[levelId].UnitsPerPixel;
             var levels =
-                schema.Resolutions.Where(k => resolution <= k.UnitsPerPixel)
-                    .OrderByDescending(x => x.UnitsPerPixel);
+                schema.Resolutions.Where(k => resolution <= k.Value.UnitsPerPixel)
+                    .OrderByDescending(x => x.Value.UnitsPerPixel);
 
             //var levelCount = levels.Count();
             foreach (var level in levels)
             {
-                var tileInfos = schema.GetTilesInView(extent, (Int32.Parse(level.Id)));
+                var tileInfos = schema.GetTilesInView(extent, (Int32.Parse(level.Value.Id)));
                 tileInfos = SortByPriority(tileInfos, extent.CenterX, extent.CenterY);
 
                 //var count = infosOfLevel.Count();
@@ -217,7 +220,7 @@ namespace BrutileArcGIS.Lib
 
         public bool ReachedMax(TileIndex index)
         {
-            int retryCount = (!_retries.Keys.Contains(index)) ? 0 : _retries[index];
+            var retryCount = (!_retries.Keys.Contains(index)) ? 0 : _retries[index];
             return retryCount > MaxRetries;
         }
 
