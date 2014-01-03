@@ -45,8 +45,8 @@ namespace BrutileArcGIS.Lib
 
         private static string ReplaceEnvironmentVar(string path)
         {
-            var firstIndex = path.IndexOf("%");
-            var lastIndex = path.LastIndexOf("%");
+            var firstIndex = path.IndexOf("%", StringComparison.Ordinal);
+            var lastIndex = path.LastIndexOf("%", StringComparison.Ordinal);
             var envVar = path.Substring(firstIndex+1, lastIndex - firstIndex-1);
             var environmentVariable = Environment.GetEnvironmentVariable(envVar);
             path = path.Replace("%"+envVar+"%", environmentVariable);

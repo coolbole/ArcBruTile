@@ -6,6 +6,7 @@ using System.Xml;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
+using BrutileArcGIS.Lib;
 using BrutileArcGIS.lib;
 
 namespace BruTileArcGIS

@@ -9,7 +9,7 @@ namespace BrutileArcGIS.Lib
 
         public ConfigBing(BingMapType mapType)
         {
-            this._mapType = mapType;
+            _mapType = mapType;
         }
 
         public ITileSource CreateTileSource()

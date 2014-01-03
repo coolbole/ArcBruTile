@@ -205,6 +205,7 @@ namespace BrutileArcGIS.Lib
                 Logger.Debug("End drawing tile.");
 
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception)
             {
                 // what to do now...

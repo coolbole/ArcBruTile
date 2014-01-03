@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
-using BruTile.Web;
 using BruTile;
-//using System.Linq;
+using BruTile.Web;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.forms
 {
     public partial class AddWmsCForm : Form
     {
-        private IList<ITileSource> tileSources;
+        private IList<ITileSource> _tileSources;
 
         public ITileSource SelectedTileSource;
 
@@ -24,7 +20,7 @@ namespace BruTileArcGIS
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            DialogResult = DialogResult.OK;
         }
 
         private void btnRetrieve_Click(object sender, EventArgs e)
@@ -33,23 +29,19 @@ namespace BruTileArcGIS
             // http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilities&service=wms-c
             // Does not work yet: http://public-wms.kaartenbalie.nl/wms/nederland
             //string url = String.Format("{0}?version={1}&request=GetCapabilities&service=wms-c", tbWmsCUrl.Text, cbbVersion.SelectedItem);
-            string url = tbWmsCUrl.Text;
+            var url = tbWmsCUrl.Text;
 
             try
             {
-                tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
+                _tileSources = WmscTileSource.TileSourceBuilder(new Uri(url), null);
 
-                var names = new List<string>();
-                foreach (var tileSource in tileSources)
-                {
-                    names.Add(tileSource.Schema.Name);
-                }
+                var names = _tileSources.Select(t => t.Schema.Name).ToList();
 
                 lbServices.DataSource = names;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                MessageBox.Show(ex.Message);
             }
 
         }
@@ -58,21 +50,13 @@ namespace BruTileArcGIS
         {
             if (lbServices.SelectedItem != null)
             {
-                string name = (String)lbServices.SelectedItem;
-                foreach (ITileSource tileSource in tileSources)
+                var name = (String)lbServices.SelectedItem;
+                foreach (var tileSource in _tileSources.Where(t => t.Schema.Name == name))
                 {
-                    if (tileSource.Schema.Name == name)
-                    {
-                        SelectedTileSource = tileSource;
-                    }
+                    SelectedTileSource = tileSource;
                 }
                 btnOk.Enabled = true;
             }
-        }
-
-        private void AddWmsCForm_Load(object sender, EventArgs e)
-        {
-
         }
     }
 

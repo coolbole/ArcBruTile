@@ -1,4 +1,4 @@
-﻿namespace BruTileArcGIS
+﻿namespace BrutileArcGIS.Lib
 {
     public class TileMap
     {
@@ -16,7 +16,7 @@
 
         static public int Compare(TileMap a, TileMap b)
         {
-            return(a.Title.CompareTo(b.Title));
+            return(System.String.Compare(a.Title, b.Title, System.StringComparison.Ordinal));
         }
     }
 

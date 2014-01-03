@@ -24,10 +24,8 @@ namespace BrutileArcGIS.Lib
         private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         private readonly IApplication _application;
         private IEnvelope _envelope;
-        private const bool scaleRangeReadOnly = true;
-        private const int supportedDrawPhases = -1;
         private ISpatialReference _dataSpatialReference;
-        private bool _visible=false;
+        private bool _visible;
         private IMap _map;
         private EnumBruTileLayer _enumBruTileLayer;
         private string _cacheDir;
@@ -198,7 +196,7 @@ namespace BrutileArcGIS.Lib
 
         public bool ScaleRangeReadOnly
         {
-            get {return scaleRangeReadOnly; }
+            get {return true; }
         }
 
         public bool ShowTips { get; set; }
@@ -214,7 +212,7 @@ namespace BrutileArcGIS.Lib
 
         public int SupportedDrawPhases
         {
-            get { return supportedDrawPhases; }
+            get { return -1; }
         }
 
         public bool Valid

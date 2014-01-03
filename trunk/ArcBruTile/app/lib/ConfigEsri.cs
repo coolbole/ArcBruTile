@@ -57,7 +57,7 @@ namespace BrutileArcGIS.Lib
                 schema.Extent = new BruTile.Extent(-180, -90, 180, 90);
                 schema.OriginX = -180;
                 schema.OriginY = 90;
-                schema.Name = "ESRI"; ;
+                schema.Name = "ESRI";
                 schema.Format = format;
                 schema.Axis = AxisDirection.InvertedY;
                 schema.Srs = "EPSG:4326";
@@ -69,7 +69,7 @@ namespace BrutileArcGIS.Lib
         {
             get
             {
-                var url = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer/tile/{0}/{2}/{1}";
+                const string url = "http://server.arcgisonline.com/ArcGIS/rest/services/ESRI_StreetMap_World_2D/MapServer/tile/{0}/{2}/{1}";
                 return new BasicRequest(url);
             }
         }

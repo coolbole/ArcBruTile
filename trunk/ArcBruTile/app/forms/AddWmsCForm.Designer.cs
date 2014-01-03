@@ -1,4 +1,4 @@
-﻿namespace BruTileArcGIS
+﻿namespace BrutileArcGIS.forms
 {
     partial class AddWmsCForm
     {
@@ -171,7 +171,6 @@
             this.Name = "AddWmsCForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add WMS-C Service";
-            this.Load += new System.EventHandler(this.AddWmsCForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
