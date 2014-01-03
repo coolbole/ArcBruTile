@@ -60,22 +60,29 @@ namespace BruTileArcGIS
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value))
                 {
-
                     AddItem("BruTileArcGIS.commands.OsmMenuDef");
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
                 {
                     AddItem("BruTileArcGIS.commands.BingMenuDef");
                 }
-
-                if (config.AppSettings.Settings["useGoogle"] != null)
+                if (Convert.ToBoolean(config.AppSettings.Settings["useStamen"].Value))
                 {
-                    if (Convert.ToBoolean(config.AppSettings.Settings["useGoogle"].Value))
-                    {
-                        AddItem("BruTileArcGIS.commands.GoogleMenuDef");
-                    }
+                    AddItem("BruTileArcGIS.commands.StamenMenuDef");
                 }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useBingHybrid"].Value)) AddItem("AddBingHybridLayerCommand");
+                if (Convert.ToBoolean(config.AppSettings.Settings["useMapBox"].Value))
+                {
+                    AddItem("BruTileArcGIS.commands.MapBoxMenuDef");
+                }
+                if (Convert.ToBoolean(config.AppSettings.Settings["useCloudMade"].Value))
+                {
+                    AddItem("BruTileArcGIS.commands.CloudMadeMenuDef");
+                }
+                if (Convert.ToBoolean(config.AppSettings.Settings["useMapQuest"].Value))
+                {
+                    AddItem("BruTileArcGIS.commands.MapQuestMenuDef");
+                }
+
             }
             catch (Exception ex)
             {

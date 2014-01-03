@@ -143,11 +143,16 @@
     <Compile Include="commands\AddBingAerialLayerCommand.cs" />
     <Compile Include="commands\AddBingHybridLayerCommand.cs" />
     <Compile Include="commands\AddBingRoadLayerCommand.cs" />
+    <Compile Include="commands\AddBruTileLayerCommandBase.cs" />
     <Compile Include="commands\AddServicesCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
     <Compile Include="commands\BingMenuDef.cs" />
+    <Compile Include="commands\CloudMadeMenuDef.cs" />
+    <Compile Include="commands\MapBoxMenuDef.cs" />
+    <Compile Include="commands\MapQuestMenuDef.cs" />
     <Compile Include="commands\OsmMenuDef.cs" />
+    <Compile Include="commands\StamenMenuDef.cs" />
     <Compile Include="forms\AddServicesForm.cs">
       <SubType>Form</SubType>
     </Compile>

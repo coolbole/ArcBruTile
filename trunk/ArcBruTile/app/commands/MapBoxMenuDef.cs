@@ -2,27 +2,35 @@
 
 namespace BrutileArcGIS.commands
 {
-    public class OsmMenuDef : IMenuDef
+    public class MapBoxMenuDef : IMenuDef
     {
         public string Caption
         {
-            get { return "&OpenStreetMap"; }
+            get { return "&MapBox"; }
         }
-
         public void GetItemInfo(int pos, IItemDef itemDef)
         {
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddOsmLayerCommand1";
+                    itemDef.ID = "AddBingRoadLayerCommand";
                     itemDef.Group = false;
                     break;
+                case 1:
+                    itemDef.ID = "AddBingAerialLayerCommand";
+                    itemDef.Group = false;
+                    break;
+                case 2:
+                    itemDef.ID = "AddBingHybridLayerCommand";
+                    itemDef.Group = false;
+                    break;
+
             }
         }
 
         public int ItemCount
         {
-            get { return 1; }
+            get { return 3; }
         }
 
         public string Name
@@ -31,3 +39,4 @@ namespace BrutileArcGIS.commands
         }
     }
 }
+
