@@ -35,14 +35,6 @@ namespace BrutileArcGIS.Lib
             return tileDir;
         }
 
-        public static int GetTileTimeOut()
-        {
-            var config = ConfigurationHelper.GetConfig();
-            var tileTimeOut = Int32.Parse(config.AppSettings.Settings["tileTimeout"].Value);
-            return tileTimeOut;
-
-        }
-
         private static string ReplaceEnvironmentVar(string path)
         {
             var firstIndex = path.IndexOf("%", StringComparison.Ordinal);

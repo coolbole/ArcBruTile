@@ -9,8 +9,8 @@ namespace BrutileArcGIS.Lib
             ISpatialReference res=null;
 
             // first get the code
-            int start=epsgCode.IndexOf(":", System.StringComparison.Ordinal)+1;
-            int end = epsgCode.Length;
+            var start=epsgCode.IndexOf(":", System.StringComparison.Ordinal)+1;
+            var end = epsgCode.Length;
 
             int code = int.Parse(epsgCode.Substring(start, end-start));
 

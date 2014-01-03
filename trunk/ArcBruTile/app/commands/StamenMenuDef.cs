@@ -13,19 +13,26 @@ namespace BrutileArcGIS.commands
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddBingRoadLayerCommand";
+                    itemDef.ID = "AddStamenWaterColorLayerCommand";
                     itemDef.Group = false;
                     break;
-                case 1:
-                    itemDef.ID = "AddBingAerialLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 2:
-                    itemDef.ID = "AddBingHybridLayerCommand";
-                    itemDef.Group = false;
-                    break;
-
             }
+            switch (pos)
+            {
+                case 1:
+                    itemDef.ID = "AddStamenTerrainLayerCommand";
+                    itemDef.Group = false;
+                    break;
+            }
+            switch (pos)
+            {
+                case 2:
+                    itemDef.ID = "AddStamenTonerLayerCommand";
+                    itemDef.Group = false;
+                    break;
+            }
+
+
         }
 
         public int ItemCount

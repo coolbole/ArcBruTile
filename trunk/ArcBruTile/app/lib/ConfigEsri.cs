@@ -54,7 +54,7 @@ namespace BrutileArcGIS.Lib
                 
                 schema.Height = 512;
                 schema.Width = 512;
-                schema.Extent = new BruTile.Extent(-180, -90, 180, 90);
+                schema.Extent = new Extent(-180, -90, 180, 90);
                 schema.OriginX = -180;
                 schema.OriginY = 90;
                 schema.Name = "ESRI";

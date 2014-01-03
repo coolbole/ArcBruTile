@@ -2,8 +2,6 @@
 using System.Net;
 using System.Text;
 using System.Xml;
-using BruTileArcGIS;
-using BrutileArcGIS.lib;
 
 namespace BrutileArcGIS.Lib
 {

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using BruTile;
+using BrutileArcGIS.lib;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Display;
@@ -44,6 +45,7 @@ namespace BrutileArcGIS.Lib
         {
             ShowTips = false;
             Name = "BruTile";
+
             Cached = false;
             _config = ConfigHelper.GetConfig(enumBruTileLayer, tmsUrl, overwriteUrls);
 
@@ -55,10 +57,15 @@ namespace BrutileArcGIS.Lib
         // used by bing initializer
         public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
+            var config = ConfigurationHelper.GetConfig();
+            //var bingToken=config.AppSettings.Settings["BingToken"].Value;
+            // var bingUrl = config.AppSettings.Settings["BingUrl"].Value;
+            
             ShowTips = false;
             Name = "BruTile";
             Cached = false;
             _config = ConfigHelper.GetConfig(enumBruTileLayer);
+            
             _application = application;
             _enumBruTileLayer = enumBruTileLayer;
             InitializeLayer();
@@ -81,7 +88,7 @@ namespace BrutileArcGIS.Lib
             var mxdoc = (IMxDocument)_application.Document;
             _map = mxdoc.FocusMap;
             _cacheDir = CacheSettings.GetCacheFolder();
-            _tileTimeOut = CacheSettings.GetTileTimeOut();
+            _tileTimeOut = ConfigurationHelper.GetTileTimeOut();
 
             var spatialReferences = new SpatialReferences();
 
@@ -147,13 +154,14 @@ namespace BrutileArcGIS.Lib
                                         Logger.Debug("Map spatial reference: " + _map.SpatialReference.FactoryCode);
                                     }
 
-                                    var bruTileHelper = new BruTileHelper(_cacheDir, _tileTimeOut);
+                                    var bruTileHelper = new BruTileHelper(_tileTimeOut);
                                     _displayFilter.Transparency = (short)(255 - ((_transparency * 255) / 100));
                                     if (display.Filter == null)
                                     {
                                         display.Filter = _displayFilter;
                                     }
-                                    bruTileHelper.Draw(_application, activeView, _config, trackCancel, SpatialReference, _enumBruTileLayer, ref _currentLevel, _tileSource, display);
+                                    var fileCache = CacheDirectory.GetFileCache(_cacheDir,_config,_enumBruTileLayer);
+                                    bruTileHelper.Draw(_application.StatusBar.ProgressBar, activeView, fileCache, trackCancel, SpatialReference, ref _currentLevel, _tileSource, display);
                                 }
                             }
                             catch (Exception ex)

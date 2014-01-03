@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using BruTileArcGIS;
 using BrutileArcGIS.forms;
 using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;

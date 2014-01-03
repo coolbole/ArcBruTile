@@ -6,6 +6,15 @@ namespace BrutileArcGIS.Lib
 {
     public class ConfigurationHelper
     {
+        public static int GetTileTimeOut()
+        {
+            var config = GetConfig();
+            var tileTimeOut = Int32.Parse(config.AppSettings.Settings["tileTimeout"].Value);
+            return tileTimeOut;
+
+        }
+
+
         public static Configuration GetConfig()
         {
             Configuration config;
@@ -20,7 +29,7 @@ namespace BrutileArcGIS.Lib
             }
             catch
             {
-                var msg = string.Format("Can not find ({0})", configFileName);
+                var msg = String.Format("Can not find ({0})", configFileName);
                 throw new ApplicationException(msg);
             }
 

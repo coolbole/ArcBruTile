@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using BruTile;
 using BruTile.Cache;
 using BruTile.Web;
+using BrutileArcGIS.lib;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.DataSourcesRaster;
 using ESRI.ArcGIS.Display;
 using ESRI.ArcGIS.esriSystem;
-using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Geometry;
 using log4net;
@@ -23,12 +22,10 @@ namespace BrutileArcGIS.Lib
     public class BruTileHelper
     {
         private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-        private static string _cacheDir;
         private static int _tileTimeOut;
         private static ITrackCancel _trackCancel;
         private static ISpatialReference _layerSpatialReference;
         private static ISpatialReference _dataSpatialReference;
-        private static EnumBruTileLayer _enumBruTileLayer;
         private int _currentLevel;
         private static FileCache _fileCache;
         private static ITileSource _tileSource;
@@ -37,28 +34,28 @@ namespace BrutileArcGIS.Lib
         private IDisplay _display;
         static WebTileProvider _tileProvider;
 
-        public BruTileHelper(string cacheDir, int tileTimeOut)
+        public BruTileHelper(int tileTimeOut)
         {
-            _cacheDir = cacheDir;
             _tileTimeOut = tileTimeOut;
         }
 
 
-        public void Draw(IApplication application,
+        public void Draw(IStepProgressor stepProgressor,
                          IActiveView activeView,
-                         IConfig config,
+                         FileCache fileCache,
                          ITrackCancel trackCancel,
                          ISpatialReference layerSpatialReference,
-                         EnumBruTileLayer enumBruTileLayer,
                          ref int currentLevel, ITileSource tileSource, IDisplay display)
         {
             _tileSource = tileSource;
             _trackCancel = trackCancel;
             _layerSpatialReference = layerSpatialReference;
-            _enumBruTileLayer = enumBruTileLayer;
             _currentLevel = currentLevel;
-            _fileCache = GetFileCache(config);
+            _fileCache = fileCache;
             _tileProvider = (WebTileProvider)tileSource.Provider;
+            var spatialReferences = new SpatialReferences();
+            _dataSpatialReference = spatialReferences.GetSpatialReference(tileSource.Schema.Srs);
+
             //var fetcher = new FileFetcher<Image>(osmTileSource, fileCache);
 
             _display = display;
@@ -71,9 +68,10 @@ namespace BrutileArcGIS.Lib
 
                 if (_tiles.ToList().Count > 0)
                 {
-                    application.StatusBar.ProgressBar.MinRange = 0;
-                    application.StatusBar.ProgressBar.MaxRange = _tiles.ToList().Count;
-                    application.StatusBar.ProgressBar.Show();
+                    
+                    stepProgressor.MinRange = 0;
+                    stepProgressor.MaxRange = _tiles.ToList().Count;
+                    stepProgressor.Show();
 
                     var downloadFinished = new ManualResetEvent(false);
         
@@ -96,7 +94,7 @@ namespace BrutileArcGIS.Lib
 
                     foreach (var tile in _tiles)
                     {
-                        application.StatusBar.ProgressBar.Step();
+                        stepProgressor.Step();
 
                         if (tile != null)
                         {
@@ -107,7 +105,7 @@ namespace BrutileArcGIS.Lib
                         }
                     }
 
-                    application.StatusBar.ProgressBar.Hide();
+                    stepProgressor.Hide();
                 }
                 else
                 {
@@ -213,66 +211,6 @@ namespace BrutileArcGIS.Lib
             }
         }
 
-
-        protected IEnvelope GetEnvelope(BruTile.Extent extent)
-        {
-            IEnvelope envelope = new EnvelopeClass();
-            envelope.XMin = extent.MinX;
-            envelope.XMax = extent.MaxX;
-            envelope.YMin = extent.MinY;
-            envelope.YMax = extent.MaxY;
-            return envelope;
-        }
-
-
-
-        private static FileCache GetFileCache(IConfig config)
-        {
-            var schema = _tileSource.Schema;
-            var spatialReferences = new SpatialReferences();
-            _dataSpatialReference = spatialReferences.GetSpatialReference(schema.Srs);
-
-            var cacheDirType = GetCacheDirectory(config, _enumBruTileLayer);
-
-            var format = schema.Format;
-
-            if (format.Contains(@"image/"))
-            {
-                format = format.Substring(6, schema.Format.Length - 6);
-            }
-            if (format.Contains("png8"))
-            {
-                format = format.Replace("png8", "png");
-            }
-            var fileCache = new FileCache(cacheDirType, format);
-
-            return fileCache;
-
-        }
-
-        private static string GetCacheDirectory(IConfig config, EnumBruTileLayer layerType)
-        {
-            string cacheDirectory = String.Format("{0}{1}{2}", _cacheDir, System.IO.Path.DirectorySeparatorChar, layerType);
-
-            if (_enumBruTileLayer == EnumBruTileLayer.TMS || _enumBruTileLayer == EnumBruTileLayer.InvertedTMS)
-            {
-                string url=(_enumBruTileLayer == EnumBruTileLayer.TMS? ((ConfigTms)config).Url: ((ConfigInvertedTMS)config).Url);
-
-                string service = url.Substring(7, url.Length - 7);
-                service = service.Replace(@"/", "-");
-                service = service.Replace(":", "-");
-
-                if (service.EndsWith("-"))
-                {
-                    service = service.Substring(0, service.Length - 1);
-                }
-                cacheDirectory = String.Format("{0}{1}{2}{3}{4}", _cacheDir, System.IO.Path.DirectorySeparatorChar, layerType, System.IO.Path.DirectorySeparatorChar, service);
-            }
-
-            return cacheDirectory;
-        }
-
-
         private static void DownloadTile(object tile)
         {
             var parameters = (object[])tile;
@@ -312,8 +250,8 @@ namespace BrutileArcGIS.Lib
         {
             var schema = _tileSource.Schema;
             var fi = new FileInfo(name);
-            var tfwFile = name.Replace(fi.Extension, "." + GetWorldFile(schema.Format));
-            WriteWorldFile(tfwFile, tile.Extent, schema);
+            var tfwFile = name.Replace(fi.Extension, "." + WorldFileWriter.GetWorldFile(schema.Format));
+            WorldFileWriter.WriteWorldFile(tfwFile, tile.Extent, schema);
         }
 
         public static byte[] GetBitmap(Uri uri)
@@ -351,10 +289,10 @@ namespace BrutileArcGIS.Lib
 
             var mapWidth = activeView.ExportFrame.right;
             var mapHeight = activeView.ExportFrame.bottom;
-            var resolution = GetMapResolution(env, mapWidth);
+            var resolution = env.GetMapResolution(mapWidth);
             Logger.Debug("Map resolution: " + resolution);
 
-            var centerPoint = GetCenterPoint(env);
+            var centerPoint = env.GetCenterPoint();
 
             var transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
             var level = Utilities.GetNearestLevel(schema.Resolutions, transform.Resolution);
@@ -368,71 +306,6 @@ namespace BrutileArcGIS.Lib
         }
 
 
-        protected float GetMapResolution(IEnvelope env, int mapWidth)
-        {
-            var dx = env.XMax - env.XMin;
-            var res = Convert.ToSingle(dx / mapWidth);
-            return res;
-        }
-
-        private static string GetWorldFile(string format)
-        {
-            var res = String.Empty;
-
-            format = (format.Contains(@"image/") ? format.Substring(6, format.Length - 6) : format);
-
-            if (format == "jpg")
-            {
-                res = "jgw";
-            }
-            if (format == "jpeg")
-            {
-                res = "jgw";
-            }
-            else if (format == "png")
-            {
-                res = "pgw";
-            }
-            else if (format == "png8")
-            {
-                res = "pgw";
-            }
-
-            else if (format == "tif")
-            {
-                res = "tfw";
-            }
-
-            return res;
-
-        }
-
-        private static void WriteWorldFile(string f, BruTile.Extent extent, ITileSchema schema)
-        {
-            using (var sw = new StreamWriter(f))
-            {
-                var resX = (extent.MaxX - extent.MinX) / schema.Width;
-                var resY = (extent.MaxY - extent.MinY) / schema.Height;
-                sw.WriteLine(resX.ToString(CultureInfo.InvariantCulture));
-                sw.WriteLine("0");
-                sw.WriteLine("0");
-                sw.WriteLine((resY*-1).ToString(CultureInfo.InvariantCulture));
-                sw.WriteLine(extent.MinX.ToString(CultureInfo.InvariantCulture));
-                sw.WriteLine(extent.MaxY.ToString(CultureInfo.InvariantCulture));
-                sw.Close();
-            }
-        }
-
-
-        protected PointF GetCenterPoint(IEnvelope env)
-        {
-            var p = new PointF
-            {
-                X = Convert.ToSingle(env.XMin + (env.XMax - env.XMin)/2),
-                Y = Convert.ToSingle(env.YMin + (env.YMax - env.YMin)/2)
-            };
-            return p;
-        }
     }
 }
 
