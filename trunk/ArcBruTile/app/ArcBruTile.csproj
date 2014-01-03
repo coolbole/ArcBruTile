@@ -142,6 +142,7 @@
     <Compile Include="commands\AboutBruTileCommand.cs" />
     <Compile Include="commands\AddBingLayerCommand.cs" />
     <Compile Include="commands\AddBruTileLayerCommandBase.cs" />
+    <Compile Include="commands\AddMapBoxLayerCommand.cs" />
     <Compile Include="commands\AddServicesCommand.cs" />
     <Compile Include="commands\AddOsmLayerCommand.cs" />
     <Compile Include="commands\AddStamenLayerCommand.cs" />

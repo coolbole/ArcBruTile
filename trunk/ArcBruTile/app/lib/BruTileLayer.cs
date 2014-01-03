@@ -57,7 +57,7 @@ namespace BrutileArcGIS.Lib
         // used by bing initializer
         public BruTileLayer(IApplication application,EnumBruTileLayer enumBruTileLayer)
         {
-            var config = ConfigurationHelper.GetConfig();
+            //var config = ConfigurationHelper.GetConfig();
             //var bingToken=config.AppSettings.Settings["BingToken"].Value;
             // var bingUrl = config.AppSettings.Settings["BingUrl"].Value;
             

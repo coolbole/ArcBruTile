@@ -13,15 +13,15 @@ namespace BrutileArcGIS.commands
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddBingRoadLayerCommand";
+                    itemDef.ID = "AddMapBoxSatelliteLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 1:
-                    itemDef.ID = "AddBingAerialLayerCommand";
+                    itemDef.ID = "AddMapBoxStreetsLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 2:
-                    itemDef.ID = "AddBingHybridLayerCommand";
+                    itemDef.ID = "AddMapBoxTerrainLayerCommand";
                     itemDef.Group = false;
                     break;
 
