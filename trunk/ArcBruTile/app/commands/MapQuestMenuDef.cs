@@ -13,24 +13,19 @@ namespace BrutileArcGIS.commands
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddBingRoadLayerCommand";
+                    itemDef.ID = "AddMapQuestOpenAerialMapLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 1:
-                    itemDef.ID = "AddBingAerialLayerCommand";
+                    itemDef.ID = "AddMapQuestOSMLayerCommand";
                     itemDef.Group = false;
                     break;
-                case 2:
-                    itemDef.ID = "AddBingHybridLayerCommand";
-                    itemDef.Group = false;
-                    break;
-
             }
         }
 
         public int ItemCount
         {
-            get { return 3; }
+            get { return 2; }
         }
 
         public string Name
