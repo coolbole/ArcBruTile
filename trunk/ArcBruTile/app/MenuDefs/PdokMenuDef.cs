@@ -6,10 +6,9 @@ namespace BrutileArcGIS.MenuDefs
     {
         public PdokMenuDef()
         {
-            m_barCaption = "ArcBruTile - &PDOK";
+            m_barCaption = "&PDOK";
             AddItem(typeof(AddPdokBrtAchtergrondLayerCommand));
             AddItem(typeof(AddPdokBrpGewaspercelenLayerCommand));
-            AddItem(typeof(AboutBruTileCommand));
         }
     }
 }

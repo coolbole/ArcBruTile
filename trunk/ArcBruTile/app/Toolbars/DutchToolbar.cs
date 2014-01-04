@@ -2,7 +2,6 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using BrutileArcGIS.Lib;
 using BrutileArcGIS.MenuDefs;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
@@ -11,51 +10,23 @@ using log4net.Config;
 
 namespace BrutileArcGIS.Toolbars
 {
-    [Guid("E74018F6-E70C-44B6-8227-1BCDEF152839")]
+    [Guid("E7A9F7CC-9705-4104-8237-99D2D8C7C291")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("BrutileArcGIS.Toolbars.ArcBruTiletoolbar")]
-    public sealed class ArcBruTileToolbar : BaseToolbar
+    [ProgId("BrutileArcGIS.Toolbars.Dutchtoolbar")]
+    public sealed class DutchToolbar:BaseToolbar
     {
         private static readonly ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-
-        public ArcBruTileToolbar()
+   
+        public DutchToolbar()
         {
             XmlConfigurator.Configure(new FileInfo(Assembly.GetExecutingAssembly().Location + ".config"));
 
             try
             {
-                Logger.Info("Startup ArcBruTile");
-                AddItem(typeof(BruTileMenuDef));
-                var config = ConfigurationHelper.GetConfig();
+                AddItem(typeof(DutchMenuDef));
+                AddItem(typeof(PdokMenuDef));
+                //var config = ConfigurationHelper.GetConfig();
 
-                //Status sectie
-                BeginGroup();
-
-                BeginGroup();
-                if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value))
-                {
-                    AddItem(typeof(OsmMenuDef));
-                }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
-                {
-                    AddItem(typeof(BingMenuDef));
-                }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useStamen"].Value))
-                {
-                    AddItem(typeof(StamenMenuDef));
-                }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useMapBox"].Value))
-                {
-                    AddItem(typeof(MapBoxMenuDef));
-                }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useCloudMade"].Value))
-                {
-                    AddItem(typeof(CloudMadeMenuDef));
-                }
-                if (Convert.ToBoolean(config.AppSettings.Settings["useMapQuest"].Value))
-                {
-                    AddItem(typeof(MapQuestMenuDef));
-                }
 
             }
             catch (Exception ex)
@@ -68,7 +39,7 @@ namespace BrutileArcGIS.Toolbars
         {
             get
             {
-                return "ArcBruTile";
+                return "ArcBruTile - PDOK";
             }
         }
 
@@ -76,7 +47,7 @@ namespace BrutileArcGIS.Toolbars
         {
             get
             {
-                return "ArcBruTile toolbar";
+                return "PDOK toolbar";
             }
         }
 
@@ -127,6 +98,7 @@ namespace BrutileArcGIS.Toolbars
 
         #endregion
         #endregion
+
 
     }
 }

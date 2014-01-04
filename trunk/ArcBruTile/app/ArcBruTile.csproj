@@ -55,6 +55,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BruTile, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -139,6 +140,7 @@
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
+    <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
     <Compile Include="forms\BruTileAboutBox.cs">
@@ -217,7 +219,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="lib\Transform.cs" />
-    <Compile Include="Toolbars\PdokToolbar.cs" />
+    <Compile Include="Toolbars\DutchToolbar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

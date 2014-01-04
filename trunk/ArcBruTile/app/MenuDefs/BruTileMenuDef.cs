@@ -6,7 +6,7 @@ namespace BrutileArcGIS.MenuDefs
     {
         public string Caption
         {
-            get { return "&ArcBruTile"; }
+            get { return "&ArcBruTile - Global"; }
         }
 
         public void GetItemInfo(int pos, IItemDef itemDef)
