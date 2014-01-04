@@ -137,6 +137,9 @@
     <Compile Include="ArcBruTileInstaller.Designer.cs">
       <DependentUpon>ArcBruTileInstaller.cs</DependentUpon>
     </Compile>
+    <Compile Include="commands\AboutPdokCommand.cs" />
+    <Compile Include="commands\AddPdokLayerCommand.cs" />
+    <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
     <Compile Include="forms\BruTileAboutBox.cs">
       <SubType>Form</SubType>
@@ -214,6 +217,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="lib\Transform.cs" />
+    <Compile Include="Toolbars\PdokToolbar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

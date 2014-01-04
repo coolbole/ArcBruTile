@@ -12,8 +12,9 @@ namespace BrutileArcGIS.commands
     {
         private IApplication _application;
         private readonly string _url;
+        private EnumBruTileLayer _enumBruTileLayer;
 
-        public AddTmsLayerCommandBase(string category, string caption, string message, string name, Bitmap bitmap, string url)
+        public AddTmsLayerCommandBase(string category, string caption, string message, string name, Bitmap bitmap, string url, EnumBruTileLayer enumBruTileLayer)
         {
             m_category = category;
             m_caption = caption;
@@ -22,6 +23,7 @@ namespace BrutileArcGIS.commands
             m_name = name;
             m_bitmap = bitmap;
             _url = url;
+            _enumBruTileLayer = enumBruTileLayer;
         }
 
         public override bool Enabled
@@ -52,7 +54,7 @@ namespace BrutileArcGIS.commands
             {
                 var mxdoc = (IMxDocument)_application.Document;
                 var map = mxdoc.FocusMap;
-                var brutileLayer = new BruTileLayer(_application, EnumBruTileLayer.InvertedTMS, _url, true)
+                var brutileLayer = new BruTileLayer(_application, _enumBruTileLayer, _url, true)
                 {
                     Name = m_name,
                     Visible = true

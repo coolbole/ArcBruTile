@@ -7,18 +7,18 @@ using ESRI.ArcGIS.Framework;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AboutBruTileCommand")]
-    public sealed class AboutBruTileCommand : BaseCommand
+    [ProgId("AboutPdokCommand")]
+    public sealed class AboutPdokCommand : BaseCommand
     {
         private IApplication _application;
 
-        public AboutBruTileCommand()
+        public AboutPdokCommand()
         {
             m_category = "BruTile";
-            m_caption = "&About ArcBruTile...";
-            m_message = "About BruTile...";
+            m_caption = "&About Pdok...";
+            m_message = "About Pdok...";
             m_toolTip = m_caption;
-            m_name = "AboutBruTileCommand";
+            m_name = "AboutPdokCommand";
         }
 
         public override void OnCreate(object hook)
