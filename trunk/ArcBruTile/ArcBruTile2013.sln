@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21126.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcBruTile", "app\ArcBruTile.csproj", "{501036A0-A949-4E35-A8BF-B375CD6D20C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcBruTile.Tests", "ArcBruTile.Tests\ArcBruTile.Tests.csproj", "{327F29F1-D587-4804-9C7E-E48B419ADE6B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -19,6 +21,10 @@ Global
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
