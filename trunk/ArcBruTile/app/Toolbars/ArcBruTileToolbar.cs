@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using BrutileArcGIS.Lib;
+using BrutileArcGIS.MenuDefs;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ADF.CATIDs;
 using log4net;
@@ -51,8 +51,9 @@ namespace BruTileArcGIS
             try
             {
                 Logger.Info("Startup ArcBruTile");
-                AddItem("BruTileArcGIS.BruTileMenuDef");
-                Configuration config = ConfigurationHelper.GetConfig();
+                AddItem(typeof(BruTileMenuDef));
+
+                var config = ConfigurationHelper.GetConfig();
 
                 //Status sectie
                 BeginGroup();
@@ -60,27 +61,27 @@ namespace BruTileArcGIS
                 BeginGroup();
                 if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value))
                 {
-                    AddItem("BruTileArcGIS.commands.OsmMenuDef");
+                    AddItem(typeof(OsmMenuDef));
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
                 {
-                    AddItem("BruTileArcGIS.commands.BingMenuDef");
+                    AddItem(typeof(BingMenuDef));
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useStamen"].Value))
                 {
-                    AddItem("BruTileArcGIS.commands.StamenMenuDef");
+                    AddItem(typeof(StamenMenuDef));
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useMapBox"].Value))
                 {
-                    AddItem("BruTileArcGIS.commands.MapBoxMenuDef");
+                    AddItem(typeof(MapBoxMenuDef));
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useCloudMade"].Value))
                 {
-                    AddItem("BruTileArcGIS.commands.CloudMadeMenuDef");
+                    AddItem(typeof(CloudMadeMenuDef));
                 }
                 if (Convert.ToBoolean(config.AppSettings.Settings["useMapQuest"].Value))
                 {
-                    AddItem("BruTileArcGIS.commands.MapQuestMenuDef");
+                    AddItem(typeof(MapQuestMenuDef));
                 }
 
             }

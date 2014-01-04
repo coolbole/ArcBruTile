@@ -1,6 +1,6 @@
 ﻿using ESRI.ArcGIS.SystemUI;
 
-namespace BrutileArcGIS.commands
+namespace BrutileArcGIS.MenuDefs
 {
     public class CloudMadeMenuDef : IMenuDef
     {

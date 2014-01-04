@@ -1,6 +1,6 @@
 ﻿using ESRI.ArcGIS.SystemUI;
 
-namespace BruTileArcGIS
+namespace BrutileArcGIS.MenuDefs
 {
     public class BruTileMenuDef : IMenuDef
     {
