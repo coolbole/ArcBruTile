@@ -12,7 +12,7 @@ namespace BrutileArcGIS.commands
     {
         private IApplication _application;
         private readonly string _url;
-        private EnumBruTileLayer _enumBruTileLayer;
+        private readonly EnumBruTileLayer _enumBruTileLayer;
 
         public AddTmsLayerCommandBase(string category, string caption, string message, string name, Bitmap bitmap, string url, EnumBruTileLayer enumBruTileLayer)
         {

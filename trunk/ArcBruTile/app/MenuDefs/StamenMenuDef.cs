@@ -1,48 +1,16 @@
-﻿using ESRI.ArcGIS.SystemUI;
+﻿using BrutileArcGIS.commands;
+using ESRI.ArcGIS.ADF.BaseClasses;
 
 namespace BrutileArcGIS.MenuDefs
 {
-    public class StamenMenuDef : IMenuDef
+    public class StamenMenuDef : BaseMenu
     {
-        public string Caption
+        public StamenMenuDef()
         {
-            get { return "&Stamen"; }
-        }
-        public void GetItemInfo(int pos, IItemDef itemDef)
-        {
-            switch (pos)
-            {
-                case 0:
-                    itemDef.ID = "AddStamenWaterColorLayerCommand";
-                    itemDef.Group = false;
-                    break;
-            }
-            switch (pos)
-            {
-                case 1:
-                    itemDef.ID = "AddStamenTerrainLayerCommand";
-                    itemDef.Group = false;
-                    break;
-            }
-            switch (pos)
-            {
-                case 2:
-                    itemDef.ID = "AddStamenTonerLayerCommand";
-                    itemDef.Group = false;
-                    break;
-            }
-
-
-        }
-
-        public int ItemCount
-        {
-            get { return 3; }
-        }
-
-        public string Name
-        {
-            get { return "BruTile"; }
+            m_barCaption = "&Stamen";
+            AddItem(typeof(AddStamenWaterColorLayerCommand));
+            AddItem(typeof(AddStamenTerrainLayerCommand));
+            AddItem(typeof(AddStamenTonerLayerCommand));
         }
     }
 }

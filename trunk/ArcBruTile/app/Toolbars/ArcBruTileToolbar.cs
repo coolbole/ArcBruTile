@@ -1,48 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using BrutileArcGIS.Lib;
 using BrutileArcGIS.MenuDefs;
 using ESRI.ArcGIS.ADF.BaseClasses;
-using ESRI.ArcGIS.ADF.CATIDs;
 using log4net;
 using log4net.Config;
 
 namespace BruTileArcGIS
 {
-    [Guid("059B9A69-335D-41EA-B511-4D3F985D27CC")]
-    [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("ArcBruTileToolbar")]
     public sealed class ArcBruTileToolbar : BaseToolbar
     {
         private static readonly ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-
-        [ComRegisterFunction]
-        [ComVisible(false)]
-        static void RegisterFunction(Type registerType)
-        {
-            ArcGISCategoryRegistration(registerType);
-        }
-
-        [ComUnregisterFunction]
-        [ComVisible(false)]
-        static void UnregisterFunction(Type registerType)
-        {
-            ArcGISCategoryUnregistration(registerType);
-        }
-
-        private static void ArcGISCategoryRegistration(Type registerType)
-        {
-            var regKey = string.Format("HKEY_CLASSES_ROOT\\CLSID\\{{{0}}}", registerType.GUID);
-            MxCommandBars.Register(regKey);
-        }
-
-        private static void ArcGISCategoryUnregistration(Type registerType)
-        {
-            var regKey = string.Format("HKEY_CLASSES_ROOT\\CLSID\\{{{0}}}", registerType.GUID);
-            MxCommandBars.Unregister(regKey);
-        }
 
         public ArcBruTileToolbar()
         {

@@ -1,38 +1,14 @@
-﻿using ESRI.ArcGIS.SystemUI;
-
+﻿using BrutileArcGIS.commands;
+using ESRI.ArcGIS.ADF.BaseClasses;
 namespace BrutileArcGIS.MenuDefs
 {
-    public class PdokMenuDef:IMenuDef
+    public class PdokMenuDef:BaseMenu
     {
-        public string Caption
+        public PdokMenuDef()
         {
-            get { return "ArcBruTile - &PDOK"; }
-        }
-
-        public void GetItemInfo(int pos, IItemDef itemDef)
-        {
-            switch (pos)
-            {
-                case 0:
-                    itemDef.ID = "AddPdokBrtAchtergrondLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 1:
-                    itemDef.ID = "AboutBruTileCommand";
-                    itemDef.Group = true;
-                    break;
-            }
-
-        }
-
-        public int ItemCount
-        {
-            get { return 2; }
-        }
-
-        public string Name
-        {
-            get { return "Pdok"; }
+            m_barCaption = "ArcBruTile - &PDOK";
+            AddItem(typeof(AddPdokBrtAchtergrondLayerCommand));
+            AddItem(typeof(AboutBruTileCommand));
         }
     }
 }
