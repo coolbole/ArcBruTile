@@ -12,4 +12,18 @@ namespace BrutileArcGIS.commands
         {
         }
     }
+
+
+    [ProgId("AddPdokBrpGewaspercelenLayerCommand")]
+    public sealed class AddPdokBrpGewaspercelenLayerCommand : AddTmsLayerCommandBase
+    {
+        public AddPdokBrpGewaspercelenLayerCommand()
+            : base("Pdok", "&Brp gewaspercelen", "Add Brp gewaspercelen", "Pdok Brp", Resources.download, "http://acceptatie.geodata.nationaalgeoregister.nl/tiles/service/tms/1.0.0/brpgewaspercelen@EPSG%3A28992@png8", EnumBruTileLayer.TMS)
+        {
+        }
+    }
 }
+
+
+
+

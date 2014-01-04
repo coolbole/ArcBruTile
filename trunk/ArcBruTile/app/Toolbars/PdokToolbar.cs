@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using BrutileArcGIS.commands;
 using BrutileArcGIS.MenuDefs;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using log4net;
@@ -19,7 +20,6 @@ namespace BrutileArcGIS
             try
             {
                 AddItem(typeof(PdokMenuDef));
-
                 //var config = ConfigurationHelper.GetConfig();
 
 
