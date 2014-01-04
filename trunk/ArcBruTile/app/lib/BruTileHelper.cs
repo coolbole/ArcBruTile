@@ -257,8 +257,6 @@ namespace BrutileArcGIS.Lib
         public static byte[] GetBitmap(Uri uri)
         {
             byte[] bytes = null;
-            const string userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.14) Gecko/20080404 Firefox/2.0.0.14"; // or another agent
-            var referer = String.Empty;// "http://maps.google.com/maps";
 
             try
             {

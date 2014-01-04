@@ -3,7 +3,6 @@ using System.Net;
 using BruTile;
 using BruTile.Predefined;
 using BruTile.Tms;
-//using BruTile.Web.TmsService;
 
 namespace BrutileArcGIS.Lib
 {

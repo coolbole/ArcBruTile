@@ -11,9 +11,7 @@ namespace BrutileArcGIS.Lib
             var config = GetConfig();
             var tileTimeOut = Int32.Parse(config.AppSettings.Settings["tileTimeout"].Value);
             return tileTimeOut;
-
         }
-
 
         public static Configuration GetConfig()
         {

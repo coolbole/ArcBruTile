@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 
 namespace BrutileArcGIS.Lib
@@ -25,8 +24,8 @@ namespace BrutileArcGIS.Lib
 
         public static string GetCacheFolder()
         {
-            Configuration config=ConfigurationHelper.GetConfig();
-            string tileDir = config.AppSettings.Settings["tileDir"].Value;
+            var config=ConfigurationHelper.GetConfig();
+            var tileDir = config.AppSettings.Settings["tileDir"].Value;
             if(tileDir.Contains("%"))
             {
                 tileDir = ReplaceEnvironmentVar(tileDir);

@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using BruTileArcGIS;
 using BrutileArcGIS.Lib;
-using BrutileArcGIS.lib;
 
 namespace BrutileArcGIS.forms
 {
@@ -107,7 +106,7 @@ namespace BrutileArcGIS.forms
             if (dr == DialogResult.OK)
             {
                 var name = addProviderForm.ProviderName;
-                var url=addProviderForm.ProvidedServiceURL;
+                var url=addProviderForm.ProvidedServiceUrl;
                 var enumBruTileLayer = addProviderForm.EnumBruTileLayer;
 
                 // Now write an XML file to the services...

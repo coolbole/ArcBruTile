@@ -1,4 +1,4 @@
-﻿namespace BruTileArcGIS
+﻿namespace BrutileArcGIS.forms
 {
     partial class AddProviderForm
     {

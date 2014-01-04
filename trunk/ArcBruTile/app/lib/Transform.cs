@@ -76,15 +76,15 @@ namespace BrutileArcGIS.Lib
 
         public RectangleF WorldToMap(double x1, double y1, double x2, double y2)
         {
-            PointF point1 = WorldToMap(x1, y1);
-            PointF point2 = WorldToMap(x2, y2);
+            var point1 = WorldToMap(x1, y1);
+            var point2 = WorldToMap(x2, y2);
             return new RectangleF(point1.X, point2.Y, point2.X - point1.X, point1.Y - point2.Y);
         }
 
        private void UpdateExtent()
         {
-            float spanX = _width * _resolution;
-            float spanY = _height * _resolution;
+            var spanX = _width * _resolution;
+            var spanY = _height * _resolution;
             _extent = new BruTile.Extent(_center.X - spanX * 0.5f, _center.Y - spanY * 0.5f,
               _center.X + spanX * 0.5f, _center.Y + spanY * 0.5f);
         }

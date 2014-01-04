@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using BruTile;
-using BruTile.Web;
 using BruTile.Wmsc;
 
 namespace BrutileArcGIS.forms
