@@ -156,12 +156,12 @@
     <Compile Include="commands\AddStamenLayerCommand.cs" />
     <Compile Include="commands\AddTmsLayerCommandBase.cs" />
     <Compile Include="commands\AddWmsCLayerCommand.cs" />
-    <Compile Include="commands\BingMenuDef.cs" />
-    <Compile Include="commands\CloudMadeMenuDef.cs" />
-    <Compile Include="commands\MapBoxMenuDef.cs" />
-    <Compile Include="commands\MapQuestMenuDef.cs" />
-    <Compile Include="commands\OsmMenuDef.cs" />
-    <Compile Include="commands\StamenMenuDef.cs" />
+    <Compile Include="MenuDefs\BingMenuDef.cs" />
+    <Compile Include="MenuDefs\CloudMadeMenuDef.cs" />
+    <Compile Include="MenuDefs\MapBoxMenuDef.cs" />
+    <Compile Include="MenuDefs\MapQuestMenuDef.cs" />
+    <Compile Include="MenuDefs\OsmMenuDef.cs" />
+    <Compile Include="MenuDefs\StamenMenuDef.cs" />
     <Compile Include="forms\AddServicesForm.cs">
       <SubType>Form</SubType>
     </Compile>
