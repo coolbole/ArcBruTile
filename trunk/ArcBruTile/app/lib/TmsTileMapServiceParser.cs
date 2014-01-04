@@ -17,8 +17,8 @@ namespace BrutileArcGIS.Lib
             proxy.Credentials = CredentialCache.DefaultCredentials;
             client.Proxy = proxy;
 
-            byte[] theBytes = client.DownloadData(url);
-            string test = Encoding.UTF8.GetString(theBytes);
+            var theBytes = client.DownloadData(url);
+            var test = Encoding.UTF8.GetString(theBytes);
             client.Dispose();
             var doc = new XmlDocument();
             doc.LoadXml(test);
