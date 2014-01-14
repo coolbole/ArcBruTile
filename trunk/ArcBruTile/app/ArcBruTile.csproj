@@ -140,6 +140,7 @@
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
+    <Compile Include="lib\Requester.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
