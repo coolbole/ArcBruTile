@@ -74,7 +74,10 @@ namespace BrutileArcGIS.Lib
 
                 FetchTiles(tilesMissing);
 
-                if (tilesMissing.Count == 0) { _waitHandle.Reset(); }
+                if (tilesMissing.Count == 0)
+                {
+                    _waitHandle.Reset();
+                }
 
                 if (_tilesInProgress.Count >= MaxThreads) { _waitHandle.Reset(); }
             }
@@ -140,6 +143,7 @@ namespace BrutileArcGIS.Lib
                             _fileCache.AddWorldFile(tileInfo, _tileSource.Schema.GetTileHeight("0"), _tileSource.Schema.GetTileHeight("0"),
                                 _tileSource.Schema.Format);
                             tile = new Tile<T> { Data = data, Info = tileInfo };
+                           
                         }
                     }
                     catch (Exception ex) //This may seem a bit weird. We catch the exception to pass it as an argument. This is because we are on a worker thread here, we cannot just let it fall through. 

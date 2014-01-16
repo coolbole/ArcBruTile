@@ -125,6 +125,8 @@ namespace BrutileArcGIS.Lib
                         {
                             try
                             {
+                                var clipEnvelope = display.ClipEnvelope;
+
                                 // when loading from a file the active map doesn't exist yet 
                                 // so just deal with it here.
                                 if (_map == null)
@@ -139,11 +141,13 @@ namespace BrutileArcGIS.Lib
 
                                 if (activeView != null)
                                 {
-                                    _envelope = activeView.Extent;
+                                    //_envelope = activeView.Extent;
+                                    _envelope = clipEnvelope;
+
                                     Logger.Debug("Draw extent: xmin:" + _envelope.XMin + 
                                                  ", ymin:" + _envelope.YMin +
-                                                 ", xmax:" + _envelope.YMin +
-                                                 ", ymax:" + _envelope.YMin
+                                                 ", xmax:" + _envelope.XMax +
+                                                 ", ymax:" + _envelope.YMax
                                         );
                                     if (SpatialReference != null)
                                     {

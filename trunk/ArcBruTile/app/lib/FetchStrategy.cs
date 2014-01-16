@@ -37,7 +37,7 @@ namespace BrutileArcGIS.Lib
             //var levelCount = levels.Count();
             foreach (var level in levels)
             {
-                var tileInfos = schema.GetTilesInView(extent, (Int32.Parse(level.Value.Id)));
+                var tileInfos = schema.GetTilesInView(extent, level.Key);
                 tileInfos = SortByPriority(tileInfos, extent.CenterX, extent.CenterY);
 
                 //var count = infosOfLevel.Count();

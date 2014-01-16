@@ -1,5 +1,8 @@
 ﻿using System.Runtime.InteropServices;
+using BruTile.Cache;
+using BruTile.Web;
 using BrutileArcGIS.forms;
+using BrutileArcGIS.lib;
 using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
@@ -39,6 +42,18 @@ namespace BrutileArcGIS.commands
         {
             var bruTileAboutBox = new BruTileAboutBox();
             bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
+
+            /**var fileCache = new FileCache(@"c:\aaa\tiles", "png");
+            var osmTileSource = new OsmTileSource();
+            var mxdoc = (IMxDocument)_application.Document;
+            var map = mxdoc.FocusMap;
+            var brutileCustomLayer = new BruTileCustomLayer(_application, osmTileSource,fileCache) {Name = "testlayer"};
+            map.AddLayer(brutileCustomLayer);
+             */ 
         }
     }
 }
+
+
+
+

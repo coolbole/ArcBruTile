@@ -29,6 +29,7 @@ namespace BrutileArcGIS.lib
                 sw.WriteLine(extent.MaxY.ToString(CultureInfo.InvariantCulture));
                 sw.Close();
             }
+            
         }
 
         private static string GetWorldFile(string format)

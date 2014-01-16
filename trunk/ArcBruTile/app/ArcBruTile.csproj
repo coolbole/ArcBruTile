@@ -114,22 +114,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\SqlServer\Microsoft.ExceptionMessageBox.dll</HintPath>
     </Reference>
-    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArcBruTileInstaller.cs">
@@ -140,6 +139,7 @@
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
+    <Compile Include="lib\BruTileCustomLayer.cs" />
     <Compile Include="lib\Requester.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
