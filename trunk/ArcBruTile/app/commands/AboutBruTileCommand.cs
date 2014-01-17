@@ -40,16 +40,17 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            var bruTileAboutBox = new BruTileAboutBox();
-            bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
+            //var bruTileAboutBox = new BruTileAboutBox();
+            //bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
 
-            /**var fileCache = new FileCache(@"c:\aaa\tiles", "png");
+            var fileCache = new FileCache(@"c:\aaa\tiles", "png");
             var osmTileSource = new OsmTileSource();
             var mxdoc = (IMxDocument)_application.Document;
             var map = mxdoc.FocusMap;
             var brutileCustomLayer = new BruTileCustomLayer(_application, osmTileSource,fileCache) {Name = "testlayer"};
             map.AddLayer(brutileCustomLayer);
-             */ 
+            
+             
         }
     }
 }

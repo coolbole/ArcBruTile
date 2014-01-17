@@ -17,9 +17,9 @@ namespace BrutileArcGIS.Lib
         private readonly AutoResetEvent _waitHandle = new AutoResetEvent(false);
         private volatile bool _isAborted;
         private volatile bool _isViewChanged;
-        private readonly IFetchStrategy _strategy = new FetchStrategy();
+        //private readonly IFetchStrategy _strategy = new FetchStrategy();
         private double _resolution;
-        private readonly Retries _retries = new Retries();
+        //private readonly Retries _retries = new Retries();
         private Extent _extent;
 
 
@@ -65,12 +65,11 @@ namespace BrutileArcGIS.Lib
                 if (_isViewChanged || tilesWanted == null)
                 {
                     var levelId = Utilities.GetNearestLevel(_tileSource.Schema.Resolutions, _resolution);
-                    tilesWanted = _strategy.GetTilesWanted(_tileSource.Schema, _extent, levelId);
-                    _retries.Clear();
+                    tilesWanted = GetTilesWanted(_tileSource.Schema, _extent, levelId);
                     _isViewChanged = false;
                 }
 
-                var tilesMissing = GetTilesMissing(tilesWanted, _fileCache, _retries);
+                var tilesMissing = GetTilesMissing(tilesWanted, _fileCache);
 
                 FetchTiles(tilesMissing);
 
@@ -108,11 +107,9 @@ namespace BrutileArcGIS.Lib
         {
             // first some checks
             if (_tilesInProgress.Contains(info.Index)) return;
-            if (_retries.ReachedMax(info.Index)) return;
 
             // prepare for request
             lock (_tilesInProgress) { _tilesInProgress.Add(info.Index); }
-            _retries.PlusOne(info.Index);
 
             // now we can go for the request.
             FetchAsync(info);
@@ -165,80 +162,20 @@ namespace BrutileArcGIS.Lib
         }
 
 
-        public IList<TileInfo> GetTilesMissing(IEnumerable<TileInfo> tilesWanted, FileCache fileCache, Retries retries)
+        public IList<TileInfo> GetTilesMissing(IEnumerable<TileInfo> tilesWanted, FileCache fileCache)
         {
             return tilesWanted.Where(
-                info => fileCache.Find(info.Index) == null &&
-                !retries.ReachedMax(info.Index)).ToList();
+                info => fileCache.Find(info.Index) == null).ToList();
         }
 
 
         public IList<TileInfo> GetTilesWanted(ITileSchema schema, Extent extent, string levelId)
         {
-            IList<TileInfo> infos = new List<TileInfo>();
-            // Iterating through all levels from current to zero. If lower levels are
-            // not availeble the renderer can fall back on higher level tiles. 
-            var resolution = schema.Resolutions[levelId].UnitsPerPixel;
-            var levels =
-                schema.Resolutions.Where(k => resolution <= k.Value.UnitsPerPixel)
-                    .OrderByDescending(x => x.Value.UnitsPerPixel);
-
-            //var levelCount = levels.Count();
-            foreach (var level in levels)
-            {
-                var tileInfos = schema.GetTilesInView(extent, (Int32.Parse(level.Value.Id)));
-                tileInfos = SortByPriority(tileInfos, extent.CenterX, extent.CenterY);
-
-                //var count = infosOfLevel.Count();
-                foreach (var info in tileInfos)
-                {
-                    if ((info.Index.Row >= 0) && (info.Index.Col >= 0)) infos.Add(info);
-                }
-            }
-
-            return infos;
+            return schema.GetTilesInView(extent, (levelId)).ToList();
         }
-
-        private static IEnumerable<TileInfo> SortByPriority(IEnumerable<TileInfo> tiles, double centerX, double centerY)
-        {
-            return tiles.OrderBy(t => Distance(centerX, centerY, t.Extent.CenterX, t.Extent.CenterY));
-        }
-
-        public static double Distance(double x1, double y1, double x2, double y2)
-        {
-            return Math.Sqrt(Math.Pow(x1 - x2, 2.0) + Math.Pow(y1 - y2, 2.0));
-        }
-
-
 
     }
 
-    /// <summary>
-    /// Keeps track of retries per tile. This class doesn't do much interesting work
-    /// but makes the rest of the code a bit easier to read.
-    /// </summary>
-    public class Retries
-    {
-        private readonly IDictionary<TileIndex, int> _retries = new Dictionary<TileIndex, int>();
-        private const int MaxRetries = 0;
-
-        public bool ReachedMax(TileIndex index)
-        {
-            var retryCount = (!_retries.Keys.Contains(index)) ? 0 : _retries[index];
-            return retryCount > MaxRetries;
-        }
-
-        public void PlusOne(TileIndex index)
-        {
-            if (!_retries.Keys.Contains(index)) _retries.Add(index, 0);
-            else _retries[index]++;
-        }
-
-        public void Clear()
-        {
-            _retries.Clear();
-        }
-    }
 
     public delegate void DataChangedEventHandler<T>(object sender, DataChangedEventArgs<T> e);
 

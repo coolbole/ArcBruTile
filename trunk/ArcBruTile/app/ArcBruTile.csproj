@@ -141,6 +141,7 @@
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="lib\BruTileCustomLayer.cs" />
     <Compile Include="lib\Requester.cs" />
+    <Compile Include="lib\SimpleFileFetcher.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />

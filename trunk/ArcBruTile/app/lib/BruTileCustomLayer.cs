@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 using BruTile;
 using BruTile.Cache;
 using BrutileArcGIS.Lib;
@@ -21,30 +19,22 @@ using log4net;
 
 namespace BrutileArcGIS.lib
 {
-    public sealed class BruTileCustomLayer:BaseCustomLayer
+    public sealed class BruTileCustomLayer : BaseCustomLayer
     {
         private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
         private readonly TileSource _tileSource;
         private readonly FileCache _fileCache;
-        private readonly FileFetcher<Image> _fetcher;
+        private readonly SimpleFileFetcher _simplefilefetcher;
         private readonly ISpatialReference _dataSpatialReference;
-        private IDisplay _display;
         private readonly IMap _map;
-        private readonly Dispatcher _dispatcher;
-        private bool redraw = true;
 
         public BruTileCustomLayer(IApplication application, TileSource tileSource, FileCache fileCache)
         {
-            _dispatcher = Dispatcher.CurrentDispatcher;
-
             _tileSource = tileSource;
             _fileCache = fileCache;
-            _fetcher = new FileFetcher<Image>(tileSource, fileCache);
-
-            _fetcher.DataChanged += fetcher_DataChanged;
+            _simplefilefetcher = new SimpleFileFetcher(tileSource, fileCache);
             var spatialReferences = new SpatialReferences();
             _dataSpatialReference = spatialReferences.GetSpatialReference(_tileSource.Schema.Srs);
-
 
             if (SpatialReference.FactoryCode == 0)
             {
@@ -60,22 +50,7 @@ namespace BrutileArcGIS.lib
             {
                 ((IActiveView)_map).Extent = envelope;
             }
-        }
 
-
-        private void fetcher_DataChanged(object sender, DataChangedEventArgs<Image> e)
-        {
-            if (!_dispatcher.CheckAccess())
-                _dispatcher.Invoke(new Action(() => fetcher_DataChanged(sender, e)));
-            else
-            {
-                if (e.Error == null && e.Tile != null)
-                {
-                    _fileCache.Add(e.Tile.Info.Index, e.Tile.Data);
-                    var filename = _fileCache.GetFileName(e.Tile.Info.Index);
-                    DrawRaster(filename, _display);
-                }
-            }
         }
 
         public override void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
@@ -87,32 +62,30 @@ namespace BrutileArcGIS.lib
                     {
                         if (Visible)
                         {
-                            if (!redraw) return;
-                            Logger.Debug("Draw event Layer name: " + Name);
-                            var activeView = (IActiveView)_map;
-                            var clipEnvelope = display.ClipEnvelope;
-                            Logger.Debug("Layer spatial reference: " + SpatialReference.FactoryCode);
-                            Logger.Debug("Map spatial reference: " + _map.SpatialReference.FactoryCode);
-                            _display = display;
-                            var mapWidth = activeView.ExportFrame.right;
-                            var resolution = clipEnvelope.GetMapResolution(mapWidth);
-                            var ext = new Extent(clipEnvelope.XMin, clipEnvelope.YMin, clipEnvelope.XMax, clipEnvelope.YMax);
-                            _fetcher.ViewChanged(ext, resolution);
+                                Logger.Debug("Draw event Layer name: " + Name);
+                                var activeView = (IActiveView)_map;
+                                var clipEnvelope = display.ClipEnvelope;
+                                Logger.Debug("Layer spatial reference: " + SpatialReference.FactoryCode);
+                                Logger.Debug("Map spatial reference: " + _map.SpatialReference.FactoryCode);
+                                var mapWidth = activeView.ExportFrame.right;
+                                var resolution = clipEnvelope.GetMapResolution(mapWidth);
+                                var ext = new Extent(clipEnvelope.XMin, clipEnvelope.YMin, clipEnvelope.XMax, clipEnvelope.YMax);
+                                //_fetcher.ViewChanged(ext, resolution);
+                                _simplefilefetcher.Fetch(ext,resolution);
+                                var level = Utilities.GetNearestLevel(_tileSource.Schema.Resolutions, resolution);
+                                var tileInfos = _tileSource.Schema.GetTilesInView(ext, level);
+                                tileInfos = SortByPriority(tileInfos, ext.CenterX, ext.CenterY);
 
-                            var level = Utilities.GetNearestLevel(_tileSource.Schema.Resolutions, resolution);
-                            var tileInfos = _tileSource.Schema.GetTilesInView(ext, level);
-                            tileInfos = SortByPriority(tileInfos, ext.CenterX, ext.CenterY);
-                            foreach (var tileInfo in tileInfos)
-                            {
-                                var tile = _fileCache.Find(tileInfo.Index);
-                                if (tile != null)
+                                foreach (var tileInfo in tileInfos)
                                 {
-                                    var filename = _fileCache.GetFileName(tileInfo.Index);
-                                    DrawRaster(filename,display);
+                                    var tile = _fileCache.Find(tileInfo.Index);
+                                    if (tile != null)
+                                    {
+                                        var filename = _fileCache.GetFileName(tileInfo.Index);
+                                        DrawRaster(filename, display);
+                                    }
                                 }
-                            }
 
-                            //_invalid = false;
                         }
                     }
                     break;
@@ -188,6 +161,7 @@ namespace BrutileArcGIS.lib
                 //rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
                 rl.Draw(esriDrawPhase.esriDPGeography, display, null);
                 //Logger.Debug("End drawing tile.");
+
 
             }
             // ReSharper disable once EmptyGeneralCatchClause
