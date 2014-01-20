@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Amib.Threading;
 using BruTile;
 using BruTile.Cache;
 
@@ -10,6 +11,7 @@ namespace BrutileArcGIS.lib
     {
         private readonly ITileSource _tileSource;
         private readonly FileCache _fileCache;
+        private const bool async = false;
 
         public SimpleFileFetcher(ITileSource tileSource, FileCache filecache)
         {
@@ -24,11 +26,29 @@ namespace BrutileArcGIS.lib
             var levelId = Utilities.GetNearestLevel(_tileSource.Schema.Resolutions, newResolution);
             var tilesWanted = GetTilesWanted(_tileSource.Schema, newExtent, levelId);
             var tilesMissing = GetTilesMissing(tilesWanted, _fileCache);
+            var stp = new SmartThreadPool(1000, 5);
+
             foreach (var info in tilesMissing)
             {
-                Fetch(info);
+                // for debugging
+                if(!async)
+                    Fetch(info);
+                else
+                {
+                    stp.QueueWorkItem(GetTileOnThread, new object[] { info });
+                }
             }
         }
+
+        private void GetTileOnThread(object parameter)
+        {
+
+            var @params = (object[])parameter;
+            var tileInfo = (TileInfo)@params[0];
+
+            Fetch(tileInfo);
+        }
+
 
         private void Fetch(TileInfo tileInfo)
         {
