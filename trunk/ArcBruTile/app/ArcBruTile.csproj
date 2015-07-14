@@ -58,14 +58,6 @@
     <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BruTile, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>brutile\0.8.6\BruTile.dll</HintPath>
-    </Reference>
-    <Reference Include="BruTile.Desktop, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>brutile\0.8.6\BruTile.Desktop.dll</HintPath>
-    </Reference>
     <Reference Include="ESRI.ArcGIS.ADF.Local, Version=10.2.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -291,6 +283,16 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BruTile_0.8.6\BruTile.Desktop\BruTile.Desktop.csproj">
+      <Project>{2f6d9e1c-2001-40c8-89ba-fdf8597bb719}</Project>
+      <Name>BruTile.Desktop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\BruTile_0.8.6\BruTile\BruTile.csproj">
+      <Project>{9fb60e2d-c682-4a01-9584-8b495b8da85a}</Project>
+      <Name>BruTile</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
