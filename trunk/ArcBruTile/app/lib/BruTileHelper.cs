@@ -62,13 +62,14 @@ namespace BrutileArcGIS.Lib
 
             if (!activeView.Extent.IsEmpty)
             {
-                _tiles = GetTiles(activeView);
-                currentLevel = _currentLevel;
+                 var ti = TileCalculator.GetTiles(activeView,tileSource);
+                _tiles = ti.Tiles;
+                _currentLevel = ti.Level;
                 Logger.Debug("Number of tiles to draw: " + _tiles.Count);
 
                 if (_tiles.ToList().Count > 0)
                 {
-                    
+                 
                     stepProgressor.MinRange = 0;
                     stepProgressor.MaxRange = _tiles.ToList().Count;
                     stepProgressor.Show();
@@ -186,18 +187,19 @@ namespace BrutileArcGIS.Lib
                 // http://arcbrutile.codeplex.com/workitem/11207
                 var image = new Bitmap(file, true);
                 var format = image.PixelFormat;
-                if (format == PixelFormat.Format24bppRgb || format == PixelFormat.Format32bppArgb || format == PixelFormat.Format32bppRgb)
+                // removed: || format == PixelFormat.Format32bppArgb || format == PixelFormat.Format32bppRgb
+                if (format == PixelFormat.Format24bppRgb )
                 {
                     var rasterRGBRenderer = new RasterRGBRendererClass();
                     ((IRasterStretch2)rasterRGBRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
                     rl.Renderer = rasterRGBRenderer;
                 }
 
-                rl.Renderer.ResamplingType = rstResamplingTypes.RSP_BilinearInterpolation;
+                // rl.Renderer.ResamplingType = rstResamplingTypes.RSP_BilinearInterpolation;
                 // Now set the spatial reference to the dataframe spatial reference! 
                 // Do not remove this line...
                 rl.SpatialReference = _layerSpatialReference;
-                //rl.Draw(ESRI.ArcGIS.esriSystem.esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
+                // rl.Draw(esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
                 rl.Draw(esriDrawPhase.esriDPGeography, _display, null);
                 //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, trackCancel, env);
                 Logger.Debug("End drawing tile.");
@@ -274,34 +276,6 @@ namespace BrutileArcGIS.Lib
             return bytes;
         }
 
-        private List<TileInfo> GetTiles(IActiveView activeView)
-        {
-            var schema = _tileSource.Schema;
-            var env = Projector.ProjectEnvelope(activeView.Extent, schema.Srs);
-            Logger.Debug("Tilesource schema srs: " + schema.Srs);
-            Logger.Debug("Projected envelope: xmin:" + env.XMin +
-                        ", ymin:" + env.YMin +
-                        ", xmax:" + env.YMin +
-                        ", ymax:" + env.YMin
-                        );
-
-            var mapWidth = activeView.ExportFrame.right;
-            var mapHeight = activeView.ExportFrame.bottom;
-            var resolution = env.GetMapResolution(mapWidth);
-            Logger.Debug("Map resolution: " + resolution);
-
-            var centerPoint = env.GetCenterPoint();
-
-            var transform = new Transform(centerPoint, resolution, mapWidth, mapHeight);
-            var level = Utilities.GetNearestLevel(schema.Resolutions, transform.Resolution);
-            Logger.Debug("Current level: " + level);
-
-            _currentLevel = level;
-
-            var tiles = schema.GetTilesInView(transform.Extent, level);
-
-            return tiles.ToList();
-        }
 
 
     }

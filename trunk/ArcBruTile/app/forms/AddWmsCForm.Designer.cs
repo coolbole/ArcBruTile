@@ -44,49 +44,55 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(85, 69);
+            this.textBox2.Location = new System.Drawing.Point(113, 85);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(475, 20);
+            this.textBox2.Size = new System.Drawing.Size(632, 22);
             this.textBox2.TabIndex = 23;
             this.textBox2.Text = "http://www.idee.es/wms-c/IDEE-Base/IDEE-Base?version=1.1.1&request=GetCapabilitie" +
-                "s&service=wms-c";
+    "s&service=wms-c";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(85, 43);
+            this.textBox1.Location = new System.Drawing.Point(113, 53);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(475, 20);
+            this.textBox1.Size = new System.Drawing.Size(632, 22);
             this.textBox1.TabIndex = 22;
             this.textBox1.Text = "http://labs.metacarta.com/wms-c/tilecache.py?version=1.1.1&request=GetCapabilitie" +
-                "s&service=wms-c";
+    "s&service=wms-c";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 46);
+            this.label2.Location = new System.Drawing.Point(24, 57);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 13);
+            this.label2.Size = new System.Drawing.Size(65, 16);
             this.label2.TabIndex = 18;
             this.label2.Text = "Samples:";
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(498, 389);
+            this.btnCancel.Location = new System.Drawing.Point(664, 479);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 28);
             this.btnCancel.TabIndex = 17;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnOk
             // 
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.btnOk.Enabled = false;
-            this.btnOk.Location = new System.Drawing.Point(417, 390);
+            this.btnOk.Location = new System.Drawing.Point(556, 480);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.Size = new System.Drawing.Size(100, 28);
             this.btnOk.TabIndex = 16;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -95,37 +101,42 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 15);
+            this.label1.Location = new System.Drawing.Point(24, 18);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 13);
+            this.label1.Size = new System.Drawing.Size(84, 16);
             this.label1.TabIndex = 15;
             this.label1.Text = "WmsC URL: ";
             // 
             // tbWmsCUrl
             // 
-            this.tbWmsCUrl.Location = new System.Drawing.Point(85, 12);
+            this.tbWmsCUrl.Location = new System.Drawing.Point(113, 15);
+            this.tbWmsCUrl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tbWmsCUrl.Name = "tbWmsCUrl";
-            this.tbWmsCUrl.Size = new System.Drawing.Size(475, 20);
+            this.tbWmsCUrl.Size = new System.Drawing.Size(632, 22);
             this.tbWmsCUrl.TabIndex = 14;
             this.tbWmsCUrl.Text = "http://www.idee.es/wms-c/IDEE-Base/IDEE-Base?version=1.1.1&request=GetCapabilitie" +
-                "s&service=wms-c";
+    "s&service=wms-c";
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnRetrieve);
             this.groupBox1.Controls.Add(this.lbServices);
-            this.groupBox1.Location = new System.Drawing.Point(18, 112);
+            this.groupBox1.Location = new System.Drawing.Point(24, 138);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(555, 272);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(740, 335);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Layers";
             // 
             // btnRetrieve
             // 
-            this.btnRetrieve.Location = new System.Drawing.Point(6, 19);
+            this.btnRetrieve.Location = new System.Drawing.Point(8, 23);
+            this.btnRetrieve.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRetrieve.Name = "btnRetrieve";
-            this.btnRetrieve.Size = new System.Drawing.Size(165, 23);
+            this.btnRetrieve.Size = new System.Drawing.Size(220, 28);
             this.btnRetrieve.TabIndex = 0;
             this.btnRetrieve.Text = "Get Layers";
             this.btnRetrieve.UseVisualStyleBackColor = true;
@@ -134,28 +145,31 @@
             // lbServices
             // 
             this.lbServices.FormattingEnabled = true;
-            this.lbServices.Location = new System.Drawing.Point(6, 52);
+            this.lbServices.ItemHeight = 16;
+            this.lbServices.Location = new System.Drawing.Point(8, 64);
+            this.lbServices.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lbServices.Name = "lbServices";
-            this.lbServices.Size = new System.Drawing.Size(536, 199);
+            this.lbServices.Size = new System.Drawing.Size(713, 244);
             this.lbServices.TabIndex = 3;
             this.lbServices.SelectedIndexChanged += new System.EventHandler(this.lbServices_SelectedIndexChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 72);
+            this.label3.Location = new System.Drawing.Point(24, 89);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.Size = new System.Drawing.Size(64, 16);
             this.label3.TabIndex = 24;
             this.label3.Text = "INSPIRE:";
             // 
             // AddWmsCForm
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(591, 424);
+            this.ClientSize = new System.Drawing.Size(788, 522);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -166,6 +180,7 @@
             this.Controls.Add(this.tbWmsCUrl);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddWmsCForm";

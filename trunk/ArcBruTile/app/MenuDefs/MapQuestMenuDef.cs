@@ -1,36 +1,15 @@
-﻿using ESRI.ArcGIS.SystemUI;
+﻿using BrutileArcGIS.commands;
+using ESRI.ArcGIS.ADF.BaseClasses;
 
 namespace BrutileArcGIS.MenuDefs
 {
-    public class MapQuestMenuDef : IMenuDef
+    public class MapQuestMenuDef : BaseMenu
     {
-        public string Caption
+        public MapQuestMenuDef()
         {
-            get { return "&MapQuest"; }
-        }
-        public void GetItemInfo(int pos, IItemDef itemDef)
-        {
-            switch (pos)
-            {
-                case 0:
-                    itemDef.ID = "AddMapQuestOpenAerialMapLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 1:
-                    itemDef.ID = "AddMapQuestOSMLayerCommand";
-                    itemDef.Group = false;
-                    break;
-            }
-        }
-
-        public int ItemCount
-        {
-            get { return 2; }
-        }
-
-        public string Name
-        {
-            get { return "BruTile"; }
+            m_barCaption = "&MapQuest";
+            AddItem(typeof(AddMapQuestOpenAerialMapLayerCommand));
+            AddItem(typeof(AddMapQuestOSMLayerCommand));
         }
     }
 }

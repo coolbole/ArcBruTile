@@ -14,9 +14,6 @@ namespace BruTile.Web
         Mapnik,
         OpenCycleMap,
         OpenCycleMapTransport,
-        CloudMadeWebStyle,
-        CloudMadeFineLineStyle,
-        CloudMadeNoNames,
         MapQuest,
         MapQuestAerial,
         MapQuestRoadsAndLabels,
@@ -83,12 +80,6 @@ namespace BruTile.Web
                     return new OsmTileServerConfig("http://{0}.tile.opencyclemap.org/cycle/{1}/{2}/{3}.png", 3, new[] { "a", "b", "c" }, 0, 16);
                 case KnownTileServers.OpenCycleMapTransport:
                     return new OsmTileServerConfig("http://{0}.tile2.opencyclemap.org/transport/{1}/{2}/{3}.png", 3, new[] { "a", "b", "c" }, 0, 18);
-                case KnownTileServers.CloudMadeWebStyle:
-                    return new OsmTileServerConfigWithApiKey("http://{0}.tile.cloudmade.com/{4}/1/256/{1}/{2}/{3}.png", 3, new[] { "a", "b", "c" }, 0, 18, apiKey);
-                case KnownTileServers.CloudMadeFineLineStyle:
-                    return new OsmTileServerConfigWithApiKey("http://{0}.tile.cloudmade.com/{4}/2/256/{1}/{2}/{3}.png", 3, new[] { "a", "b", "c" }, 0, 18, apiKey);
-                case KnownTileServers.CloudMadeNoNames:
-                    return new OsmTileServerConfigWithApiKey("http://{0}.tile.cloudmade.com/{4}/1/256/{1}/{2}/{3}.png", 3, new[] { "a", "b", "c" }, 0, 18, apiKey);
                 case KnownTileServers.MapQuest:
                     return new OsmTileServerConfig("http://otile{0}.mqcdn.com/tiles/1.0.0/osm/{1}/{2}/{3}.png", 4, new[] { "1", "2", "3", "4" }, 0, 18);
                 case KnownTileServers.MapQuestAerial:

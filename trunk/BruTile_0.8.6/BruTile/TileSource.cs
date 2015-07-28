@@ -35,18 +35,6 @@ namespace BruTile
                     return new TileSource(
                         new WebTileProvider(new BasicRequest("http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png", new[] { "a", "b", "c" })),
                         new GlobalSphericalMercator(0, 20));
-                case KnownTileServers.CloudMadeWebStyle:
-                    return new TileSource(
-                        new WebTileProvider(new BasicRequest("http://{s}.tile.cloudmade.com/{k}/1/256/{z}/{x}/{y}.png", new[] { "a", "b", "c" }, apiKey)),
-                        new GlobalSphericalMercator()); 
-                case KnownTileServers.CloudMadeFineLineStyle:
-                    return new TileSource(
-                        new WebTileProvider(new BasicRequest("http://{s}.tile.cloudmade.com/{k}/2/256/{z}/{x}/{y}.png", new[] { "a", "b", "c" }, apiKey)),
-                        new GlobalSphericalMercator()); 
-                case KnownTileServers.CloudMadeNoNames:
-                    return new TileSource(
-                        new WebTileProvider(new BasicRequest("http://{s}.tile.cloudmade.com/{k}/3/256/{z}/{x}/{y}.png", new[] { "a", "b", "c" }, apiKey)),
-                        new GlobalSphericalMercator()); 
                 case KnownTileServers.MapQuest:
                     return new TileSource(
                         new WebTileProvider(new BasicRequest("http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png", new[] { "1", "2", "3", "4" })),

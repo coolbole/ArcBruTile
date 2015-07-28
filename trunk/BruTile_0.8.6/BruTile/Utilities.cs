@@ -36,6 +36,20 @@ namespace BruTile
 
         public static string GetNearestLevel(IDictionary<string, Resolution> resolutions, double resolution)
         {
+            var res= resolutions.First().Key;
+            foreach (var key in resolutions.Keys)
+            {
+                if (resolutions[key].UnitsPerPixel < resolution)
+                {
+                    return res;
+                }
+                res = key;
+            }
+            return res;
+        }
+
+        public static string GetNearestLevel_old(IDictionary<string, Resolution> resolutions, double resolution)
+        {
             if (resolutions.Count == 0)
             {
                 throw new ArgumentException("No tile resolutions");

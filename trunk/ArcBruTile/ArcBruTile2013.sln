@@ -1,17 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcBruTile", "app\ArcBruTile.csproj", "{501036A0-A949-4E35-A8BF-B375CD6D20C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcBruTile.Tests", "ArcBruTile.Tests\ArcBruTile.Tests.csproj", "{327F29F1-D587-4804-9C7E-E48B419ADE6B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FB60E2D-C682-4A01-9584-8B495B8DA85A} = {9FB60E2D-C682-4A01-9584-8B495B8DA85A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BruTile", "..\BruTile_0.8.6\BruTile\BruTile.csproj", "{9FB60E2D-C682-4A01-9584-8B495B8DA85A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BruTile.Desktop", "..\BruTile_0.8.6\BruTile.Desktop\BruTile.Desktop.csproj", "{2F6D9E1C-2001-40C8-89BA-FDF8597BB719}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ArcBruTileSetup", "ArcBruTileSetup\ArcBruTileSetup.vdproj", "{438DF783-658D-45D8-8E01-D08116A6A0DE}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ArcBruTileSetup", "ArcBruTileSetup\ArcBruTileSetup.vdproj", "{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -81,22 +84,22 @@ Global
 		{2F6D9E1C-2001-40C8-89BA-FDF8597BB719}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F6D9E1C-2001-40C8-89BA-FDF8597BB719}.Release|x86.ActiveCfg = Release|x86
 		{2F6D9E1C-2001-40C8-89BA-FDF8597BB719}.Release|x86.Build.0 = Release|x86
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug Portable|Any CPU.ActiveCfg = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug Portable|Any CPU.Build.0 = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug Portable|x86.ActiveCfg = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug Portable|x86.Build.0 = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug|Any CPU.ActiveCfg = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug|Any CPU.Build.0 = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug|x86.ActiveCfg = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Debug|x86.Build.0 = Debug
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release Portable|Any CPU.ActiveCfg = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release Portable|Any CPU.Build.0 = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release Portable|x86.ActiveCfg = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release Portable|x86.Build.0 = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release|Any CPU.ActiveCfg = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release|Any CPU.Build.0 = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release|x86.ActiveCfg = Release
-		{438DF783-658D-45D8-8E01-D08116A6A0DE}.Release|x86.Build.0 = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug Portable|Any CPU.ActiveCfg = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug Portable|Any CPU.Build.0 = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug Portable|x86.ActiveCfg = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug Portable|x86.Build.0 = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug|Any CPU.ActiveCfg = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug|Any CPU.Build.0 = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug|x86.ActiveCfg = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Debug|x86.Build.0 = Debug
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release Portable|Any CPU.ActiveCfg = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release Portable|Any CPU.Build.0 = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release Portable|x86.ActiveCfg = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release Portable|x86.Build.0 = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release|Any CPU.ActiveCfg = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release|Any CPU.Build.0 = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release|x86.ActiveCfg = Release
+		{C6DE069C-B4EB-4568-8E5E-B6F4A9246F71}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

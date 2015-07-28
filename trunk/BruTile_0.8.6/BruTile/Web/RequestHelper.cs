@@ -11,7 +11,7 @@ namespace BruTile.Web
     {
         static RequestHelper()
         {
-            Timeout = 10000;
+            Timeout = 3000;
         }
 
         public static int Timeout { get; set; }

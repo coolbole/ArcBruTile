@@ -11,7 +11,7 @@ namespace BrutileArcGIS.lib
     {
         private readonly ITileSource _tileSource;
         private readonly FileCache _fileCache;
-        private const bool async = false;
+        private const bool async = true;
 
         public SimpleFileFetcher(ITileSource tileSource, FileCache filecache)
         {
@@ -35,18 +35,20 @@ namespace BrutileArcGIS.lib
                     Fetch(info);
                 else
                 {
-                    stp.QueueWorkItem(GetTileOnThread, new object[] { info });
+                    var res = stp.QueueWorkItem(new WorkItemCallback(GetTileOnThread), new object[] { info });
+                    //stp.QueueWorkItem(GetTileOnThread, new object[] { info });
                 }
             }
         }
 
-        private void GetTileOnThread(object parameter)
+        private object GetTileOnThread(object parameter)
         {
 
             var @params = (object[])parameter;
             var tileInfo = (TileInfo)@params[0];
 
             Fetch(tileInfo);
+            return true;
         }
 
 
