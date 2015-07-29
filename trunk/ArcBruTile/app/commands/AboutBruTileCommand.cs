@@ -4,6 +4,14 @@ using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Framework;
+using System.Drawing;
+using ESRI.ArcGIS.esriSystem;
+using ESRI.ArcGIS.Geometry;
+using ESRI.ArcGIS.Carto;
+using System;
+using ESRI.ArcGIS.Display;
+using System.Threading;
+using BrutileArcGIS.lib;
 
 namespace BrutileArcGIS.commands
 {
@@ -37,8 +45,12 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            var bruTileAboutBox = new BruTileAboutBox();
-            bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
+            var mxdoc = (IMxDocument)_application.Document;
+            var map = mxdoc.FocusMap;
+            map.AddLayer(new DemoCustomLayer(_application));
+
+            //var bruTileAboutBox = new BruTileAboutBox();
+            //bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
         }
     }
 }

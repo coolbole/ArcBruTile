@@ -102,7 +102,7 @@ namespace BrutileArcGIS.Lib
                             var name = _fileCache.GetFileName(tile.Index);
 
                             if (!File.Exists(name)) continue;
-                            DrawRaster(name);
+                            DrawRasterNew(name,tile);
                         }
                     }
 
@@ -163,8 +163,14 @@ namespace BrutileArcGIS.Lib
             if (downloadFinished != null) downloadFinished.Set();
         }
 
+        private void DrawRasterNew(string file, TileInfo tileInfo)
+        {
+            var ul = new PointClass { X = tileInfo.Extent.MinX, Y = tileInfo.Extent.MaxY};
+            var lr = new PointClass { X = tileInfo.Extent.MaxX, Y = tileInfo.Extent.MinY};
+            ImageDrawer.Draw(_display, file, ul, lr);
+        }
 
-        private void DrawRaster(string file)
+        private void DrawRaster(string file,TileInfo tileInfo)
         {
             try
             {
@@ -180,6 +186,7 @@ namespace BrutileArcGIS.Lib
                     var missing = Type.Missing;
                     rasterGeometryProc.ProjectFast(_layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref missing, rl.Raster);
                 }
+                
 
                 // Fix for issue "Each 256x256 tile rendering differently causing blockly effect."
                 // In 10.1 the StrecthType for rasters seems to have changed from esriRasterStretch_NONE to "Percent Clip",
