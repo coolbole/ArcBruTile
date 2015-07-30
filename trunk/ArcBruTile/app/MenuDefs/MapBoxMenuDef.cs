@@ -16,21 +16,12 @@ namespace BrutileArcGIS.MenuDefs
                     itemDef.ID = "AddMapBoxSatelliteLayerCommand";
                     itemDef.Group = false;
                     break;
-                case 1:
-                    itemDef.ID = "AddMapBoxStreetsLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 2:
-                    itemDef.ID = "AddMapBoxTerrainLayerCommand";
-                    itemDef.Group = false;
-                    break;
-
             }
         }
 
         public int ItemCount
         {
-            get { return 3; }
+            get { return 1; }
         }
 
         public string Name

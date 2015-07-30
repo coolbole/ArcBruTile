@@ -71,7 +71,7 @@ namespace BrutileArcGIS.commands
                         Name = configWmsC.CreateTileSource().Schema.Name,
                         Visible = true
                     };
-                    _map.AddLayer(brutileLayer);
+                    ((IMapLayers)_map).InsertLayer(brutileLayer, true, 0);
                 }
             }
             catch (Exception ex)

@@ -165,9 +165,35 @@ namespace BrutileArcGIS.Lib
 
         private void DrawRasterNew(string file, TileInfo tileInfo)
         {
-            var ul = new PointClass { X = tileInfo.Extent.MinX, Y = tileInfo.Extent.MaxY};
-            var lr = new PointClass { X = tileInfo.Extent.MaxX, Y = tileInfo.Extent.MinY};
-            ImageDrawer.Draw(_display, file, ul, lr);
+            if (_needReproject)
+            {
+                var rl = new RasterLayerClass();
+                rl.CreateFromFilePath(file);
+                var props = (IRasterProps)rl.Raster;
+                props.SpatialReference = _dataSpatialReference;
+                var rasterGeometryProc = new RasterGeometryProcClass();
+                var missing = Type.Missing;
+                rasterGeometryProc.ProjectFast(_layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref missing, rl.Raster);
+                rl.Draw(esriDrawPhase.esriDPGeography, _display, null);
+            }
+            else
+            {
+                using (var fs = new System.IO.FileStream(file, FileMode.Open, FileAccess.Read))
+                {
+                    if(fs.Length>100)
+                    {
+                        using (var img1 = Image.FromStream(fs, true))
+                        {
+                            var ms = new MemoryStream();
+                            img1.Save(ms, ImageFormat.Png);
+                            var bytes1 = ms.ToArray();
+                            var ul = new PointClass() { X = tileInfo.Extent.MinX, Y = tileInfo.Extent.MaxY };
+                            var lr = new PointClass() { X = tileInfo.Extent.MaxX, Y = tileInfo.Extent.MinY };
+                            ImageDrawer.Draw(_display, bytes1, ul, lr);
+                        }
+                    }
+                }
+            }
         }
 
         private void DrawRaster(string file,TileInfo tileInfo)
@@ -186,6 +212,8 @@ namespace BrutileArcGIS.Lib
                     var missing = Type.Missing;
                     rasterGeometryProc.ProjectFast(_layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref missing, rl.Raster);
                 }
+                //var exporter = new RasterExporterClass();
+                // var bytes = exporter.ExportToBytes(rl.Raster, "png");
                 
 
                 // Fix for issue "Each 256x256 tile rendering differently causing blockly effect."

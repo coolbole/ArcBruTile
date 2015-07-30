@@ -85,6 +85,8 @@ namespace BrutileArcGIS.Lib
 
         private void InitializeLayer()
         {
+            LayerWeight = 110;
+            Cached = true;
             var mxdoc = (IMxDocument)_application.Document;
             _map = mxdoc.FocusMap;
             _cacheDir = CacheSettings.GetCacheFolder();
@@ -106,7 +108,6 @@ namespace BrutileArcGIS.Lib
             // If there is only one layer in the TOC zoom to this layer...
             if (_map.LayerCount == 0)
             {
-                //envelope.Expand(-0.1, -0.1, true);
                 _envelope.Project(_map.SpatialReference);
                 ((IActiveView)_map).Extent = _envelope;
             }

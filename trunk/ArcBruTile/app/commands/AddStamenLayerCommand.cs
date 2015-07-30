@@ -26,7 +26,7 @@ namespace BrutileArcGIS.commands
     public sealed class AddStamenTerrainLayerCommand : AddTmsLayerCommandBase
     {
         public AddStamenTerrainLayerCommand()
-            : base("BruTile", "&Terrain", "Add Terrain Layer", "Stamen Terrain", Resources.download, "http://dl.dropbox.com/u/9984329/ArcBruTile/Services/Stamen/terrain.xml", EnumBruTileLayer.InvertedTMS)
+            : base("BruTile", "&Terrain", "Add Terrain Layer", "Stamen Terrain (USA)", Resources.download, "http://dl.dropbox.com/u/9984329/ArcBruTile/Services/Stamen/terrain.xml", EnumBruTileLayer.InvertedTMS)
         {
         }
     }

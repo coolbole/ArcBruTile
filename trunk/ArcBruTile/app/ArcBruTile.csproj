@@ -159,6 +159,7 @@
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
+    <Compile Include="commands\AddStravaLayerCommand.cs" />
     <Compile Include="commands\AddTiandituLayerCommand.cs" />
     <Compile Include="commands\AddVectorTileLayerButton.cs" />
     <Compile Include="commands\DemoCustomLayer.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="lib\WorldToScreen.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
+    <Compile Include="MenuDefs\StravaMenuDef.cs" />
     <Compile Include="MenuDefs\TiandituMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
     <Compile Include="forms\BruTileAboutBox.cs">
@@ -302,6 +304,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="XMLFile1.xml" />
     <None Include="Resources\WMS_icon.png" />
     <Content Include="App.config">
       <SubType>Designer</SubType>

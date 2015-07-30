@@ -1,29 +1,28 @@
 ﻿using ESRI.ArcGIS.Display;
 using ESRI.ArcGIS.Geometry;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace BrutileArcGIS.lib
 {
     public static class ImageDrawer
     {
-        public static void Draw(IDisplay display, string imageFile, IPoint upperLeft, IPoint lowerRight)
+        public static void Draw(IDisplay display, byte[] bytes, IPoint upperLeft, IPoint lowerRight)
         {
             var hdc = display.hDC;
             var p = new IntPtr(hdc);
             var graphics = Graphics.FromHdc(p);
-            var image = Image.FromFile(imageFile);
-
+            var ms = new MemoryStream(bytes);
+            var image = Image.FromStream(ms);
             var ulCorner = WorldToScreen.Convert(display, upperLeft);
             var lrCorner = WorldToScreen.Convert(display, lowerRight);
-            var width = lrCorner.X - ulCorner.X;
-            var height = lrCorner.Y - ulCorner.Y;
-            graphics.DrawImage(image, ulCorner.X, ulCorner.Y, width, height);
+            var destPoints = new PointF[] {
+                new PointF(ulCorner.X-1, ulCorner.Y-1),
+                new PointF(lrCorner.X+1, ulCorner.Y-1),
+                new PointF(ulCorner.X-1, lrCorner.Y+1) };
+            graphics.DrawImage(image, destPoints);
         }
-
     }
 }

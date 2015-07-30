@@ -16,7 +16,7 @@ using Feature = GeoJSON.Net.Feature.Feature;
 
 namespace BrutileArcGIS.lib
 {
-    public class MvtSubLayer : BaseCustomLayer
+    public class MvtSubLayer : BaseCustomLayer,ILayerPosition
     {
         private readonly MapBoxVectorTileSource _tileSource;
         private readonly IApplication _application;
@@ -24,6 +24,7 @@ namespace BrutileArcGIS.lib
 
         public MvtSubLayer(IApplication application, string url)
         {
+            LayerWeight = 100;
             _application = application;
             layerNames = new HashSet<string>();
 
@@ -42,6 +43,10 @@ namespace BrutileArcGIS.lib
 
         public new ISpatialReference SpatialReference { get; set; }
 
+        public double LayerWeight
+        {
+            get;set;
+        }
 
         public override void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
         {

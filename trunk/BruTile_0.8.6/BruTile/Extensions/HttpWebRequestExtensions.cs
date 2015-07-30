@@ -79,11 +79,11 @@ namespace BruTile.Extensions
                 catch
                 {
                     //removed bt 14/7/2015 
-                    throw new TimeoutException("No response received in time.");
+                    // throw new TimeoutException("No response received in time.");
                 }
 
                 //removed bt 14/7/2015 
-                throw new TimeoutException("No response received in time.");
+                // throw new TimeoutException("No response received in time.");
             }
 
             //bubble exception that occurred on worker thread

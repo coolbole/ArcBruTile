@@ -6,6 +6,7 @@ using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.Carto;
 
 namespace BrutileArcGIS.commands
 {
@@ -72,7 +73,7 @@ namespace BrutileArcGIS.commands
                         Name = selectedService.Title,
                         Visible = true
                     };
-                    map.AddLayer(brutileLayer);
+                    ((IMapLayers)map).InsertLayer(brutileLayer,true,0);
                 }
             }
             catch (Exception ex)

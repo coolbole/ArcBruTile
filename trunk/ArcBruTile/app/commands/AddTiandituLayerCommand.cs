@@ -58,7 +58,7 @@ namespace BrutileArcGIS.commands
                 var mxdoc = (IMxDocument)_application.Document;
                 var map = mxdoc.FocusMap;
                 wmtsLayer.Name = "Tianditu - Satellite";
-                map.AddLayer(wmtsLayer);
+                ((IMapLayers)map).InsertLayer(wmtsLayer, true, 0);
 
             }
             catch (Exception ex)

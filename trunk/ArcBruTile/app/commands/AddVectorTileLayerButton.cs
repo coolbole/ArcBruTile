@@ -7,6 +7,7 @@ using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Framework;
+using ESRI.ArcGIS.Carto;
 
 namespace BrutileArcGIS.commands
 {
@@ -60,7 +61,7 @@ namespace BrutileArcGIS.commands
                     var mxdoc = (IMxDocument) _application.Document;
                     var map = mxdoc.FocusMap;
                     var mvtlayer = new MvtSubLayer(_application, vectorTileLayerForm.Url) { Name = vectorTileLayerForm.Url };
-                    map.AddLayer(mvtlayer);
+                    ((IMapLayers)map).InsertLayer(mvtlayer,true,0);
                 }
             }
             catch (Exception ex)

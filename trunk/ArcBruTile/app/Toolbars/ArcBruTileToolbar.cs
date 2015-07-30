@@ -50,6 +50,7 @@ namespace BrutileArcGIS.Toolbars
             {
                 AddItem(typeof(MapQuestMenuDef));
             }
+            AddItem(typeof(StravaMenuDef));
             AddItem(typeof(TiandituMenuDef));
         }
 
