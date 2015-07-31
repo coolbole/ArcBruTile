@@ -6,20 +6,22 @@ using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.GISClient;
+using BrutileArcGIS.Properties;
 
 namespace BrutileArcGIS.commands
 {
-    public class AddTiandituLayerCommand : BaseCommand
+    public class AddTiandituSatelliteLayerCommand : BaseCommand
     {
         private IApplication _application;
 
-        public AddTiandituLayerCommand()
+        public AddTiandituSatelliteLayerCommand()
         {
             m_category = "BruTile";
             m_caption = "&Satellite";
             m_message = "Add Tianditu Satellite layer";
             m_toolTip = m_caption;
-            m_name = "AddTaindituLayerCommand";
+            m_name = "AddTaindituSatelliteLayerCommand";
+            m_bitmap = Resources.download;
         }
 
         public override bool Enabled

@@ -160,7 +160,8 @@
     <Compile Include="commands\AboutPdokCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="commands\AddStravaLayerCommand.cs" />
-    <Compile Include="commands\AddTiandituLayerCommand.cs" />
+    <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
+    <Compile Include="commands\AddTiandituWorldLayerCommand.cs" />
     <Compile Include="commands\AddVectorTileLayerButton.cs" />
     <Compile Include="commands\DemoCustomLayer.cs" />
     <Compile Include="forms\AddVectorTileLayer.cs">

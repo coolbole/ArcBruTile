@@ -8,7 +8,9 @@ namespace BrutileArcGIS.MenuDefs
         public TiandituMenuDef()
         {
             m_barCaption = "Tianditu";
-            AddItem(typeof(AddTiandituLayerCommand));
+            AddItem(typeof(AddTiandituSatelliteLayerCommand));
+            AddItem(typeof(AddTiandituWorldLayerCommand));
+
         }
     }
 }
