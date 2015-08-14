@@ -17,11 +17,11 @@ namespace BrutileArcGIS.MenuDefs
                     itemDef.ID = "AddServicesCommand";
                     itemDef.Group = false;
                     break;
+                //case 1:
+                //    itemDef.ID = "VectorTileLayerCommand";
+                //    itemDef.Group = false;
+                //    break;
                 case 1:
-                    itemDef.ID = "VectorTileLayerCommand";
-                    itemDef.Group = false;
-                    break;
-                case 2:
                     itemDef.ID = "AboutBruTileCommand";
                     itemDef.Group = true;
                     break;

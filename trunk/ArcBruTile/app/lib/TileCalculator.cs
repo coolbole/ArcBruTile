@@ -23,8 +23,8 @@ namespace BrutileArcGIS.lib
             Logger.Debug("Tilesource schema srs: " + schema.Srs);
             Logger.Debug("Projected envelope: xmin:" + env.XMin +
                         ", ymin:" + env.YMin +
-                        ", xmax:" + env.YMin +
-                        ", ymax:" + env.YMin
+                        ", xmax:" + env.YMax +
+                        ", ymax:" + env.YMax
                         );
 
             var mapWidth = activeView.ExportFrame.right;

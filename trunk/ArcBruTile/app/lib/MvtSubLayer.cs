@@ -28,7 +28,13 @@ namespace BrutileArcGIS.lib
             _application = application;
             layerNames = new HashSet<string>();
 
-            _tileSource = new MapBoxVectorTileSource(url);
+            if (!url.Contains("mapzen")){
+                _tileSource = new MapBoxVectorTileSource(url);
+            }
+            else
+            {
+                _tileSource = new MapBoxVectorTileSource(url,"mvt");
+            }
             var srf = new SpatialReferenceEnvironmentClass();
             var sr = srf.CreateGeographicCoordinateSystem((int)esriSRGeoCSType.esriSRGeoCS_WGS1984);
             SpatialReference = sr;
@@ -79,6 +85,7 @@ namespace BrutileArcGIS.lib
             if (i > 0)
             {
                 var stream = new MemoryStream(tile.Value);
+                
                 var layerInfos = VectorTileParser.Parse(stream, tile.Key.Index.Col, tile.Key.Index.Row, Int32.Parse(tile.Key.Index.Level));
                 DrawLayerInfos(display, layerInfos, SpatialReference);
                 Debug.WriteLine("col:" + tile.Key.Index.Col + ", " + "row:" + tile.Key.Index.Row + ", level: " + tile.Key.Index.Level);

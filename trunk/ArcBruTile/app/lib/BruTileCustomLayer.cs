@@ -71,10 +71,10 @@ namespace BrutileArcGIS.lib
                                 var resolution = clipEnvelope.GetMapResolution(mapWidth);
                                 var ext = new Extent(clipEnvelope.XMin, clipEnvelope.YMin, clipEnvelope.XMax, clipEnvelope.YMax);
                                 //_fetcher.ViewChanged(ext, resolution);
-                                _simplefilefetcher.Fetch(ext,resolution);
+                                //_simplefilefetcher.Fetch(ext,resolution);
                                 var level = Utilities.GetNearestLevel(_tileSource.Schema.Resolutions, resolution);
                                 var tileInfos = _tileSource.Schema.GetTilesInView(ext, level);
-                                tileInfos = SortByPriority(tileInfos, ext.CenterX, ext.CenterY);
+                                // tileInfos = SortByPriority(tileInfos, ext.CenterX, ext.CenterY);
 
                                 foreach (var tileInfo in tileInfos)
                                 {

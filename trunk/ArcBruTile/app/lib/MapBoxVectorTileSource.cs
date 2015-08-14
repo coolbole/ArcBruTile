@@ -3,16 +3,25 @@ using BruTile;
 using BruTile.Predefined;
 using BruTile.Tms;
 using BruTile.Web;
+using System.Net.Http;
+using System.Net;
 
 namespace BrutileArcGIS.lib
 {
     public class MapBoxVectorTileSource : ITileSource
     {
-        public MapBoxVectorTileSource(string url)
+        public MapBoxVectorTileSource(string url, string ext="pbf")
         {
-            var request = new TmsRequest(new Uri(url), "pbf");
-            Provider = new WebTileProvider(request);
+            var request = new TmsRequest(new Uri(url), ext);
+            Provider = new WebTileProvider(request, fetchTile: FetchTile);
             Schema = new GlobalSphericalMercator();
+        }
+        byte[] FetchTile(Uri uir)
+        {
+            using (var _httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+            {
+                return _httpClient.GetAsync(uir).Result.Content.ReadAsByteArrayAsync().Result;
+            }
         }
 
         public ITileProvider Provider { get; private set; }

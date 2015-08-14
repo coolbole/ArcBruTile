@@ -35,6 +35,8 @@
             this.lblSamples = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -42,7 +44,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(32, 52);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(185, 16);
+            this.label1.Size = new System.Drawing.Size(197, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Mapbox Vector Tile Layer url: ";
             // 
@@ -82,17 +84,17 @@
             this.lblSamples.AutoSize = true;
             this.lblSamples.Location = new System.Drawing.Point(32, 145);
             this.lblSamples.Name = "lblSamples";
-            this.lblSamples.Size = new System.Drawing.Size(65, 16);
+            this.lblSamples.Size = new System.Drawing.Size(66, 17);
             this.lblSamples.TabIndex = 19;
             this.lblSamples.Text = "Samples:";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(174, 174);
+            this.textBox1.Location = new System.Drawing.Point(190, 180);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(792, 22);
+            this.textBox1.Size = new System.Drawing.Size(776, 22);
             this.textBox1.TabIndex = 23;
             this.textBox1.Text = "http://basemapsbeta.arcgis.com/arcgis/rest/services/World_Basemap/VectorTileServe" +
     "r/tile/";
@@ -102,9 +104,28 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(32, 180);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(135, 16);
+            this.label2.Size = new System.Drawing.Size(140, 17);
             this.label2.TabIndex = 24;
             this.label2.Text = "Esri World Basemap:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(32, 218);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(62, 17);
+            this.label3.TabIndex = 25;
+            this.label3.Text = "mapzen:";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(190, 213);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(776, 22);
+            this.textBox2.TabIndex = 26;
+            this.textBox2.Text = "http://vector.mapzen.com/osm/all";
             // 
             // AddVectorTileLayer
             // 
@@ -113,6 +134,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(979, 303);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lblSamples);
@@ -136,5 +159,7 @@
         private System.Windows.Forms.Label lblSamples;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
