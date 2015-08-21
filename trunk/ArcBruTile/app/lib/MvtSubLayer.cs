@@ -122,7 +122,7 @@ namespace BrutileArcGIS.lib
                 {
                     display.SetSymbol((ISymbol)GetDrawingLineSymbol());
                     var line = (LineString)geom;
-                    DrawLine(display, line, sr);
+                    //DrawLine(display, line, sr);
                 }
                 else if (geom is GeoJSON.Net.Geometry.Point)
                 {

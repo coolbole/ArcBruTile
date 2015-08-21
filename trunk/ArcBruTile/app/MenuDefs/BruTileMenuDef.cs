@@ -31,7 +31,7 @@ namespace BrutileArcGIS.MenuDefs
 
         public int ItemCount
         {
-            get { return 3; }
+            get { return 2; }
         }
 
         public string Name

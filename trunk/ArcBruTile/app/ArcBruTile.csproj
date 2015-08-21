@@ -263,6 +263,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="unregister.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="forms\AddVectorTileLayer.resx">
@@ -291,6 +294,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="register.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\brutilelogobig.png" />
   </ItemGroup>
   <ItemGroup>
@@ -306,7 +312,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="XMLFile1.xml" />
     <None Include="Resources\WMS_icon.png" />
     <Content Include="App.config">
       <SubType>Designer</SubType>
