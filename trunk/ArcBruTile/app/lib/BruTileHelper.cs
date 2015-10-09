@@ -174,6 +174,19 @@ namespace BrutileArcGIS.Lib
                 var rasterGeometryProc = new RasterGeometryProcClass();
                 var missing = Type.Missing;
                 rasterGeometryProc.ProjectFast(_layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref missing, rl.Raster);
+
+                // fix 9/10/2015: with projected tiles color changes and transparency is ignored.
+                var image = new Bitmap(file, true);
+                var format = image.PixelFormat;
+                if (format == PixelFormat.Format24bppRgb | format == PixelFormat.Format32bppArgb)
+                {
+                    var rasterRGBRenderer = new RasterRGBRendererClass();
+                    ((IRasterStretch2)rasterRGBRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
+                    ((IRasterStretch2)rasterRGBRenderer).Background = true;
+                    rl.Renderer = rasterRGBRenderer;
+                }
+                // end fix 9/10/2015: with projected tiles color changes and transparency is ignored.
+
                 rl.Draw(esriDrawPhase.esriDPGeography, _display, null);
             }
             else
