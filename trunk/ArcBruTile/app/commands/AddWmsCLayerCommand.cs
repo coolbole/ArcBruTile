@@ -66,7 +66,7 @@ namespace BrutileArcGIS.commands
                     var tileSource = addWmsCForm.SelectedTileSource;
                     
                     IConfig configWmsC = new ConfigWmsC(tileSource);
-                    var brutileLayer = new BruTileLayer(_application,configWmsC)
+                    var brutileLayer = new BruTileLayer(_application, configWmsC, EnumBruTileLayer.WMSC)
                     {
                         Name = configWmsC.CreateTileSource().Schema.Name,
                         Visible = true

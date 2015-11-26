@@ -119,6 +119,7 @@
     <Reference Include="mapbox.vector.tile">
       <HintPath>..\packages\mapbox-vector-tile.2.0.0\lib\mapbox.vector.tile.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ExceptionMessageBox, Version=9.0.242.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\SqlServer\Microsoft.ExceptionMessageBox.dll</HintPath>
@@ -159,12 +160,19 @@
       <DependentUpon>ArcBruTileInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
+    <Compile Include="commands\AddGisCloudMapCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="commands\AddStravaLayerCommand.cs" />
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddTiandituWorldLayerCommand.cs" />
     <Compile Include="commands\AddVectorTileLayerButton.cs" />
     <Compile Include="commands\DemoCustomLayer.cs" />
+    <Compile Include="forms\AddGisCloudForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\AddGisCloudForm.Designer.cs">
+      <DependentUpon>AddGisCloudForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\AddVectorTileLayer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +181,8 @@
     </Compile>
     <Compile Include="lib\BaseGroupLayer.cs" />
     <Compile Include="lib\BruTileCustomLayer.cs" />
+    <Compile Include="lib\ConfigGisCloud.cs" />
+    <Compile Include="lib\GisCloudUtil.cs" />
     <Compile Include="lib\ImageDrawer.cs" />
     <Compile Include="lib\MapBoxVectorTileSource.cs" />
     <Compile Include="lib\MvtSubLayer.cs" />
@@ -268,6 +278,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="forms\AddGisCloudForm.resx">
+      <DependentUpon>AddGisCloudForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\AddVectorTileLayer.resx">
       <DependentUpon>AddVectorTileLayer.cs</DependentUpon>
     </EmbeddedResource>

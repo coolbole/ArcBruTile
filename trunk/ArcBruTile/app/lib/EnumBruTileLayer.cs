@@ -6,6 +6,7 @@
         BingRoad, BingAerial, BingHybrid, 
         TMS, 
         WMSC, 
-        InvertedTMS
+        InvertedTMS,
+        Giscloud
     }
 }

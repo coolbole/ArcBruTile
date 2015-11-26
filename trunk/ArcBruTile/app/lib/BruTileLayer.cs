@@ -72,14 +72,14 @@ namespace BrutileArcGIS.Lib
         }
 
         // used by WmsC
-        public BruTileLayer(IApplication application, IConfig config)
+        public BruTileLayer(IApplication application, IConfig config, EnumBruTileLayer enumBrutileLayer)
         {
             ShowTips = false;
             Name = "BruTile";
             Cached = false;
             _application = application;
             _config = config;
-            _enumBruTileLayer = EnumBruTileLayer.WMSC;
+            _enumBruTileLayer = enumBrutileLayer;
             InitializeLayer();
         }
 
@@ -264,8 +264,9 @@ namespace BrutileArcGIS.Lib
         {
             get 
             {
-                return GetDefaultEnvelope();
+                return _envelope;
             }
+            set { _envelope = value; }
         }
 
         public double LayerWeight

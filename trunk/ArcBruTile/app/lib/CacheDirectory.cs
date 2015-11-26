@@ -1,6 +1,7 @@
 ﻿using System;
 using BruTile.Cache;
 using BrutileArcGIS.Lib;
+using System.IO;
 
 namespace BrutileArcGIS.lib
 {
@@ -30,7 +31,7 @@ namespace BrutileArcGIS.lib
 
         private static string GetCacheDirectory(IConfig config, EnumBruTileLayer layerType, string baseCacheDir)
         {
-            string cacheDirectory = String.Format("{0}{1}{2}", baseCacheDir, System.IO.Path.DirectorySeparatorChar, layerType);
+            string cacheDirectory = String.Format("{0}{1}{2}", baseCacheDir, Path.DirectorySeparatorChar, layerType);
 
             if (layerType == EnumBruTileLayer.TMS || layerType == EnumBruTileLayer.InvertedTMS)
             {
@@ -44,7 +45,12 @@ namespace BrutileArcGIS.lib
                 {
                     service = service.Substring(0, service.Length - 1);
                 }
-                cacheDirectory = String.Format("{0}{1}{2}{3}{4}", baseCacheDir, System.IO.Path.DirectorySeparatorChar, layerType, System.IO.Path.DirectorySeparatorChar, service);
+                cacheDirectory = string.Format("{0}{1}{2}{3}{4}", baseCacheDir, Path.DirectorySeparatorChar, layerType, Path.DirectorySeparatorChar, service);
+            }
+            else if (layerType == EnumBruTileLayer.Giscloud)
+            {
+                var layerId = ((ConfigGisCloud)config).LayerId;
+                cacheDirectory = string.Format("{0}{1}{2}{3}{4}", baseCacheDir, Path.DirectorySeparatorChar, "giscloud", Path.DirectorySeparatorChar,layerId);
             }
 
             return cacheDirectory;

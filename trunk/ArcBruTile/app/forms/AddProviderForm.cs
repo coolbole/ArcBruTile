@@ -164,5 +164,9 @@ namespace BrutileArcGIS.forms
             Process.Start(psi);
         }
 
+        private void AddProviderForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
