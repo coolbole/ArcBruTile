@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BrutileArcGIS.lib;
-using BrutileArcGIS.Lib;
-using BruTile.Web;
+﻿using BrutileArcGIS.lib;
 using Xunit;
 
 namespace ArcBruTile.Tests
@@ -13,7 +6,7 @@ namespace ArcBruTile.Tests
     public class GisCloudUtilTests
     {
         [Fact]
-        public void CreateBingTileSourceReturnsTileSource()
+        public void GetProjectIdReturnsCorrectId()
         {
             // arrange
             var expectedPrefix = "http://editor.giscloud.com/map/";
