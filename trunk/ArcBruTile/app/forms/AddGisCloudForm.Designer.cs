@@ -32,17 +32,17 @@
             this.tbGisCloudUrl = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rdbJpg = new System.Windows.Forms.RadioButton();
+            this.rdbPng = new System.Windows.Forms.RadioButton();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.rdbPng = new System.Windows.Forms.RadioButton();
-            this.rdbJpg = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // tbGisCloudUrl
@@ -80,6 +80,62 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Add GIS Cloud Map:";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rdbJpg);
+            this.groupBox1.Controls.Add(this.rdbPng);
+            this.groupBox1.Location = new System.Drawing.Point(95, 118);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(175, 60);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Format:";
+            // 
+            // rdbJpg
+            // 
+            this.rdbJpg.AutoSize = true;
+            this.rdbJpg.Location = new System.Drawing.Point(108, 20);
+            this.rdbJpg.Name = "rdbJpg";
+            this.rdbJpg.Size = new System.Drawing.Size(48, 21);
+            this.rdbJpg.TabIndex = 7;
+            this.rdbJpg.Text = "jpg";
+            this.rdbJpg.UseVisualStyleBackColor = true;
+            this.rdbJpg.CheckedChanged += new System.EventHandler(this.rdbJpg_CheckedChanged);
+            // 
+            // rdbPng
+            // 
+            this.rdbPng.AutoSize = true;
+            this.rdbPng.Checked = true;
+            this.rdbPng.Location = new System.Drawing.Point(30, 20);
+            this.rdbPng.Name = "rdbPng";
+            this.rdbPng.Size = new System.Drawing.Size(53, 21);
+            this.rdbPng.TabIndex = 6;
+            this.rdbPng.TabStop = true;
+            this.rdbPng.Text = "png";
+            this.rdbPng.UseVisualStyleBackColor = true;
+            this.rdbPng.CheckedChanged += new System.EventHandler(this.rdbPng_CheckedChanged);
+            // 
+            // textBox1
+            // 
+            this.textBox1.CausesValidation = false;
+            this.textBox1.Location = new System.Drawing.Point(95, 77);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(521, 22);
+            this.textBox1.TabIndex = 4;
+            this.textBox1.Text = "http://editor.giscloud.com/map/449121/raster-map-test";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(20, 82);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Sample:";
+            // 
             // btnCancel
             // 
             this.btnCancel.CausesValidation = false;
@@ -104,65 +160,9 @@
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 82);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 17);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Sample:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.CausesValidation = false;
-            this.textBox1.Location = new System.Drawing.Point(95, 77);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(521, 22);
-            this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "http://editor.giscloud.com/map/449121/raster-map-test";
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // rdbPng
-            // 
-            this.rdbPng.AutoSize = true;
-            this.rdbPng.Checked = true;
-            this.rdbPng.Location = new System.Drawing.Point(30, 20);
-            this.rdbPng.Name = "rdbPng";
-            this.rdbPng.Size = new System.Drawing.Size(53, 21);
-            this.rdbPng.TabIndex = 6;
-            this.rdbPng.TabStop = true;
-            this.rdbPng.Text = "png";
-            this.rdbPng.UseVisualStyleBackColor = true;
-            this.rdbPng.CheckedChanged += new System.EventHandler(this.rdbPng_CheckedChanged);
-            // 
-            // rdbJpg
-            // 
-            this.rdbJpg.AutoSize = true;
-            this.rdbJpg.Location = new System.Drawing.Point(108, 20);
-            this.rdbJpg.Name = "rdbJpg";
-            this.rdbJpg.Size = new System.Drawing.Size(48, 21);
-            this.rdbJpg.TabIndex = 7;
-            this.rdbJpg.Text = "jpg";
-            this.rdbJpg.UseVisualStyleBackColor = true;
-            this.rdbJpg.CheckedChanged += new System.EventHandler(this.rdbJpg_CheckedChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.rdbJpg);
-            this.groupBox1.Controls.Add(this.rdbPng);
-            this.groupBox1.Location = new System.Drawing.Point(95, 118);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(175, 60);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Format:";
             // 
             // AddGisCloudForm
             // 
@@ -175,12 +175,13 @@
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox2);
             this.Name = "AddGisCloudForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add GIS Cloud Map";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
 
         }

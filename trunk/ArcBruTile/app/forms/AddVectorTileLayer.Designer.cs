@@ -144,6 +144,7 @@
             this.Controls.Add(this.tbVectorTileUrl);
             this.Controls.Add(this.label1);
             this.Name = "AddVectorTileLayer";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Mapbox Vector Tile Layer";
             this.ResumeLayout(false);
             this.PerformLayout();
