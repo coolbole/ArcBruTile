@@ -72,7 +72,7 @@ namespace BrutileArcGIS.commands
             foreach (var layer in layerInfo.data)
             {
                 var fl = layer.type.ToString();
-                if (fl == "raster")
+                if (fl == "raster" || fl=="polygon" || fl=="line" || fl=="point")
                 {
                     var name = layer.name;
                     var xmin = layer.x_min;
@@ -85,8 +85,17 @@ namespace BrutileArcGIS.commands
                     var layerType = EnumBruTileLayer.Giscloud;
                     var mxdoc = (IMxDocument)_application.Document;
                     var map = mxdoc.FocusMap;
+                    var tileUrl = string.Empty;
                     // for otok this must be: 1445289333 and map449121
-                    var tileUrl = "http://editor.giscloud.com/r/" + created + "/map" + mapid + "/layer" + id + "/{z}/{x}/{y}." + format;
+                    if (fl == "polygon" || fl=="line" || fl=="point")
+                    {
+                        format = "png";
+                        tileUrl = "http://api.giscloud.com/t/" + created + "/map" + mapid + "/layer" + id + "/{z}/{x}/{y}." + format;
+                    }
+                    else
+                    {
+                        tileUrl = "http://editor.giscloud.com/r/" + created + "/map" + mapid + "/layer" + id + "/{z}/{x}/{y}." + format;
+                    }
                     var config = new ConfigGisCloud(tileUrl, id);
                     var brutileLayer = new BruTileLayer(_application, config, layerType)
                     {
