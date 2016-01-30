@@ -17,10 +17,6 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ArcBruTileSetup", "ArcBruTileSetup\ArcBruTileSetup.vdproj", "{B872F422-4F55-4E2C-92E1-244C55F7DDCA}"
 EndProject
 Global
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Portable|Any CPU = Debug Portable|Any CPU
 		Debug Portable|x86 = Debug Portable|x86

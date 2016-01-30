@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
+using System.Threading;
+using BrutileArcGIS.Lib;
 using BruTile;
+using BruTile.Web;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
@@ -11,6 +15,7 @@ using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geometry;
 using GeoJSON.Net.Geometry;
+using log4net;
 using mapbox.vector.tile;
 using Feature = GeoJSON.Net.Feature.Feature;
 
@@ -18,9 +23,13 @@ namespace BrutileArcGIS.lib
 {
     public class MvtSubLayer : BaseCustomLayer,ILayerPosition
     {
-        private readonly MapBoxVectorTileSource _tileSource;
+        private static MapBoxVectorTileSource _tileSource;
         private readonly IApplication _application;
         private HashSet<string> layerNames;
+        private List<TileInfo> tileInfos;
+        private static Dictionary<TileInfo, byte[]> tiles;
+        private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
+
 
         public MvtSubLayer(IApplication application, string url)
         {
@@ -64,21 +73,58 @@ namespace BrutileArcGIS.lib
                     var map = mxdoc.FocusMap;
                     var activeView = map as IActiveView;
                     var tileInfosMeta = TileCalculator.GetTiles(activeView, _tileSource);
-                    var tileInfos = tileInfosMeta.Tiles;
+                    tileInfos = tileInfosMeta.Tiles;
+                    tiles = new Dictionary<TileInfo, byte[]>();
 
-                    var tiles = new Dictionary<TileInfo, byte[]>();
-                    foreach (var tileInfo in tileInfos)
-                    {
-                        tiles[tileInfo] = _tileSource.GetTile(tileInfo);
-                    }
+                    Logger.Debug("Mapbox vector tile, number of tiles: " + tileInfos.Count);
+                    Logger.Debug("Mapbox vector tile, start downloading...");
+
+                    var downloadFinished = new ManualResetEvent(false);
+                    var t = new Thread(DownloadTiles);
+                    t.Start(downloadFinished);
+                    downloadFinished.WaitOne();
+                    Logger.Debug("Mapbox vector tile, downloading finished.");
+                    Logger.Debug("Mapbox vector tile, start drawing ...");
 
                     foreach (var tile in tiles)
                     {
                         DrawVectorTile(display, tile);
                     }
+                    Logger.Debug("Mapbox vector tile, drawing finished.");
                 }
             }
         }
+
+        private void DownloadTiles(object args)
+        {
+            var downloadFinished = args as ManualResetEvent;
+            var doneEvents = new MultipleThreadResetEvent(tileInfos.Count);
+
+            foreach (var tileInfo in tileInfos)
+            {
+                object o = new object[] { tileInfo, doneEvents };
+                ThreadPool.QueueUserWorkItem(DownloadTile, o);
+            }
+            doneEvents.WaitAll();
+            if (downloadFinished != null) downloadFinished.Set();
+        }
+
+
+        private static void DownloadTile(object tile)
+        {
+            var parameters = (object[]) tile;
+            var tileInfo = (TileInfo) parameters[0];
+            var doneEvent = (MultipleThreadResetEvent) parameters[1];
+            var url = ((WebTileProvider)_tileSource.Provider).Request.GetUri(tileInfo);
+            var request = new WebClient();
+            var bytes = request.DownloadData(url);
+            if (bytes != null)
+            {
+                tiles[tileInfo] = bytes;
+            }
+            doneEvent.SetOne();
+        }
+
         private void DrawVectorTile(IDisplay display, KeyValuePair<TileInfo, byte[]> tile)
         {
             var i = tile.Value.Length;

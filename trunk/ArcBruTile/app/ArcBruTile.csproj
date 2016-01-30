@@ -145,6 +145,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
@@ -182,6 +183,7 @@
     <Compile Include="lib\BaseGroupLayer.cs" />
     <Compile Include="lib\BruTileCustomLayer.cs" />
     <Compile Include="lib\ConfigGisCloud.cs" />
+    <Compile Include="lib\GISCloudLayer.cs" />
     <Compile Include="lib\GisCloudUtil.cs" />
     <Compile Include="lib\ImageDrawer.cs" />
     <Compile Include="lib\MapBoxVectorTileSource.cs" />

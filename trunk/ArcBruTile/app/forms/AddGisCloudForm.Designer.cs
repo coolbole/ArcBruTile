@@ -40,6 +40,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -66,6 +67,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.groupBox1);
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.label2);
@@ -75,7 +77,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(657, 186);
+            this.groupBox2.Size = new System.Drawing.Size(657, 220);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Add GIS Cloud Map:";
@@ -84,7 +86,7 @@
             // 
             this.groupBox1.Controls.Add(this.rdbJpg);
             this.groupBox1.Controls.Add(this.rdbPng);
-            this.groupBox1.Location = new System.Drawing.Point(95, 118);
+            this.groupBox1.Location = new System.Drawing.Point(23, 123);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(175, 60);
             this.groupBox1.TabIndex = 8;
@@ -140,7 +142,7 @@
             // 
             this.btnCancel.CausesValidation = false;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(551, 207);
+            this.btnCancel.Location = new System.Drawing.Point(594, 241);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 28);
@@ -151,7 +153,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(398, 207);
+            this.btnOk.Location = new System.Drawing.Point(441, 241);
             this.btnOk.Margin = new System.Windows.Forms.Padding(4);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(145, 28);
@@ -164,13 +166,24 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(20, 186);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(350, 17);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Note: it is only possible to add publicly available maps.";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
             // AddGisCloudForm
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(697, 246);
+            this.ClientSize = new System.Drawing.Size(698, 273);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox2);
@@ -199,5 +212,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rdbJpg;
         private System.Windows.Forms.RadioButton rdbPng;
+        private System.Windows.Forms.Label label3;
     }
 }

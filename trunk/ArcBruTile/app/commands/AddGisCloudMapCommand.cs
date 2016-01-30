@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -35,7 +37,6 @@ namespace BrutileArcGIS.commands
 
             _application = hook as IApplication;
 
-            //Disable if it is not ArcMap
             if (hook is IMxApplication)
                 m_enabled = true;
             else
@@ -51,7 +52,9 @@ namespace BrutileArcGIS.commands
             {
                 var format = addGisCloudForm.GisCloudFormat;
                 var mapid = addGisCloudForm.GisCloudProjectId;
-                AddGisCloudLayers(mapid, format);
+                var layers = GetGISCloudLayers(mapid,format);
+                layers = layers.OrderBy(ob => ob.Order).ToList();
+                AddGisCloudLayers(layers);
             }
         }
 
@@ -64,57 +67,74 @@ namespace BrutileArcGIS.commands
             return info;
         }
 
-        private void AddGisCloudLayers(string mapid, string format)
+        private void AddGisCloudLayers(IEnumerable<GISCloudLayer> gisCloudLayers)
         {
-            // first get layers info from the api
+            var layerType = EnumBruTileLayer.Giscloud;
+            var mxdoc = (IMxDocument)_application.Document;
+            var map = mxdoc.FocusMap;
+
+            foreach (var gisCloudLayer in gisCloudLayers)
+            {
+                var config = new ConfigGisCloud(gisCloudLayer.TileUrl, gisCloudLayer.LayerId);
+                var brutileLayer = new BruTileLayer(_application, config, layerType)
+                {
+                    Name = gisCloudLayer.Name,
+                    Visible = gisCloudLayer.LayerIsVisible
+                };
+                brutileLayer.Visible = gisCloudLayer.LayerIsVisible;
+                var envelope = new EnvelopeClass
+                {
+                    XMin = gisCloudLayer.Xmin,
+                    XMax = gisCloudLayer.Xmax,
+                    YMin = gisCloudLayer.Ymin,
+                    YMax = gisCloudLayer.Ymax,
+                    SpatialReference = brutileLayer.SpatialReference
+                };
+                brutileLayer.Extent = envelope;
+                ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
+            }
+        }
+
+        public List<GISCloudLayer> GetGISCloudLayers(string mapid,string format)
+        {
+            var gisCloudLayers = new List<GISCloudLayer>();
+
             var url = "http://api.giscloud.com/1/maps/" + mapid + "/layers";
             var layerInfo = GetDataFromGiscloudApi(url);
             foreach (var layer in layerInfo.data)
             {
                 var fl = layer.type.ToString();
-                if (fl == "raster" || fl=="polygon" || fl=="line" || fl=="point")
+                if (fl == "raster" || fl == "polygon" || fl == "line" || fl == "point")
                 {
-                    var name = layer.name;
-                    var xmin = layer.x_min;
-                    var xmax = layer.x_max;
-                    var ymin = layer.y_min;
-                    var ymax = layer.y_max;
-                    var id = (int)(layer.id);
-                    var created = layer.created;
-
-                    var layerType = EnumBruTileLayer.Giscloud;
-                    var mxdoc = (IMxDocument)_application.Document;
-                    var map = mxdoc.FocusMap;
-                    var tileUrl = string.Empty;
-                    // for otok this must be: 1445289333 and map449121
-                    if (fl == "polygon" || fl=="line" || fl=="point")
+                    var gisCloudLayer = new GISCloudLayer
                     {
-                        format = "png";
-                        tileUrl = "http://api.giscloud.com/t/" + created + "/map" + mapid + "/layer" + id + "/{z}/{x}/{y}." + format;
+                        Name = layer.name,
+                        Xmin = layer.x_min,
+                        Xmax = layer.x_max,
+                        Ymin = layer.y_min,
+                        Ymax = layer.y_max,
+                        Visible = layer.visible,
+                        Order = layer.order,
+                        LayerId = layer.id,
+                        Created = layer.created,
+                        Type = layer.type,
+                        Format = format
+                    };
+
+                    if (fl == "polygon" || fl == "line" || fl == "point")
+                    {
+                        gisCloudLayer.Format = "png";
+                        gisCloudLayer.TileUrl = "http://api.giscloud.com/t/" + gisCloudLayer.Created + "/map" + mapid + "/layer" + gisCloudLayer.LayerId + "/{z}/{x}/{y}." + gisCloudLayer.Format;
                     }
                     else
                     {
-                        tileUrl = "http://editor.giscloud.com/r/" + created + "/map" + mapid + "/layer" + id + "/{z}/{x}/{y}." + format;
+                        gisCloudLayer.TileUrl = "http://editor.giscloud.com/r/" + gisCloudLayer.Created + "/map" + mapid + "/layer" + gisCloudLayer.LayerId + "/{z}/{x}/{y}." + format;
                     }
-                    var config = new ConfigGisCloud(tileUrl, id);
-                    var brutileLayer = new BruTileLayer(_application, config, layerType)
-                    {
-                        Name = name,
-                        Visible = true
-                    };
-                    brutileLayer.Visible = false;
-                    var envelope = new EnvelopeClass
-                    {
-                        XMin = xmin,
-                        XMax = xmax,
-                        YMin = ymin,
-                        YMax = ymax,
-                        SpatialReference = brutileLayer.SpatialReference
-                    };
-                    brutileLayer.Extent = envelope;
-                    ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
+
+                    gisCloudLayers.Add(gisCloudLayer);
                 }
             }
+            return gisCloudLayers;
         }
     }
 }

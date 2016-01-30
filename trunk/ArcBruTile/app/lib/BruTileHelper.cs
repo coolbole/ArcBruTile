@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using BruTile;
 using BruTile.Cache;
@@ -147,13 +148,11 @@ namespace BrutileArcGIS.Lib
             if (downloadTiles.Count > 0)
             {
                 // 2. Download tiles...
-                //var doneEvents = new ManualResetEvent[downloadTiles.Count];
                 var doneEvents = new MultipleThreadResetEvent(downloadTiles.Count);
 
                 foreach (var t in downloadTiles)
                 {
                     object o = new object[] {t, doneEvents};
-                    ThreadPool.SetMaxThreads(25, 25);
                     ThreadPool.QueueUserWorkItem(DownloadTile, o);
                 }
 
@@ -180,10 +179,10 @@ namespace BrutileArcGIS.Lib
                 var format = image.PixelFormat;
                 if (format == PixelFormat.Format24bppRgb | format == PixelFormat.Format32bppArgb)
                 {
-                    var rasterRGBRenderer = new RasterRGBRendererClass();
-                    ((IRasterStretch2)rasterRGBRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
-                    ((IRasterStretch2)rasterRGBRenderer).Background = true;
-                    rl.Renderer = rasterRGBRenderer;
+                    var rasterRgbRenderer = new RasterRGBRendererClass();
+                    ((IRasterStretch2)rasterRgbRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
+                    ((IRasterStretch2)rasterRgbRenderer).Background = true;
+                    rl.Renderer = rasterRgbRenderer;
                 }
                 // end fix 9/10/2015: with projected tiles color changes and transparency is ignored.
 
@@ -209,58 +208,6 @@ namespace BrutileArcGIS.Lib
             }
         }
 
-        private void DrawRaster(string file,TileInfo tileInfo)
-        {
-            try
-            {
-                Logger.Debug("Start drawing tile" + file + "...");
-                IRasterLayer rl = new RasterLayerClass();
-                rl.CreateFromFilePath(file);
-                var props=(IRasterProps)rl.Raster;
-                props.SpatialReference = _dataSpatialReference;
-
-                if (_needReproject)
-                {
-                    IRasterGeometryProc rasterGeometryProc = new RasterGeometryProcClass();
-                    var missing = Type.Missing;
-                    rasterGeometryProc.ProjectFast(_layerSpatialReference, rstResamplingTypes.RSP_NearestNeighbor, ref missing, rl.Raster);
-                }
-                //var exporter = new RasterExporterClass();
-                // var bytes = exporter.ExportToBytes(rl.Raster, "png");
-                
-
-                // Fix for issue "Each 256x256 tile rendering differently causing blockly effect."
-                // In 10.1 the StrecthType for rasters seems to have changed from esriRasterStretch_NONE to "Percent Clip",
-                // giving color problems with 24 or 32 bits tiles.
-                // http://arcbrutile.codeplex.com/workitem/11207
-                var image = new Bitmap(file, true);
-                var format = image.PixelFormat;
-                // removed: || format == PixelFormat.Format32bppArgb || format == PixelFormat.Format32bppRgb
-                if (format == PixelFormat.Format24bppRgb )
-                {
-                    var rasterRGBRenderer = new RasterRGBRendererClass();
-                    ((IRasterStretch2)rasterRGBRenderer).StretchType = esriRasterStretchTypesEnum.esriRasterStretch_NONE;
-                    rl.Renderer = rasterRGBRenderer;
-                }
-
-                // rl.Renderer.ResamplingType = rstResamplingTypes.RSP_BilinearInterpolation;
-                // Now set the spatial reference to the dataframe spatial reference! 
-                // Do not remove this line...
-                rl.SpatialReference = _layerSpatialReference;
-                // rl.Draw(esriDrawPhase.esriDPGeography, (IDisplay)activeView.ScreenDisplay, null);
-                rl.Draw(esriDrawPhase.esriDPGeography, _display, null);
-                //activeView.PartialRefresh(esriViewDrawPhase.esriViewGeography, trackCancel, env);
-                Logger.Debug("End drawing tile.");
-
-            }
-            // ReSharper disable once EmptyGeneralCatchClause
-            catch (Exception)
-            {
-                // what to do now...
-                // just try to load next tile...
-            }
-        }
-
         private static void DownloadTile(object tile)
         {
             var parameters = (object[])tile;
@@ -271,7 +218,6 @@ namespace BrutileArcGIS.Lib
             if (!_trackCancel.Continue())
             {
                 doneEvent.SetOne();
-                //!!!multipleThreadResetEvent.SetOne();
                 return;
             }
             
@@ -279,18 +225,12 @@ namespace BrutileArcGIS.Lib
             Logger.Debug("Url: " + url);
             var bytes = GetBitmap(url);
 
-            try
+            if (bytes != null)
             {
-                if (bytes != null)
-                {
-                    var name = _fileCache.GetFileName(tileInfo.Index);
-                    _fileCache.Add(tileInfo.Index, bytes);
-                    CreateRaster(tileInfo, name);
-                    Logger.Debug("Tile retrieved: " + url.AbsoluteUri);
-                }
-            }
-            catch (Exception)
-            {
+                var name = _fileCache.GetFileName(tileInfo.Index);
+                _fileCache.Add(tileInfo.Index, bytes);
+                CreateRaster(tileInfo, name);
+                Logger.Debug("Tile retrieved: " + url.AbsoluteUri);
             }
             doneEvent.SetOne();
         }
@@ -306,26 +246,17 @@ namespace BrutileArcGIS.Lib
 
         public static byte[] GetBitmap(Uri uri)
         {
-            byte[] bytes = null;
-
             try
             {
-                
-                bytes = RequestHelper.FetchImage(uri);
-
+                var request = new WebClient();
+                return request.DownloadData(uri);
             }
-            catch (System.Net.WebException webException)
+            catch(WebException ex)
             {
-                // if there is an error loading the tile
-                // like tile doesn't exist on server (404)
-                // just log a message and go on
-                Logger.Error("Error loading tile webException: " + webException.Message + ". url: " + uri.AbsoluteUri);
+                Logger.Debug("Exception, url: " + uri + ", exception: " + ex);
+                return null;
             }
-            return bytes;
         }
-
-
-
     }
 }
 

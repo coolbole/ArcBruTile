@@ -8,7 +8,7 @@ namespace BrutileArcGIS.commands
     public sealed class AddOsmLayerCommand : AddBruTileLayerCommandBase
     {
         public AddOsmLayerCommand()
-            : base("BruTile", "&Mapnik", "Add OpenStreetMap Layer", "OpenStreetMap Mapnik", Resources.osm_logo, EnumBruTileLayer.OSM)
+            : base("BruTile", "&OSM Mapnik", "Add OSM Mapnik", "OSM Mapnik", Resources.osm_logo, EnumBruTileLayer.OSM)
         {
         }
     }

@@ -143,12 +143,12 @@ namespace BrutileArcGIS.Lib
                                 if (activeView != null)
                                 {
                                     //_envelope = activeView.Extent;
-                                    // _envelope = clipEnvelope;
+                                    //_envelope = clipEnvelope;
 
-                                    Logger.Debug("Draw extent: xmin:" + _envelope.XMin + 
-                                                 ", ymin:" + _envelope.YMin +
-                                                 ", xmax:" + _envelope.XMax +
-                                                 ", ymax:" + _envelope.YMax
+                                    Logger.Debug("Draw extent: xmin:" + clipEnvelope.XMin + 
+                                                 ", ymin:" + clipEnvelope.YMin +
+                                                 ", xmax:" + clipEnvelope.XMax +
+                                                 ", ymax:" + clipEnvelope.YMax
                                         );
                                     if (SpatialReference != null)
                                     {
