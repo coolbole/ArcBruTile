@@ -78,9 +78,11 @@ namespace BrutileArcGIS.forms
             dgvServices.Columns.Remove("Srs");
             dgvServices.Columns.Remove("Type");
             dgvServices.Columns.Remove("OverwriteUrls");
+            dgvServices.Columns.Remove("Auth");
+
 
             //resize columns
-            dgvServices.Columns[0].Width=120;
+            dgvServices.Columns[0].Width=dgvServices.Width;
             dgvServices.ClearSelection();
             _init = false;
             if (tilemaps.Count > 0)

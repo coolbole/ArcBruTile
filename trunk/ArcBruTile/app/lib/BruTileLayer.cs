@@ -39,10 +39,12 @@ namespace BrutileArcGIS.Lib
         private ITileSource _tileSource;
         private bool _supportsInteractive = true;
         private short _transparency;
+        private string _auth;
 
         // used in the add services dialog
-        public BruTileLayer(IApplication app, EnumBruTileLayer enumBruTileLayer, string tmsUrl, bool overwriteUrls)
+        public BruTileLayer(IApplication app, EnumBruTileLayer enumBruTileLayer, string tmsUrl, bool overwriteUrls, string auth=null)
         {
+            _auth = auth;
             ShowTips = false;
             Name = "BruTile";
 
@@ -166,7 +168,7 @@ namespace BrutileArcGIS.Lib
                                         display.Filter = _displayFilter;
                                     }
                                     var fileCache = CacheDirectory.GetFileCache(_cacheDir,_config,_enumBruTileLayer);
-                                    bruTileHelper.Draw(_application.StatusBar.ProgressBar, activeView, fileCache, trackCancel, SpatialReference, ref _currentLevel, _tileSource, display);
+                                    bruTileHelper.Draw(_application.StatusBar.ProgressBar, activeView, fileCache, trackCancel, SpatialReference, ref _currentLevel, _tileSource, display, _auth);
                                 }
                             }
                             catch (Exception ex)

@@ -30,9 +30,11 @@ namespace BrutileArcGIS.Lib
                     {
                         tileMap.OverwriteUrls = bool.Parse(node.Attributes["overwriteurls"].Value);
                     }
+                    if (node.Attributes["auth"] != null)
+                    {
+                        tileMap.Auth = node.Attributes["auth"].Value;
+                    }
                 }
-
-
                 tilemaps.Add(tileMap);
             }
 

@@ -13,6 +13,7 @@
         public string Profile { get; set; }
         public string Type { get; set; }
         public bool OverwriteUrls { get; set; }
+        public string Auth { get; set; }
 
         static public int Compare(TileMap a, TileMap b)
         {

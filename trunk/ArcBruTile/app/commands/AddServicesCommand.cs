@@ -68,7 +68,7 @@ namespace BrutileArcGIS.commands
                         }
                     }
 
-                    var brutileLayer = new BruTileLayer(_application, layerType, selectedService.Href, selectedService.OverwriteUrls)
+                    var brutileLayer = new BruTileLayer(_application, layerType, selectedService.Href, selectedService.OverwriteUrls,selectedService.Auth)
                     {
                         Name = selectedService.Title,
                         Visible = true

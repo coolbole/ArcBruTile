@@ -34,6 +34,7 @@ namespace BrutileArcGIS.Lib
         List<TileInfo> _tiles;
         private IDisplay _display;
         static WebTileProvider _tileProvider;
+        private static string _auth;
 
         public BruTileHelper(int tileTimeOut)
         {
@@ -46,8 +47,9 @@ namespace BrutileArcGIS.Lib
                          FileCache fileCache,
                          ITrackCancel trackCancel,
                          ISpatialReference layerSpatialReference,
-                         ref string currentLevel, ITileSource tileSource, IDisplay display)
+                         ref string currentLevel, ITileSource tileSource, IDisplay display, string auth=null)
         {
+            _auth = auth;
             _tileSource = tileSource;
             _trackCancel = trackCancel;
             _layerSpatialReference = layerSpatialReference;
@@ -222,6 +224,11 @@ namespace BrutileArcGIS.Lib
             }
             
             var url = _tileProvider.Request.GetUri(tileInfo);
+            if (_auth != null)
+            {
+                var uriBuilder = new UriBuilder(url) {Query = _auth};
+                url = uriBuilder.Uri;
+            }
             Logger.Debug("Url: " + url);
             var bytes = GetBitmap(url);
 
