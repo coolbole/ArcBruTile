@@ -185,6 +185,9 @@
     <Compile Include="lib\ConfigGisCloud.cs" />
     <Compile Include="lib\GISCloudLayer.cs" />
     <Compile Include="lib\GisCloudUtil.cs" />
+    <Compile Include="lib\GZipWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="lib\ImageDrawer.cs" />
     <Compile Include="lib\MapBoxVectorTileSource.cs" />
     <Compile Include="lib\MvtSubLayer.cs" />

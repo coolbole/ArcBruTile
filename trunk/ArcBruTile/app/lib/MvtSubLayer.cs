@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Net;
 using System.Threading;
 using BrutileArcGIS.Lib;
 using BruTile;
@@ -18,16 +18,17 @@ using GeoJSON.Net.Geometry;
 using log4net;
 using mapbox.vector.tile;
 using Feature = GeoJSON.Net.Feature.Feature;
+using System.Windows.Media;
 
 namespace BrutileArcGIS.lib
 {
-    public class MvtSubLayer : BaseCustomLayer,ILayerPosition
+    public class MvtSubLayer : BaseCustomLayer, ILayerPosition
     {
         private static MapBoxVectorTileSource _tileSource;
         private readonly IApplication _application;
         private HashSet<string> layerNames;
         private List<TileInfo> tileInfos;
-        private static Dictionary<TileInfo, byte[]> tiles;
+        private static Dictionary<TileInfo, List<LayerInfo>> tiles;
         private static readonly log4net.ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
 
 
@@ -37,12 +38,13 @@ namespace BrutileArcGIS.lib
             _application = application;
             layerNames = new HashSet<string>();
 
-            if (!url.Contains("mapzen")){
+            if (!url.Contains("mapzen"))
+            {
                 _tileSource = new MapBoxVectorTileSource(url);
             }
             else
             {
-                _tileSource = new MapBoxVectorTileSource(url,"mvt");
+                _tileSource = new MapBoxVectorTileSource(url, "mvt");
             }
             var srf = new SpatialReferenceEnvironmentClass();
             var sr = srf.CreateGeographicCoordinateSystem((int)esriSRGeoCSType.esriSRGeoCS_WGS1984);
@@ -60,7 +62,8 @@ namespace BrutileArcGIS.lib
 
         public double LayerWeight
         {
-            get;set;
+            get;
+            set;
         }
 
         public override void Draw(esriDrawPhase drawPhase, IDisplay display, ITrackCancel trackCancel)
@@ -74,7 +77,7 @@ namespace BrutileArcGIS.lib
                     var activeView = map as IActiveView;
                     var tileInfosMeta = TileCalculator.GetTiles(activeView, _tileSource);
                     tileInfos = tileInfosMeta.Tiles;
-                    tiles = new Dictionary<TileInfo, byte[]>();
+                    tiles = new Dictionary<TileInfo, List<LayerInfo>>();
 
                     Logger.Debug("Mapbox vector tile, number of tiles: " + tileInfos.Count);
                     Logger.Debug("Mapbox vector tile, start downloading...");
@@ -112,33 +115,33 @@ namespace BrutileArcGIS.lib
 
         private static void DownloadTile(object tile)
         {
-            var parameters = (object[]) tile;
-            var tileInfo = (TileInfo) parameters[0];
-            var doneEvent = (MultipleThreadResetEvent) parameters[1];
+            var parameters = (object[])tile;
+            var tileInfo = (TileInfo)parameters[0];
+            var doneEvent = (MultipleThreadResetEvent)parameters[1];
             var url = ((WebTileProvider)_tileSource.Provider).Request.GetUri(tileInfo);
-            var request = new WebClient();
+            var request = new GZipWebClient();
             var bytes = request.DownloadData(url);
             if (bytes != null)
             {
-                tiles[tileInfo] = bytes;
+                var stream = new MemoryStream(bytes);
+                Logger.Debug("Start parsing vector tile...");
+                var layerInfos = VectorTileParser.Parse(stream, tileInfo.Index.Col, tileInfo.Index.Row, Int32.Parse(tileInfo.Index.Level));
+                tiles[tileInfo] = layerInfos;
             }
             doneEvent.SetOne();
         }
 
-        private void DrawVectorTile(IDisplay display, KeyValuePair<TileInfo, byte[]> tile)
+        private void DrawVectorTile(IDisplay display, KeyValuePair<TileInfo, List<LayerInfo>> tile)
         {
-            var i = tile.Value.Length;
-            if (i > 0)
-            {
-                var stream = new MemoryStream(tile.Value);
-                
-                var layerInfos = VectorTileParser.Parse(stream, tile.Key.Index.Col, tile.Key.Index.Row, Int32.Parse(tile.Key.Index.Level));
-                DrawLayerInfos(display, layerInfos, SpatialReference);
-                Debug.WriteLine("col:" + tile.Key.Index.Col + ", " + "row:" + tile.Key.Index.Row + ", level: " + tile.Key.Index.Level);
-            }
+            Logger.Debug("End parsing vector tile...");
+            Logger.Debug("Start drawing vector tile...");
+            DrawLayerInfos(display, tile.Value, SpatialReference);
+            Logger.Debug("End drawing vector tile...");
+            Debug.WriteLine("col:" + tile.Key.Index.Col + ", " + "row:" + tile.Key.Index.Row + ", level: " + tile.Key.Index.Level);
+
         }
 
-        private void DrawLayerInfos(IDisplay display, IEnumerable<LayerInfo> layerInfos, ISpatialReference sr)
+        private void DrawLayerInfos(IDisplay display, List<LayerInfo> layerInfos, ISpatialReference sr)
         {
             foreach (var layerInfo in layerInfos)
             {
@@ -153,29 +156,31 @@ namespace BrutileArcGIS.lib
 
         private void DrawFeatures(string layerName, IDisplay display, IEnumerable<Feature> features, ISpatialReference sr)
         {
-
-            foreach (var feature in features)
+            if (layerName == "water")
             {
-                layerNames.Add(feature.Geometry.Type + ":" + layerName);
-                var geom = feature.Geometry;
-                if (geom is GeoJSON.Net.Geometry.Polygon)
+                foreach (var feature in features)
                 {
-                    display.SetSymbol((ISymbol)GetDrawingPolygonSymbol());
-                    var poly = (GeoJSON.Net.Geometry.Polygon)geom;
-                    DrawPolygon(display, poly, sr);
-                }
-                else if (geom is LineString)
-                {
-                    display.SetSymbol((ISymbol)GetDrawingLineSymbol());
-                    var line = (LineString)geom;
-                    //DrawLine(display, line, sr);
-                }
-                else if (geom is GeoJSON.Net.Geometry.Point)
-                {
-                    display.SetSymbol((ISymbol)GetDrawingPointSymbol());
-                    var point = (GeoJSON.Net.Geometry.Point)geom;
-                    var gp = (GeographicPosition)point.Coordinates;
-                    DrawPoint(display, gp.Longitude, gp.Latitude, sr);
+                    layerNames.Add(feature.Geometry.Type + ":" + layerName);
+                    var geom = feature.Geometry;
+                    if (geom is GeoJSON.Net.Geometry.Polygon)
+                    {
+                        display.SetSymbol((ISymbol)GetDrawingPolygonSymbol());
+                        var poly = (GeoJSON.Net.Geometry.Polygon)geom;
+                        DrawPolygon(display, poly, sr);
+                    }
+                    else if (geom is LineString)
+                    {
+                        display.SetSymbol((ISymbol)GetDrawingLineSymbol());
+                        var line = (LineString)geom;
+                        //DrawLine(display, line, sr);
+                    }
+                    else if (geom is GeoJSON.Net.Geometry.Point)
+                    {
+                        display.SetSymbol((ISymbol)GetDrawingPointSymbol());
+                        var point = (GeoJSON.Net.Geometry.Point)geom;
+                        var gp = (GeographicPosition)point.Coordinates;
+                        DrawPoint(display, gp.Longitude, gp.Latitude, sr);
+                    }
                 }
             }
         }
@@ -251,6 +256,12 @@ namespace BrutileArcGIS.lib
         private static SimpleFillSymbol GetDrawingPolygonSymbol()
         {
             var fillSymbol = new SimpleFillSymbolClass();
+            var color = ColorTranslator.FromHtml("#357abf");
+            var fillcolor = new RgbColorClass();
+            fillcolor.Red = color.R;
+            fillcolor.Green = color.G;
+            fillcolor.Blue = color.B;
+            fillSymbol.Color = fillcolor;
             return fillSymbol;
         }
 
@@ -263,6 +274,12 @@ namespace BrutileArcGIS.lib
         private static SimpleMarkerSymbol GetDrawingPointSymbol()
         {
             var markerSymbol = new SimpleMarkerSymbolClass();
+            var color = ColorTranslator.FromHtml("#357abf");
+            var fillcolor = new RgbColorClass();
+            fillcolor.Red = color.R;
+            fillcolor.Green = color.G;
+            fillcolor.Blue = color.B;
+            markerSymbol.Color = fillcolor;
             return markerSymbol;
         }
     }
