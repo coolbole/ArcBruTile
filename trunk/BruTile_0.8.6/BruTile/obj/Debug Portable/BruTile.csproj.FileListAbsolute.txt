@@ -1,0 +1,4 @@
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile\bin\Debug Portable\BruTile.dll
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile\bin\Debug Portable\BruTile.pdb
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile\obj\Debug Portable\BruTile.dll
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile\obj\Debug Portable\BruTile.pdb

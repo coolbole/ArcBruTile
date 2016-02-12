@@ -35,7 +35,22 @@ namespace BrutileArcGIS.lib
 
             if (layerType == EnumBruTileLayer.TMS || layerType == EnumBruTileLayer.InvertedTMS)
             {
-                string url = (layerType == EnumBruTileLayer.TMS ? ((ConfigTms)config).Url : ((ConfigInvertedTMS)config).Url);
+                string url = null;
+                if (layerType == EnumBruTileLayer.TMS)
+                {
+                    url = ((ConfigTms) config).Url;
+                }
+                else if (layerType == EnumBruTileLayer.InvertedTMS)
+                {
+                    if (config is ConfigInvertedTMS)
+                    {
+                        url = ((ConfigInvertedTMS) config).Url;
+                    }
+                    else
+                    {
+                        url = ((NaverConfig)config).Url;
+                    }
+                }
 
                 string service = url.Substring(7, url.Length - 7);
                 service = service.Replace(@"/", "-");

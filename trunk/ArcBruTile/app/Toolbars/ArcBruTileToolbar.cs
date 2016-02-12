@@ -52,6 +52,7 @@ namespace BrutileArcGIS.Toolbars
             }
             AddItem(typeof(StravaMenuDef));
             AddItem(typeof(TiandituMenuDef));
+            AddItem(typeof(NaverMenuDef));
         }
 
         public override string Caption

@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Common Files\ArcGIS\bin\ESRIRegAsm.exe" ArcBruTile.dll /p:desktop

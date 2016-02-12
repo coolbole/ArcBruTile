@@ -1,0 +1,7 @@
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\bin\Debug\BruTile.Desktop.dll
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\bin\Debug\BruTile.Desktop.pdb
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\bin\Debug\BruTile.dll
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\bin\Debug\BruTile.pdb
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\obj\Debug\BruTile.Desktop.csprojResolveAssemblyReference.cache
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\obj\Debug\BruTile.Desktop.dll
+D:\dev\git\bertt\arcbrutile\trunk\BruTile_0.8.6\BruTile.Desktop\obj\Debug\BruTile.Desktop.pdb

@@ -162,6 +162,10 @@
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
     <Compile Include="commands\AddGisCloudMapCommand.cs" />
+    <Compile Include="commands\AddNaverCadastralLayerCommand.cs" />
+    <Compile Include="commands\AddNaverHybridLayerCommand.cs" />
+    <Compile Include="commands\AddNaverSatelliteLayerCommand.cs" />
+    <Compile Include="commands\AddNaverStreetLayerCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="commands\AddStravaLayerCommand.cs" />
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
@@ -191,10 +195,13 @@
     <Compile Include="lib\ImageDrawer.cs" />
     <Compile Include="lib\MapBoxVectorTileSource.cs" />
     <Compile Include="lib\MvtSubLayer.cs" />
+    <Compile Include="lib\NaverConfig.cs" />
+    <Compile Include="lib\NaverTileSchema.cs" />
     <Compile Include="lib\Requester.cs" />
     <Compile Include="lib\SimpleFileFetcher.cs" />
     <Compile Include="lib\TileCalculator.cs" />
     <Compile Include="lib\WorldToScreen.cs" />
+    <Compile Include="MenuDefs\NaverMenuDef.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="MenuDefs\StravaMenuDef.cs" />

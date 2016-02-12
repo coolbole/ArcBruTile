@@ -42,10 +42,11 @@ namespace BruTile.Web
         /// <returns>The URI at which to get the data for the specified tile.</returns>
         public Uri GetUri(TileInfo info)
         {
+            var level = info.Index.Level;
             var stringBuilder = new StringBuilder(_urlFormatter);
             stringBuilder.Replace(XTag, info.Index.Col.ToString(CultureInfo.InvariantCulture));
             stringBuilder.Replace(YTag, info.Index.Row.ToString(CultureInfo.InvariantCulture));
-            stringBuilder.Replace(ZTag, info.Index.Level);
+            stringBuilder.Replace(ZTag, level);
             stringBuilder.Replace(ApiKeyTag, _apiKey);
             InsertServerNode(stringBuilder, _serverNodes, ref _nodeCounter);
             return new Uri(stringBuilder.ToString());
