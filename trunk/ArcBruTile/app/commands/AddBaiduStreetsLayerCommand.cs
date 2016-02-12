@@ -1,27 +1,29 @@
 ﻿using System.Runtime.InteropServices;
+using BrutileArcGIS.lib;
+using BrutileArcGIS.Lib;
+using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
-using ESRI.ArcGIS.Framework;
-using BrutileArcGIS.Lib;
-using BrutileArcGIS.forms;
-using BrutileArcGIS.lib;
 using ESRI.ArcGIS.Carto;
+using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geometry;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AboutBruTileCommand")]
-    public sealed class AboutBruTileCommand : BaseCommand
+    [ProgId("AddBaiduStreetsLayerCommand")]
+    public class AddBaiduStreetsLayerCommand : BaseCommand
     {
+
         private IApplication _application;
 
-        public AboutBruTileCommand()
+        public AddBaiduStreetsLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&About ArcBruTile...";
-            m_message = "About BruTile...";
+            m_caption = "&Add Baidu streets map";
+            m_message = "AddBaiduStreets map";
             m_toolTip = m_caption;
-            m_name = "AboutBruTileCommand";
+            m_name = "AddBaiduStreetsLayerCommand";
+            m_bitmap = Resources.download;
         }
 
         public override void OnCreate(object hook)
@@ -31,7 +33,6 @@ namespace BrutileArcGIS.commands
 
             _application = hook as IApplication;
 
-            //Disable if it is not ArcMap
             if (hook is IMxApplication)
                 m_enabled = true;
             else
@@ -40,7 +41,7 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            var url = "http://online3.map.bdimg.com/tile/?qt=tile&styles=sl&x={x}&y={y}&z={z}";
+            var url = "http://online{s}.map.bdimg.com/tile/?qt=tile&styles=sl&x={x}&y={y}&z={z}";
             var baiduconfig = new BaiduConfig("Baidu", url);
 
             var layerType = EnumBruTileLayer.InvertedTMS;
@@ -49,7 +50,7 @@ namespace BrutileArcGIS.commands
 
             var brutileLayer = new BruTileLayer(_application, baiduconfig, layerType)
             {
-                Name = "Baidu",
+                Name = "Baidu Streets",
                 Visible = true
             };
             var env = new EnvelopeClass();
@@ -61,15 +62,6 @@ namespace BrutileArcGIS.commands
 
             ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
 
-
-
-
-
-
-            //var bruTileAboutBox = new BruTileAboutBox();
-            //bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
         }
     }
 }
-
-

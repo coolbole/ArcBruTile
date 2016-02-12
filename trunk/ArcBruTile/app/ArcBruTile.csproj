@@ -161,6 +161,9 @@
       <DependentUpon>ArcBruTileInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
+    <Compile Include="commands\AddBaiduLayerCommand.cs" />
+    <Compile Include="commands\AddBaiduSatelliteLayerCommand.cs" />
+    <Compile Include="commands\AddBaiduStreetsLayerCommand.cs" />
     <Compile Include="commands\AddGisCloudMapCommand.cs" />
     <Compile Include="commands\AddNaverCadastralLayerCommand.cs" />
     <Compile Include="commands\AddNaverHybridLayerCommand.cs" />
@@ -184,6 +187,8 @@
     <Compile Include="forms\AddVectorTileLayer.Designer.cs">
       <DependentUpon>AddVectorTileLayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\BaiduConfig.cs" />
+    <Compile Include="lib\BaiduTileSchema.cs" />
     <Compile Include="lib\BaseGroupLayer.cs" />
     <Compile Include="lib\BruTileCustomLayer.cs" />
     <Compile Include="lib\ConfigGisCloud.cs" />
@@ -201,6 +206,7 @@
     <Compile Include="lib\SimpleFileFetcher.cs" />
     <Compile Include="lib\TileCalculator.cs" />
     <Compile Include="lib\WorldToScreen.cs" />
+    <Compile Include="MenuDefs\BaiduMenuDef.cs" />
     <Compile Include="MenuDefs\NaverMenuDef.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />

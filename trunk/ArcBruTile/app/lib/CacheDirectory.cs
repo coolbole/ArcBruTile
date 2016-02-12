@@ -46,9 +46,14 @@ namespace BrutileArcGIS.lib
                     {
                         url = ((ConfigInvertedTMS) config).Url;
                     }
-                    else
+                    else if(config is NaverConfig)
                     {
                         url = ((NaverConfig)config).Url;
+                    }
+                    else 
+                    {
+                        url = ((BaiduConfig)config).Url;
+                        url = url.Replace("?", "");
                     }
                 }
 

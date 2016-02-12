@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25008.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcBruTile", "app\ArcBruTile.csproj", "{501036A0-A949-4E35-A8BF-B375CD6D20C3}"
 EndProject
@@ -41,7 +41,6 @@ Global
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{501036A0-A949-4E35-A8BF-B375CD6D20C3}.Release|x86.ActiveCfg = Release|Any CPU
 		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug Portable|Any CPU.ActiveCfg = Debug|Any CPU
-		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug Portable|Any CPU.Build.0 = Debug|Any CPU
 		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug Portable|x86.ActiveCfg = Debug|Any CPU
 		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{327F29F1-D587-4804-9C7E-E48B419ADE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -81,7 +80,6 @@ Global
 		{2F6D9E1C-2001-40C8-89BA-FDF8597BB719}.Release|x86.ActiveCfg = Release|x86
 		{2F6D9E1C-2001-40C8-89BA-FDF8597BB719}.Release|x86.Build.0 = Release|x86
 		{B872F422-4F55-4E2C-92E1-244C55F7DDCA}.Debug Portable|Any CPU.ActiveCfg = Debug
-		{B872F422-4F55-4E2C-92E1-244C55F7DDCA}.Debug Portable|Any CPU.Build.0 = Debug
 		{B872F422-4F55-4E2C-92E1-244C55F7DDCA}.Debug Portable|x86.ActiveCfg = Debug
 		{B872F422-4F55-4E2C-92E1-244C55F7DDCA}.Debug Portable|x86.Build.0 = Debug
 		{B872F422-4F55-4E2C-92E1-244C55F7DDCA}.Debug|Any CPU.ActiveCfg = Debug
