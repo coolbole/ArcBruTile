@@ -4,9 +4,6 @@ using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Framework;
 using BrutileArcGIS.Lib;
 using BrutileArcGIS.forms;
-using BrutileArcGIS.lib;
-using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.Geometry;
 
 namespace BrutileArcGIS.commands
 {
@@ -40,34 +37,8 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            var url = "http://online3.map.bdimg.com/tile/?qt=tile&styles=sl&x={x}&y={y}&z={z}";
-            var baiduconfig = new BaiduConfig("Baidu", url);
-
-            var layerType = EnumBruTileLayer.InvertedTMS;
-            var mxdoc = (IMxDocument)_application.Document;
-            var map = mxdoc.FocusMap;
-
-            var brutileLayer = new BruTileLayer(_application, baiduconfig, layerType)
-            {
-                Name = "Baidu",
-                Visible = true
-            };
-            var env = new EnvelopeClass();
-            env.XMin = 7728334;
-            env.YMin = 1755189;
-            env.XMax = 16173851;
-            env.YMax = 7411992;
-            brutileLayer.Extent = env;
-
-            ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
-
-
-
-
-
-
-            //var bruTileAboutBox = new BruTileAboutBox();
-            //bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
+            var bruTileAboutBox = new BruTileAboutBox();
+            bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
         }
     }
 }
