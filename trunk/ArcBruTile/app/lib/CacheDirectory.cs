@@ -50,6 +50,12 @@ namespace BrutileArcGIS.lib
                     {
                         url = ((NaverConfig)config).Url;
                     }
+                    else if (config is DaumConfig)
+                    {
+                        url = ((DaumConfig)config).Url;
+                        var idx = url.LastIndexOf('.');
+                        url = url.Substring(0,idx);
+                    }
                     else 
                     {
                         url = ((BaiduConfig)config).Url;

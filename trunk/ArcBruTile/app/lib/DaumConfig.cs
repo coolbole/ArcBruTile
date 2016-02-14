@@ -5,9 +5,9 @@ using BruTile.Web;
 
 namespace BrutileArcGIS.lib
 {
-    public class NaverConfig : IConfig
+    public class DaumConfig:IConfig
     {
-        public NaverConfig(string name, string url)
+        public DaumConfig(string name, string url)
         {
             Name = name;
             Url = url;
@@ -15,14 +15,14 @@ namespace BrutileArcGIS.lib
 
         public ITileSource CreateTileSource()
         {
-            var tileSchema = new NaverTileSchema();
-            var servers = new List<string> {"onetile1", "onetile2", "onetile3", "onetile4"};
-            var naverRequest = new BasicRequest(Url,servers);
-            var tileProvider = new WebTileProvider(naverRequest);
+            var tileSchema = new DaumTileSchema();
+            var daumRequest = new DaumRequest(Url, new List<string>{"0","1","2","3"});
+            var tileProvider = new WebTileProvider(daumRequest);
             var tileSource = new TileSource(tileProvider, tileSchema);
             return tileSource;
         }
         public string Name { get; set; }
         public string Url { get; set; }
+
     }
 }

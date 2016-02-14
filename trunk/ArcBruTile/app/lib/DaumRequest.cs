@@ -1,17 +1,14 @@
-﻿// Copyright (c) BruTile developers team. All rights reserved. See License.txt in the project root for license information.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using BruTile;
+using BruTile.Web;
 
-namespace BruTile.Web
+namespace BrutileArcGIS.lib
 {
-    /// <summary>
-    /// A flexible request builder that can be used for a number of simple cases.
-    /// </summary>
-    public class BasicRequest : IRequest
+    public class DaumRequest:IRequest
     {
         protected readonly string _urlFormatter;
         protected const string ServerNodeTag = "{s}";
@@ -23,7 +20,7 @@ namespace BruTile.Web
         protected readonly IList<string> _serverNodes;
         protected readonly string _apiKey;
 
-        public BasicRequest(string urlFormatter, IEnumerable<string> serverNodes = null, string apiKey= null)
+        public DaumRequest(string urlFormatter, IEnumerable<string> serverNodes = null, string apiKey= null)
         {
             _urlFormatter = urlFormatter;
             _serverNodes = serverNodes != null ? serverNodes.ToList() : null;
@@ -35,18 +32,16 @@ namespace BruTile.Web
             _apiKey = apiKey;
         }
 
-        /// <summary>
-        /// Generates a URI at which to get the data for a tile.
-        /// </summary>
-        /// <param name="info">Information about a tile.</param>
-        /// <returns>The URI at which to get the data for the specified tile.</returns>
-        public virtual Uri GetUri(TileInfo info)
+        public Uri GetUri(TileInfo info)
         {
             var level = info.Index.Level;
+            var l1 = Int32.Parse(level);
+            var l2 = 14 - l1;
+            var l3 = l2.ToString();
             var stringBuilder = new StringBuilder(_urlFormatter);
             stringBuilder.Replace(XTag, info.Index.Col.ToString(CultureInfo.InvariantCulture));
             stringBuilder.Replace(YTag, info.Index.Row.ToString(CultureInfo.InvariantCulture));
-            stringBuilder.Replace(ZTag, level);
+            stringBuilder.Replace(ZTag, l3);
             stringBuilder.Replace(ApiKeyTag, _apiKey);
             InsertServerNode(stringBuilder, _serverNodes, ref _nodeCounter);
             return new Uri(stringBuilder.ToString());
@@ -61,5 +56,7 @@ namespace BruTile.Web
                 if (nodeCounter >= serverNodes.Count) nodeCounter = 0;
             }
         }
+
+
     }
 }

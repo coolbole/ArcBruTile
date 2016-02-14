@@ -3,12 +3,13 @@ using BruTile;
 
 namespace BrutileArcGIS.lib
 {
-    public class NaverTileSchema : TileSchema
+    public class DaumTileSchema:TileSchema
     {
-        public NaverTileSchema()
+
+        public DaumTileSchema()
         {
             var resolutions = new[] {
-                4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25 
+                2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25 
             };
 
             var count = 0;
@@ -20,12 +21,13 @@ namespace BrutileArcGIS.lib
             }
             Height = 256;
             Width = 256;
-            OriginX = 90112;
-            OriginY = 1192896;
-            Extent = new Extent(90112, 1192896, 1990673, 2761664);
+            OriginX = -30000;
+            OriginY = -60000;
+            Extent = new Extent(-30000, -60000, 694288, 1277010);
             Format = "png";
             Axis = AxisDirection.Normal;
-            Srs = "EPSG:5179";
+            Srs = "EPSG:5181";
         }
+
     }
 }

@@ -1,27 +1,27 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using BrutileArcGIS.lib;
 using BrutileArcGIS.Lib;
+using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
-using ESRI.ArcGIS.Framework;
-using BruTile.Web;
 using ESRI.ArcGIS.Carto;
+using ESRI.ArcGIS.Framework;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AboutBruTileCommand")]
-    public sealed class AboutBruTileCommand : BaseCommand
+    [ProgId("AddDaumHybridLayerCommand")]
+    public class AddDaumHybridLayerCommand: BaseCommand
     {
         private IApplication _application;
 
-        public AboutBruTileCommand()
+        public AddDaumHybridLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&About ArcBruTile...";
-            m_message = "About BruTile...";
+            m_caption = "&Add Daum Hybrid";
+            m_message = "Add Daum Hybrid";
             m_toolTip = m_caption;
-            m_name = "AboutBruTileCommand";
+            m_name = "AddDaumHybridLayerCommand";
+            m_bitmap = Resources.download;
         }
 
         public override void OnCreate(object hook)
@@ -31,7 +31,6 @@ namespace BrutileArcGIS.commands
 
             _application = hook as IApplication;
 
-            //Disable if it is not ArcMap
             if (hook is IMxApplication)
                 m_enabled = true;
             else
@@ -40,11 +39,9 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            // var url = "http://i{s}.maps.daum-img.net/map/image/G03/i/1.20/L{z}/{y}/{x}.png";
-            var url1 = "http://h{s}.maps.daum-img.net/map/image/G03/h/1.20/L{z}/{y}/{x}.png";
-            var url = "http://s{s}.maps.daum-img.net/L{z}/{y}/{x}.jpg";
+            var url = "http://h{s}.maps.daum-img.net/map/image/G03/h/1.20/L{z}/{y}/{x}.png";
 
-            var daumConfig = new DaumConfig("Daum Streets", url);
+            var daumConfig = new DaumConfig("Hybrid", url);
 
             var layerType = EnumBruTileLayer.InvertedTMS;
             var mxdoc = (IMxDocument)_application.Document;
@@ -52,15 +49,11 @@ namespace BrutileArcGIS.commands
 
             var brutileLayer = new BruTileLayer(_application, daumConfig, layerType)
             {
-                Name = "Daum Streets",
+                Name = "Hybrid",
                 Visible = true
             };
             ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
-
-            //var bruTileAboutBox = new BruTileAboutBox();
-            //bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
         }
+
     }
 }
-
-

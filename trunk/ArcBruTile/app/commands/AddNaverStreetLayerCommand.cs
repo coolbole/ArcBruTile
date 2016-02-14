@@ -12,7 +12,6 @@ namespace BrutileArcGIS.commands
     [ProgId("AddNaverStreetLayerCommand")]
     public class AddNaverStreetLayerCommand : BaseCommand
     {
-
         private IApplication _application;
 
         public AddNaverStreetLayerCommand()

@@ -101,7 +101,7 @@ namespace BruTile
             return GetTilesInView(this, extent, levelId);
         }
 
-        internal static IEnumerable<TileInfo> GetTilesInView(ITileSchema schema, Extent extent, string levelId)
+        public static IEnumerable<TileInfo> GetTilesInView(ITileSchema schema, Extent extent, string levelId)
         {
             var range = TileTransform.WorldToTile(extent, levelId, schema);
 

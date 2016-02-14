@@ -58,21 +58,21 @@ namespace BruTile.Web
             string zoomUrl;
 
             if (zoom < 10)
-                zoomUrl = "L0" + zoom;
+                zoomUrl = "l0" + zoom;
             else
-                zoomUrl = "L" + zoom;
+                zoomUrl = "l" + zoom;
 
             return zoomUrl;
         }
 
         static string ColumnToHex(int x)
         {
-            return "C" + String.Format("{0:x8}", x); //Column (xTile naar hex met min/max 8 getallen aanvullen met 0)
+            return "c" + String.Format("{0:x8}", x); //Column (xTile naar hex met min/max 8 getallen aanvullen met 0)
         }
 
         static string RowToHex(int y)
         {
-            return "R" + String.Format("{0:x8}", y); //Row (yTile naar hex met min/max 8 getallen aanvullen met 0)
+            return "r" + String.Format("{0:x8}", y); //Row (yTile naar hex met min/max 8 getallen aanvullen met 0)
         }
 
     }
