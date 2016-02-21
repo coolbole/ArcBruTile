@@ -17,11 +17,11 @@ namespace BrutileArcGIS.MenuDefs
                     itemDef.Group = false;
                     break;
                 case 1:
-                    itemDef.ID = "AddDaumHybridLayerCommand";
+                    itemDef.ID = "AddDaumSatelliteLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 2:
-                    itemDef.ID = "AddDaumSatelliteLayerCommand";
+                    itemDef.ID = "AddDaumHybridLayerCommand";
                     itemDef.Group = false;
                     break;
             }

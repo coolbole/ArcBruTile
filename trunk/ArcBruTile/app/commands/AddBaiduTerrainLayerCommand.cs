@@ -10,19 +10,19 @@ using ESRI.ArcGIS.Geometry;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AddBaiduLayerCommand")]
-    public class AddBaiduLayerCommand : BaseCommand
+    [ProgId("AddBaiduTerrainLayerCommand")]
+    public class AddBaiduTerrainLayerCommand : BaseCommand
     {
 
         private IApplication _application;
 
-        public AddBaiduLayerCommand()
+        public AddBaiduTerrainLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Baidu map";
-            m_message = "AddBaidu map";
+            m_caption = "&Terrain";
+            m_message = "AddBaidu terrain map";
             m_toolTip = m_caption;
-            m_name = "AddBaiduLayerCommand";
+            m_name = "AddBaiduTerrainLayerCommand";
             m_bitmap = Resources.download;
         }
 
@@ -50,7 +50,7 @@ namespace BrutileArcGIS.commands
 
             var brutileLayer = new BruTileLayer(_application, baiduconfig, layerType)
             {
-                Name = "Baidu",
+                Name = "Baidu Terrain",
                 Visible = true
             };
             var env = new EnvelopeClass();

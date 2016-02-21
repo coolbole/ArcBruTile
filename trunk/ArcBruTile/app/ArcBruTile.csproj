@@ -161,7 +161,7 @@
       <DependentUpon>ArcBruTileInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="commands\AboutPdokCommand.cs" />
-    <Compile Include="commands\AddBaiduLayerCommand.cs" />
+    <Compile Include="commands\AddBaiduTerrainLayerCommand.cs" />
     <Compile Include="commands\AddBaiduSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddBaiduStreetsLayerCommand.cs" />
     <Compile Include="commands\AddDaumHybridLayerCommand.cs" />

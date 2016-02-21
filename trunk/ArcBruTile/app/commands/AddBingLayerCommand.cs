@@ -4,11 +4,11 @@ using BrutileArcGIS.Properties;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AddBingAerialLayerCommand")]
-    public sealed class AddBingAerialLayerCommand : AddBruTileLayerCommandBase
+    [ProgId("AddBingSatelliteLayerCommand")]
+    public sealed class AddBingSatelliteLayerCommand : AddBruTileLayerCommandBase
     {
-        public AddBingAerialLayerCommand()
-            : base("BruTile", "&Aerial", "Add Bing Aerial Layer", "Bing Aerial", Resources.download, EnumBruTileLayer.BingAerial)
+        public AddBingSatelliteLayerCommand()
+            : base("BruTile", "&Satellite", "Add Bing Satellite Layer", "Bing Satellite", Resources.download, EnumBruTileLayer.BingSatellite)
         {
         }
     }
@@ -22,11 +22,11 @@ namespace BrutileArcGIS.commands
         }
     }
 
-    [ProgId("AddBingRoadLayerCommand")]
-    public sealed class AddBingRoadLayerCommand : AddBruTileLayerCommandBase
+    [ProgId("AddBingStreetsLayerCommand")]
+    public sealed class AddBingStreetsLayerCommand : AddBruTileLayerCommandBase
     {
-        public AddBingRoadLayerCommand()
-            : base("BruTile", "&Roads", "Add Bing Road Layer", "Bing Road", Resources.download, EnumBruTileLayer.BingRoad)
+        public AddBingStreetsLayerCommand()
+            : base("BruTile", "&Streets", "Add Bing Streets Layer", "Bing Streets", Resources.download, EnumBruTileLayer.BingStreets)
         {
         }
     }

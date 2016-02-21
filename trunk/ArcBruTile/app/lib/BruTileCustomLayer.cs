@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using BruTile;
 using BruTile.Cache;
@@ -170,6 +171,19 @@ namespace BrutileArcGIS.lib
                 // what to do now...
                 // just try to load next tile...
             }
+        }
+
+
+        public override void Save(IVariantStream stream)
+        {
+            // todo: implement save
+            base.Save(stream);
+        }
+
+        public override void Load(IVariantStream stream)
+        {
+            // todo: implement load 
+            base.Load(stream);
         }
 
     }

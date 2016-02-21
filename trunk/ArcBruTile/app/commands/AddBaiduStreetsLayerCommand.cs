@@ -19,7 +19,7 @@ namespace BrutileArcGIS.commands
         public AddBaiduStreetsLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Baidu streets map";
+            m_caption = "&Streets";
             m_message = "AddBaiduStreets map";
             m_toolTip = m_caption;
             m_name = "AddBaiduStreetsLayerCommand";

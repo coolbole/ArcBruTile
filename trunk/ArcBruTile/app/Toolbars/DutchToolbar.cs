@@ -23,7 +23,7 @@ namespace BrutileArcGIS.Toolbars
 
             try
             {
-                AddItem(typeof(DutchMenuDef));
+                AddItem(typeof(BruTileMenuDef));
                 AddItem(typeof(PdokMenuDef));
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace BrutileArcGIS.Toolbars
         {
             get
             {
-                return "PDOK toolbar";
+                return "Dutch toolbar";
             }
         }
 

@@ -10,7 +10,7 @@ namespace BrutileArcGIS.commands
         public sealed class AddVWorldStreetLayerCommand  : AddTmsLayerCommandBase
         {
             public AddVWorldStreetLayerCommand()
-                : base("BruTile", "&Street", "Add Street Layer", "VWorld Street", Resources.download, "http://dl.dropbox.com/u/9984329/ArcBruTile/Services/vworld/vworldstreet.xml", EnumBruTileLayer.InvertedTMS)
+                : base("BruTile", "&Streets", "Add Street Layer", "VWorld Street", Resources.download, "http://dl.dropbox.com/u/9984329/ArcBruTile/Services/vworld/vworldstreet.xml", EnumBruTileLayer.InvertedTMS)
             {
             }
         }
@@ -28,7 +28,7 @@ namespace BrutileArcGIS.commands
         public sealed class AddVWorldHybridLayerCommand : AddTmsLayerCommandBase
         {
             public AddVWorldHybridLayerCommand()
-                : base("BruTile", "&Hybrid", "Add hybrid Layer", "VWorld Hybrid", Resources.download, "http://dl.dropbox.com/u/9984329/ArcBruTile/Services/vworld/hybrid.xml", EnumBruTileLayer.InvertedTMS)
+                : base("BruTile", "&Hybrid", "Add Hybrid Layer", "VWorld Hybrid", Resources.download, "http://dl.dropbox.com/u/9984329/ArcBruTile/Services/vworld/hybrid.xml", EnumBruTileLayer.InvertedTMS)
             {
             }
         }

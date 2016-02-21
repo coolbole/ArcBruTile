@@ -13,11 +13,11 @@ namespace BrutileArcGIS.MenuDefs
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddBingRoadLayerCommand";
+                    itemDef.ID = "AddBingStreetsLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 1:
-                    itemDef.ID = "AddBingAerialLayerCommand";
+                    itemDef.ID = "AddBingSatelliteLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 2:

@@ -3,7 +3,7 @@
     public enum EnumBruTileLayer
     {
         OSM,
-        BingRoad, BingAerial, BingHybrid, 
+        BingStreets, BingSatellite, BingHybrid, 
         TMS, 
         WMSC, 
         InvertedTMS,

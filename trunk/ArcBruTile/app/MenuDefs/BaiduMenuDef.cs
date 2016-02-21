@@ -13,7 +13,7 @@ namespace BrutileArcGIS.MenuDefs
             switch (pos)
             {
                 case 0:
-                    itemDef.ID = "AddBaiduLayerCommand";
+                    itemDef.ID = "AddBaiduTerrainLayerCommand";
                     itemDef.Group = false;
                     break;
                 case 1:

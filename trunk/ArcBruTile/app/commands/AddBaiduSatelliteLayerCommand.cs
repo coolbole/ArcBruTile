@@ -19,8 +19,8 @@ namespace BrutileArcGIS.commands
         public AddBaiduSatelliteLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Baidu Satellite map";
-            m_message = "AddBaiduSAtellite map";
+            m_caption = "&Satellite";
+            m_message = "AddBaiduSatellite map";
             m_toolTip = m_caption;
             m_name = "AddBaiduSatelliteLayerCommand";
             m_bitmap = Resources.download;

@@ -37,7 +37,7 @@ namespace BrutileArcGIS.Lib
             {
                 result = new ConfigOsm(OsmMapType.Default);
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.BingRoad)
+            else if (enumBruTileLayer == EnumBruTileLayer.BingStreets)
             {
                 result = new ConfigBing(BingMapType.Roads);
             }
@@ -45,7 +45,7 @@ namespace BrutileArcGIS.Lib
             {
                 result = new ConfigBing(BingMapType.Hybrid);
             }
-            else if (enumBruTileLayer == EnumBruTileLayer.BingAerial)
+            else if (enumBruTileLayer == EnumBruTileLayer.BingSatellite)
             {
                 result = new ConfigBing(BingMapType.Aerial);
             }
