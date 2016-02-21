@@ -51,11 +51,6 @@ namespace BrutileArcGIS.Toolbars
                 AddItem(typeof(MapQuestMenuDef));
             }
             AddItem(typeof(StravaMenuDef));
-            AddItem(typeof(TiandituMenuDef));
-            AddItem(typeof(NaverMenuDef));
-            AddItem(typeof(BaiduMenuDef));
-            AddItem(typeof(DaumMenuDef));
-
         }
 
         public override string Caption

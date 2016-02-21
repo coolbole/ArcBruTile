@@ -177,6 +177,7 @@
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddTiandituWorldLayerCommand.cs" />
     <Compile Include="commands\AddVectorTileLayerButton.cs" />
+    <Compile Include="commands\AddVworldLayerCommand.cs" />
     <Compile Include="commands\DemoCustomLayer.cs" />
     <Compile Include="forms\AddGisCloudForm.cs">
       <SubType>Form</SubType>
@@ -219,6 +220,7 @@
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="MenuDefs\StravaMenuDef.cs" />
     <Compile Include="MenuDefs\TiandituMenuDef.cs" />
+    <Compile Include="MenuDefs\VworldMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
     <Compile Include="forms\BruTileAboutBox.cs">
       <SubType>Form</SubType>
@@ -294,7 +296,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="lib\Transform.cs" />
+    <Compile Include="Toolbars\ChinaToolbar.cs" />
     <Compile Include="Toolbars\DutchToolbar.cs" />
+    <Compile Include="Toolbars\KoreaToolbar.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,4 +1,5 @@
-﻿using ESRI.ArcGIS.SystemUI;
+﻿using BrutileArcGIS.commands;
+using ESRI.ArcGIS.SystemUI;
 
 namespace BrutileArcGIS.MenuDefs
 {
@@ -6,7 +7,7 @@ namespace BrutileArcGIS.MenuDefs
     {
         public string Caption
         {
-            get { return "&ArcBruTile 0.6"; }
+            get { return "&ArcBruTile 0.7"; }
         }
 
         public void GetItemInfo(int pos, IItemDef itemDef)

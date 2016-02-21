@@ -10,21 +10,23 @@ using log4net.Config;
 
 namespace BrutileArcGIS.Toolbars
 {
-    [Guid("E7A9F7CC-9705-4104-8237-99D2D8C7C291")]
+    [Guid("759F6D96-4B55-4D4B-B21C-10DD685FCD1D")]
     [ClassInterface(ClassInterfaceType.None)]
-    [ProgId("BrutileArcGIS.Toolbars.Dutchtoolbar")]
-    public sealed class DutchToolbar:BaseToolbar
+    [ProgId("BrutileArcGIS.Toolbars.Chinatoolbar")]
+    public class KoreaToolbar : BaseToolbar
     {
         private static readonly ILog Logger = LogManager.GetLogger("ArcBruTileSystemLogger");
-   
-        public DutchToolbar()
+
+        public KoreaToolbar()
         {
             XmlConfigurator.Configure(new FileInfo(Assembly.GetExecutingAssembly().Location + ".config"));
 
             try
             {
-                AddItem(typeof(DutchMenuDef));
-                AddItem(typeof(PdokMenuDef));
+                AddItem(typeof(BruTileMenuDef));
+                AddItem(typeof(DaumMenuDef));
+                AddItem(typeof(NaverMenuDef));
+                AddItem(typeof(VworldMenuDef));
             }
             catch (Exception ex)
             {
@@ -36,7 +38,7 @@ namespace BrutileArcGIS.Toolbars
         {
             get
             {
-                return "ArcBruTile - Dutch";
+                return "ArcBruTile - Korea";
             }
         }
 
@@ -44,21 +46,16 @@ namespace BrutileArcGIS.Toolbars
         {
             get
             {
-                return "PDOK toolbar";
+                return "ArcBruTile Korea toolbar";
             }
         }
 
-        #region COM Registration Function(s)
         [ComRegisterFunction()]
         [ComVisible(false)]
         static void RegisterFunction(Type registerType)
         {
             // Required for ArcGIS Component Category Registrar support
             ArcGISCategoryRegistration(registerType);
-
-            //
-            // TODO: Add any COM registration code here
-            //
         }
 
         [ComUnregisterFunction()]
@@ -67,13 +64,8 @@ namespace BrutileArcGIS.Toolbars
         {
             // Required for ArcGIS Component Category Registrar support
             ArcGISCategoryUnregistration(registerType);
-
-            //
-            // TODO: Add any COM unregistration code here
-            //
         }
 
-        #region ArcGIS Component Category Registrar generated code
         /// <summary>
         /// Required method for ArcGIS Component Category registration -
         /// Do not modify the contents of this method with the code editor.
@@ -92,10 +84,5 @@ namespace BrutileArcGIS.Toolbars
             string regKey = string.Format("HKEY_CLASSES_ROOT\\CLSID\\{{{0}}}", registerType.GUID);
             MxCommandBars.Unregister(regKey);
         }
-
-        #endregion
-        #endregion
-
-
     }
 }
