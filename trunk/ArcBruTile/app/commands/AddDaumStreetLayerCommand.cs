@@ -17,7 +17,7 @@ namespace BrutileArcGIS.commands
         public AddDaumStreetLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Daum Streets";
+            m_caption = "&Streets";
             m_message = "Add Daum Streets";
             m_toolTip = m_caption;
             m_name = "AddDaumStreetLayerCommand";

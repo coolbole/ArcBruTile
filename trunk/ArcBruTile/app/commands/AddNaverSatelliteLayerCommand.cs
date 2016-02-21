@@ -18,7 +18,7 @@ namespace BrutileArcGIS.commands
         public AddNaverSatelliteLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Naver Satellite";
+            m_caption = "&Satellite";
             m_message = "Add Naver Satellite";
             m_toolTip = m_caption;
             m_name = "AddNaverSatelliteLayerCommand";

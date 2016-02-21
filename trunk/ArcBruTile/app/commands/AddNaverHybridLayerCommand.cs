@@ -18,7 +18,7 @@ namespace BrutileArcGIS.commands
         public AddNaverHybridLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Naver Hybrid";
+            m_caption = "&Hybrid";
             m_message = "Add Naver Hybrid";
             m_toolTip = m_caption;
             m_name = "AddNaverHybridLayerCommand";

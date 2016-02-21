@@ -18,7 +18,7 @@ namespace BrutileArcGIS.commands
         public AddNaverCadastralLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Naver Cadastral";
+            m_caption = "&Cadastral";
             m_message = "Add Naver Cadastral";
             m_toolTip = m_caption;
             m_name = "AddNaverCadastralLayerCommand";

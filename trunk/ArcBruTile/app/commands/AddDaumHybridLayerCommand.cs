@@ -17,7 +17,7 @@ namespace BrutileArcGIS.commands
         public AddDaumHybridLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Daum Hybrid";
+            m_caption = "&Hybrid";
             m_message = "Add Daum Hybrid";
             m_toolTip = m_caption;
             m_name = "AddDaumHybridLayerCommand";

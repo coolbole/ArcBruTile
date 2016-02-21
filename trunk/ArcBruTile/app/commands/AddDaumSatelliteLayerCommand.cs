@@ -17,7 +17,7 @@ namespace BrutileArcGIS.commands
         public AddDaumSatelliteLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Daum Satellite";
+            m_caption = "&Satellite";
             m_message = "Add Daum Satellite";
             m_toolTip = m_caption;
             m_name = "AddDaumSatelliteLayerCommand";

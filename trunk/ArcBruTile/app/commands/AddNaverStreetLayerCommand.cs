@@ -17,7 +17,7 @@ namespace BrutileArcGIS.commands
         public AddNaverStreetLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&Add Naver Streets";
+            m_caption = "&Streets";
             m_message = "Add Naver Streets";
             m_toolTip = m_caption;
             m_name = "AddNaverStreetLayerCommand";

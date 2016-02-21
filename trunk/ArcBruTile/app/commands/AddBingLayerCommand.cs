@@ -8,7 +8,7 @@ namespace BrutileArcGIS.commands
     public sealed class AddBingAerialLayerCommand : AddBruTileLayerCommandBase
     {
         public AddBingAerialLayerCommand()
-            : base("BruTile", "&Aerial", "Add Bing Aerial Layer", "Bing Aerial", Resources.bing, EnumBruTileLayer.BingAerial)
+            : base("BruTile", "&Aerial", "Add Bing Aerial Layer", "Bing Aerial", Resources.download, EnumBruTileLayer.BingAerial)
         {
         }
     }
@@ -17,7 +17,7 @@ namespace BrutileArcGIS.commands
     public sealed class AddBingHybridLayerCommand : AddBruTileLayerCommandBase
     {
         public AddBingHybridLayerCommand()
-            : base("BruTile", "&Hybrid", "Add Bing Hybrid Layer", "Bing Hybrid", Resources.bing, EnumBruTileLayer.BingHybrid)
+            : base("BruTile", "&Hybrid", "Add Bing Hybrid Layer", "Bing Hybrid", Resources.download, EnumBruTileLayer.BingHybrid)
         {
         }
     }
@@ -26,7 +26,7 @@ namespace BrutileArcGIS.commands
     public sealed class AddBingRoadLayerCommand : AddBruTileLayerCommandBase
     {
         public AddBingRoadLayerCommand()
-            : base("BruTile", "&Roads", "Add Bing Road Layer", "Bing Road", Resources.bing, EnumBruTileLayer.BingRoad)
+            : base("BruTile", "&Roads", "Add Bing Road Layer", "Bing Road", Resources.download, EnumBruTileLayer.BingRoad)
         {
         }
     }
