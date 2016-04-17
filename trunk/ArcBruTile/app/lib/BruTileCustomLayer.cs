@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using BruTile;
 using BruTile.Cache;
 using BrutileArcGIS.Lib;
@@ -106,17 +103,6 @@ namespace BrutileArcGIS.lib
                     ((IActiveView)_map).Refresh();
                 }
             }
-        }
-
-
-        private static IEnumerable<TileInfo> SortByPriority(IEnumerable<TileInfo> tiles, double centerX, double centerY)
-        {
-            return tiles.OrderBy(t => Distance(centerX, centerY, t.Extent.CenterX, t.Extent.CenterY));
-        }
-
-        public static double Distance(double x1, double y1, double x2, double y2)
-        {
-            return Math.Sqrt(Math.Pow(x1 - x2, 2.0) + Math.Pow(y1 - y2, 2.0));
         }
 
         private IEnvelope GetDefaultEnvelope()

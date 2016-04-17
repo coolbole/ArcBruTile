@@ -197,6 +197,7 @@
     <Compile Include="lib\BruTileCustomLayer.cs" />
     <Compile Include="lib\ConfigGisCloud.cs" />
     <Compile Include="lib\DaumRequest.cs" />
+    <Compile Include="lib\GisCloudApiRetriever.cs" />
     <Compile Include="lib\GISCloudLayer.cs" />
     <Compile Include="lib\GisCloudUtil.cs" />
     <Compile Include="lib\GZipWebClient.cs">

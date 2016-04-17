@@ -229,7 +229,7 @@ namespace BrutileArcGIS.Lib
                 var uriBuilder = new UriBuilder(url) {Query = _auth};
                 url = uriBuilder.Uri;
             }
-            Logger.Debug("Url: " + url);
+            Logger.Debug("Download tile: " + url);
             var bytes = GetBitmap(url);
 
             if (bytes != null)

@@ -9,15 +9,28 @@ namespace ArcBruTile.Tests
         public void GetProjectIdReturnsCorrectId()
         {
             // arrange
-            var expectedPrefix = "http://editor.giscloud.com/map/";
             var url = "http://editor.giscloud.com/map/449121/raster-map";
 
             // act
-            var id = GisCloudUtil.GetProjectIdFromUrl(url,expectedPrefix);
+            var id = GisCloudUtil.GetProjectIdFromUrl(url);
 
             // assert
             Assert.True(id=="449121");
         }
+
+        [Fact]
+        public void UrlIsValid()
+        {
+            // arrange
+            var url = "http://editor.giscloud.com/map/449121/raster-map";
+
+            // act
+            var isValid = GisCloudUtil.UrlIsValid(url);
+
+            // assert
+            Assert.True(isValid);
+        }
+
 
     }
 }

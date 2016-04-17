@@ -52,19 +52,11 @@ namespace BrutileArcGIS.commands
             {
                 var format = addGisCloudForm.GisCloudFormat;
                 var mapid = addGisCloudForm.GisCloudProjectId;
-                var layers = GetGISCloudLayers(mapid,format);
+                var urlAuthority = addGisCloudForm.UrlAuthority;
+                var layers = GetGISCloudLayers(urlAuthority, mapid,format);
                 layers = layers.OrderBy(ob => ob.Order).ToList();
                 AddGisCloudLayers(layers);
             }
-        }
-
-        public dynamic GetDataFromGiscloudApi(string url)
-        {
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var layerinfo = httpClient.GetAsync(url).Result;
-            var info = JObject.Parse(layerinfo.Content.ReadAsStringAsync().Result);
-            return info;
         }
 
         private void AddGisCloudLayers(IEnumerable<GISCloudLayer> gisCloudLayers)
@@ -95,12 +87,12 @@ namespace BrutileArcGIS.commands
             }
         }
 
-        public List<GISCloudLayer> GetGISCloudLayers(string mapid,string format)
+        public List<GISCloudLayer> GetGISCloudLayers(string urlAuthority, string mapid,string format)
         {
             var gisCloudLayers = new List<GISCloudLayer>();
 
-            var url = "http://api.giscloud.com/1/maps/" + mapid + "/layers";
-            var layerInfo = GetDataFromGiscloudApi(url);
+            var url = urlAuthority + "/rest/1/maps/" + mapid + "/layers";
+            var layerInfo = GisCloudApiRetriever.GetDataFromGiscloudApi(url);
             foreach (var layer in layerInfo.data)
             {
                 var fl = layer.type.ToString();
@@ -124,11 +116,11 @@ namespace BrutileArcGIS.commands
                     if (fl == "polygon" || fl == "line" || fl == "point")
                     {
                         gisCloudLayer.Format = "png";
-                        gisCloudLayer.TileUrl = "http://api.giscloud.com/t/" + gisCloudLayer.Created + "/map" + mapid + "/layer" + gisCloudLayer.LayerId + "/{z}/{x}/{y}." + gisCloudLayer.Format;
+                        gisCloudLayer.TileUrl = urlAuthority + "/t/" + gisCloudLayer.Created + "/map" + mapid + "/layer" + gisCloudLayer.LayerId + "/{z}/{x}/{y}." + gisCloudLayer.Format;
                     }
                     else
                     {
-                        gisCloudLayer.TileUrl = "http://editor.giscloud.com/r/" + gisCloudLayer.Created + "/map" + mapid + "/layer" + gisCloudLayer.LayerId + "/{z}/{x}/{y}." + format;
+                        gisCloudLayer.TileUrl = urlAuthority + "/r/" + gisCloudLayer.Created + "/map" + mapid + "/layer" + gisCloudLayer.LayerId + "/{z}/{x}/{y}." + format;
                     }
 
                     gisCloudLayers.Add(gisCloudLayer);

@@ -6,11 +6,11 @@ namespace BrutileArcGIS.forms
 {
     public partial class AddGisCloudForm : Form
     {
-        private string expectedPrefix = "http://editor.giscloud.com/map/";
-
         public string GisCloudProjectId { get; set; }
 
         public string GisCloudFormat { get; set; }
+
+        public string UrlAuthority { get; set; }
 
         public AddGisCloudForm()
         {
@@ -21,10 +21,12 @@ namespace BrutileArcGIS.forms
         private void btnOk_Click(object sender, EventArgs e)
         {
             var isValid = CheckUrl(tbGisCloudUrl.Text);
+            var uri = new Uri(tbGisCloudUrl.Text);
             if (isValid)
             {
                 var url = tbGisCloudUrl.Text;
-                GisCloudProjectId = GisCloudUtil.GetProjectIdFromUrl(url, expectedPrefix);
+                GisCloudProjectId = GisCloudUtil.GetProjectIdFromUrl(url);
+                UrlAuthority = uri.GetLeftPart(UriPartial.Authority);
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -32,24 +34,14 @@ namespace BrutileArcGIS.forms
 
         private bool CheckUrl(string url)
         {
-            if (!UrlIsValid(url))
+            if (!GisCloudUtil.UrlIsValid(url))
             {
                 errorProvider1.SetError(tbGisCloudUrl, "Please specify valid url.");
-                return false;
-            }
-            if (!url.StartsWith(expectedPrefix))
-            {
-                errorProvider1.SetError(tbGisCloudUrl, "Please specify url with " + expectedPrefix + " as start");
                 return false;
             }
             return true;
         }
 
-        protected bool UrlIsValid(string url)
-        {
-            Uri result;
-            return (Uri.TryCreate(url, UriKind.Absolute, out result));
-        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
