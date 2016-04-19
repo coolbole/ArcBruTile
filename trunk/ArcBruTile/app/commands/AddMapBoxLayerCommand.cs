@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Runtime.InteropServices;
-using BrutileArcGIS.lib;
+﻿using System.Runtime.InteropServices;
 using BrutileArcGIS.Lib;
 using BrutileArcGIS.Properties;
 

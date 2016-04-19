@@ -164,6 +164,7 @@
     <Compile Include="commands\AddBaiduTerrainLayerCommand.cs" />
     <Compile Include="commands\AddBaiduSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddBaiduStreetsLayerCommand.cs" />
+    <Compile Include="commands\AddCartoDBLayerCommand.cs" />
     <Compile Include="commands\AddDaumHybridLayerCommand.cs" />
     <Compile Include="commands\AddDaumSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddDaumStreetLayerCommand.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="lib\TileCalculator.cs" />
     <Compile Include="lib\WorldToScreen.cs" />
     <Compile Include="MenuDefs\BaiduMenuDef.cs" />
+    <Compile Include="MenuDefs\CartoDBMenuDef.cs" />
     <Compile Include="MenuDefs\DaumMenuDef.cs" />
     <Compile Include="MenuDefs\NaverMenuDef.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />

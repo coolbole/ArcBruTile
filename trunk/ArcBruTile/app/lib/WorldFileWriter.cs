@@ -36,7 +36,6 @@ namespace BrutileArcGIS.lib
             }
 
             return res;
-
         }
 
 
@@ -55,7 +54,5 @@ namespace BrutileArcGIS.lib
                 sw.Close();
             }
         }
-
-
     }
 }

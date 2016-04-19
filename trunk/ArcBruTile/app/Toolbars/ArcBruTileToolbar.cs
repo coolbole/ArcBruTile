@@ -24,32 +24,15 @@ namespace BrutileArcGIS.Toolbars
 
             Logger.Info("Startup ArcBruTile");
             AddItem(typeof(BruTileMenuDef));
-            var config = ConfigurationHelper.GetConfig();
-
             //Status sectie
             BeginGroup();
-
             BeginGroup();
-            if (Convert.ToBoolean(config.AppSettings.Settings["useOSM"].Value))
-            {
-                AddItem(typeof(OsmMenuDef));
-            }
-            if (Convert.ToBoolean(config.AppSettings.Settings["useBing"].Value))
-            {
-                AddItem(typeof(BingMenuDef));
-            }
-            if (Convert.ToBoolean(config.AppSettings.Settings["useStamen"].Value))
-            {
-                AddItem(typeof(StamenMenuDef));
-            }
-            if (Convert.ToBoolean(config.AppSettings.Settings["useMapBox"].Value))
-            {
-                AddItem(typeof(MapBoxMenuDef));
-            }
-            if (Convert.ToBoolean(config.AppSettings.Settings["useMapQuest"].Value))
-            {
-                AddItem(typeof(MapQuestMenuDef));
-            }
+            AddItem(typeof(OsmMenuDef));
+            AddItem(typeof(BingMenuDef));
+            AddItem(typeof(StamenMenuDef));
+            AddItem(typeof(MapBoxMenuDef));
+            AddItem(typeof(CartoDBMenuDef));
+            AddItem(typeof(MapQuestMenuDef));
             AddItem(typeof(StravaMenuDef));
         }
 
