@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using BrutileArcGIS.lib;
 using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
@@ -14,9 +15,11 @@ namespace BrutileArcGIS.commands
         private IApplication _application;
         private readonly string _url;
         private readonly EnumBruTileLayer _enumBruTileLayer;
+        private string _auth;
 
-        public AddTmsLayerCommandBase(string category, string caption, string message, string name, Bitmap bitmap, string url, EnumBruTileLayer enumBruTileLayer)
+        public AddTmsLayerCommandBase(string category, string caption, string message, string name, Bitmap bitmap, string url, EnumBruTileLayer enumBruTileLayer, string auth=null)
         {
+            _auth = auth;
             m_category = category;
             m_caption = caption;
             m_message = message;
@@ -51,11 +54,12 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
+            var key = _auth!=null?AuthKeyRetriever.GetAuthKey(_auth):null;
             try
             {
                 var mxdoc = (IMxDocument)_application.Document;
                 var map = mxdoc.FocusMap;
-                var brutileLayer = new BruTileLayer(_application, _enumBruTileLayer, _url, true)
+                var brutileLayer = new BruTileLayer(_application, _enumBruTileLayer, _url, true, key)
                 {
                     Name = m_name,
                     Visible = true

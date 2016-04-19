@@ -191,6 +191,7 @@
     <Compile Include="forms\AddVectorTileLayer.Designer.cs">
       <DependentUpon>AddVectorTileLayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\AuthKeyRetriever.cs" />
     <Compile Include="lib\BaiduConfig.cs" />
     <Compile Include="lib\BaiduTileSchema.cs" />
     <Compile Include="lib\BaseGroupLayer.cs" />

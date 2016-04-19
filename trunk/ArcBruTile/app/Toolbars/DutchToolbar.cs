@@ -10,6 +10,7 @@ using log4net.Config;
 
 namespace BrutileArcGIS.Toolbars
 {
+    /**
     [Guid("E7A9F7CC-9705-4104-8237-99D2D8C7C291")]
     [ClassInterface(ClassInterfaceType.None)]
     [ProgId("BrutileArcGIS.Toolbars.Dutchtoolbar")]
@@ -98,4 +99,5 @@ namespace BrutileArcGIS.Toolbars
 
 
     }
+    */
 }
