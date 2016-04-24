@@ -168,6 +168,13 @@ namespace BrutileArcGIS.Lib
                                         display.Filter = _displayFilter;
                                     }
                                     var fileCache = CacheDirectory.GetFileCache(_cacheDir,_config,_enumBruTileLayer);
+
+                                    if (_enumBruTileLayer == EnumBruTileLayer.Giscloud &&
+                                        _config.CreateTileSource().Schema.Format == "jpg")
+                                    {
+                                        // potential black borders: need to add a check for clip....
+                                        bruTileHelper.ClipTilesEnvelope=_envelope;
+                                    }
                                     bruTileHelper.Draw(_application.StatusBar.ProgressBar, activeView, fileCache, trackCancel, SpatialReference, ref _currentLevel, _tileSource, display, _auth);
                                 }
                             }

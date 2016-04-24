@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using BrutileArcGIS.forms;
@@ -12,7 +10,6 @@ using ESRI.ArcGIS.ArcMapUI;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
 using ESRI.ArcGIS.Geometry;
-using Newtonsoft.Json.Linq;
 
 namespace BrutileArcGIS.commands
 {
@@ -67,7 +64,7 @@ namespace BrutileArcGIS.commands
 
             foreach (var gisCloudLayer in gisCloudLayers)
             {
-                var config = new ConfigGisCloud(gisCloudLayer.TileUrl, gisCloudLayer.LayerId);
+                var config = new ConfigGisCloud(gisCloudLayer.TileUrl, gisCloudLayer.LayerId, gisCloudLayer.Format);
                 var brutileLayer = new BruTileLayer(_application, config, layerType)
                 {
                     Name = gisCloudLayer.Name,

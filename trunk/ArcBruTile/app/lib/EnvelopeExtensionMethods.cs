@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using BruTile;
 using ESRI.ArcGIS.Geometry;
 
 namespace BrutileArcGIS.lib
@@ -23,5 +24,18 @@ namespace BrutileArcGIS.lib
             };
             return p;
         }
+
+        public static IEnvelope ToArcGis(this Extent extent, ISpatialReference sr)
+        {
+            IEnvelope env = new EnvelopeClass();
+            env.XMin = extent.MinX;
+            env.XMax = extent.MaxX;
+            env.YMin = extent.MinY;
+            env.YMax = extent.MaxY;
+            env.SpatialReference = sr;
+            return env;
+        }
+
+
     }
 }

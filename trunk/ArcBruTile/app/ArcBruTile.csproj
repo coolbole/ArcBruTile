@@ -206,6 +206,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="lib\ImageDrawer.cs" />
+    <Compile Include="lib\ImageProcessor.cs" />
     <Compile Include="lib\MapBoxVectorTileSource.cs" />
     <Compile Include="lib\MvtSubLayer.cs" />
     <Compile Include="lib\NaverConfig.cs" />

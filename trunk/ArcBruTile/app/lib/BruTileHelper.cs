@@ -41,13 +41,12 @@ namespace BrutileArcGIS.Lib
             _tileTimeOut = tileTimeOut;
         }
 
-
         public void Draw(IStepProgressor stepProgressor,
                          IActiveView activeView,
                          FileCache fileCache,
                          ITrackCancel trackCancel,
                          ISpatialReference layerSpatialReference,
-                         ref string currentLevel, ITileSource tileSource, IDisplay display, string auth=null)
+                         ref string currentLevel, ITileSource tileSource, IDisplay display, string auth = null)
         {
             _auth = auth;
             _tileSource = tileSource;
@@ -65,20 +64,20 @@ namespace BrutileArcGIS.Lib
 
             if (!activeView.Extent.IsEmpty)
             {
-                 var ti = TileCalculator.GetTiles(activeView,tileSource);
+                var ti = TileCalculator.GetTiles(activeView, tileSource);
                 _tiles = ti.Tiles;
                 _currentLevel = ti.Level;
                 Logger.Debug("Number of tiles to draw: " + _tiles.Count);
 
                 if (_tiles.ToList().Count > 0)
                 {
-                 
+
                     stepProgressor.MinRange = 0;
                     stepProgressor.MaxRange = _tiles.ToList().Count;
                     stepProgressor.Show();
 
                     var downloadFinished = new ManualResetEvent(false);
-        
+
                     // this is a hack, otherwise we get error message...
                     // "WaitAll for multiple handles on a STA thread is not supported. (mscorlib)"
                     // so lets start a thread first...
@@ -90,7 +89,7 @@ namespace BrutileArcGIS.Lib
 
                     // 3. Now draw all tiles...
 
-                    if (layerSpatialReference != null && _dataSpatialReference!=null)
+                    if (layerSpatialReference != null && _dataSpatialReference != null)
                     {
                         _needReproject = (layerSpatialReference.FactoryCode != _dataSpatialReference.FactoryCode);
                     }
@@ -105,7 +104,7 @@ namespace BrutileArcGIS.Lib
                             var name = _fileCache.GetFileName(tile.Index);
 
                             if (!File.Exists(name)) continue;
-                            DrawRasterNew(name,tile);
+                            DrawRasterNew(name, tile);
                         }
                     }
 
@@ -125,7 +124,7 @@ namespace BrutileArcGIS.Lib
             var downloadFinished = args as ManualResetEvent;
 
             // Loop through the tiles, and filter tiles that are already on disk.
-            var downloadTiles=new List<TileInfo>();
+            var downloadTiles = new List<TileInfo>();
             for (var i = 0; i < _tiles.ToList().Count; i++)
             {
                 if (!_fileCache.Exists(_tiles[i].Index))
@@ -154,7 +153,7 @@ namespace BrutileArcGIS.Lib
 
                 foreach (var t in downloadTiles)
                 {
-                    object o = new object[] {t, doneEvents};
+                    object o = new object[] { t, doneEvents };
                     ThreadPool.QueueUserWorkItem(DownloadTile, o);
                 }
 
@@ -163,6 +162,9 @@ namespace BrutileArcGIS.Lib
             }
             if (downloadFinished != null) downloadFinished.Set();
         }
+
+
+
 
         private void DrawRasterNew(string file, TileInfo tileInfo)
         {
@@ -194,16 +196,32 @@ namespace BrutileArcGIS.Lib
             {
                 using (var fs = new System.IO.FileStream(file, FileMode.Open, FileAccess.Read))
                 {
-                    if(fs.Length>100)
+                    if (fs.Length > 100)
                     {
-                        using (var img1 = Image.FromStream(fs, true))
+                        var img1 = Image.FromStream(fs, true);
                         {
-                            var ms = new MemoryStream();
-                            img1.Save(ms, ImageFormat.Png);
-                            var bytes1 = ms.ToArray();
-                            var ul = new PointClass() { X = tileInfo.Extent.MinX, Y = tileInfo.Extent.MaxY };
-                            var lr = new PointClass() { X = tileInfo.Extent.MaxX, Y = tileInfo.Extent.MinY };
-                            ImageDrawer.Draw(_display, bytes1, ul, lr);
+                            // add check if tile needs to be clipped
+                            if (ClipTilesEnvelope != null)
+                            {
+                                if (tileInfo.Extent.MinX < ClipTilesEnvelope.XMin |
+                                    tileInfo.Extent.MaxX > ClipTilesEnvelope.XMax |
+                                    tileInfo.Extent.MinY < ClipTilesEnvelope.YMin |
+                                    tileInfo.Extent.MaxY > ClipTilesEnvelope.YMax)
+                                {
+                                    img1 = ImageProcessor.CropImage(img1, tileInfo, ClipTilesEnvelope);
+                                }
+                            }
+
+                            if (img1 != null)
+                            {
+                                var ms = new MemoryStream();
+                                img1.Save(ms, ImageFormat.Png);
+                                var bytes1 = ms.ToArray();
+                                var ul = new PointClass() { X = tileInfo.Extent.MinX, Y = tileInfo.Extent.MaxY };
+                                var lr = new PointClass() { X = tileInfo.Extent.MaxX, Y = tileInfo.Extent.MinY };
+                                ImageDrawer.Draw(_display, bytes1, ul, lr);
+                                img1.Dispose();
+                            }
                         }
                     }
                 }
@@ -222,11 +240,11 @@ namespace BrutileArcGIS.Lib
                 doneEvent.SetOne();
                 return;
             }
-            
+
             var url = _tileProvider.Request.GetUri(tileInfo);
             if (_auth != null)
             {
-                var uriBuilder = new UriBuilder(url) {Query = _auth};
+                var uriBuilder = new UriBuilder(url) { Query = _auth };
                 url = uriBuilder.Uri;
             }
             Logger.Debug("Download tile: " + url);
@@ -251,6 +269,8 @@ namespace BrutileArcGIS.Lib
             WorldFileWriter.WriteWorldFile(tfwFile, tile.Extent, schema);
         }
 
+        public IEnvelope ClipTilesEnvelope { get; set; }
+
         public static byte[] GetBitmap(Uri uri)
         {
             try
@@ -258,7 +278,7 @@ namespace BrutileArcGIS.Lib
                 var request = new WebClient();
                 return request.DownloadData(uri);
             }
-            catch(WebException ex)
+            catch (WebException ex)
             {
                 Logger.Debug("Exception, url: " + uri + ", exception: " + ex);
                 return null;
