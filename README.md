@@ -9,6 +9,7 @@ ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [Baidu](h
 Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile.slack.com](http://arcbrutile.slack.com)
 
 **N****ews**
+29-05-2016: Project moved from CodePlex to GitHub
 
 17-05-2016: Added [Air Quality Index](https://aqicn.org) services: aqi, pm25, o3, no2, so2, co, asean-pm10
 
