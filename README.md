@@ -39,20 +39,6 @@ Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile
 
 11-2-2016: Added [OpenWeatherMap](http://openweathermap.org/) (Clouds, Clouds Classic, Snow, Precipitation, Rain, Wind, Temperature, Precipitation Forecast, Pressure, Clouds Forecast) and OpenSeaMap.  Use the 'Add TMS Service' option and choose OpenWeatherMap or OpenSeaMap
 
-8-2-2016: ArcBruTile 0.6 released
-
-31-1-2016: Added raster maps from [MapBox](https://www.mapbox.com/developers/api/maps/): Streets, Light, Dark, Satellite, Streets - Satellite, Wheatpaste, Streets - basic, Comic, Outdoors, Run - bike - hike, Pencil, Pirates, Emerald and High - Contrast. Use the 'Add TMS Service' option and choose MapBox. Support in ArcBruTile 0.6 and higher.
-
-31-1-2016: Added raster maps from [Klokan Technologies](http://www.klokantech.com/): Bright and Retro. Use the 'Add TMS Service' option and choose Klokan Technologies. Support in ArcBruTile 0.6 and higher.
-
-30-1-2016: Added raster maps from [OSM2VectorTiles](http://osm2vectortiles.org/): Comic, Light, Dark, Woodcut, Pirates and Wheatpaste. Use the 'Add TMS Service' option and choose OSM2Vectortiles.
-
-30-1-2016: Source control switched from Subversion to Git 
-
-16-11-2015: Changed link to Dutch Nationaal Georegister (PDOK) production service.
-
-21-8-2015: ArcBruTile 0.5 is released. For this release Microsoft.Net Framework 4.5 is required.  
-
 **Supported maps**
 
 Air Quality Index:  aqi, pm25, o3, no2, so2, co, asean-pm10. [https://aqicn.org](https://aqicn.org) 
