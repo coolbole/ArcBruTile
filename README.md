@@ -57,8 +57,21 @@ ArcBruTile is based on the generic tiling library [BruTile](http://brutile.codep
  **Why ArcBruTile is developed:**
 
 Because ArcGIS, one of the most popular desktop GIS program around, lacks support for non-Esri tile services, especially the increasingly popular [OpenStreetMap](http://www.openstreetmap.org) maps. And because we're bored searching for the always slow or lost or broken disk/service with actual map reference data :-)  
-ArcBruTile also solves the projections problem: all tiles are transformed on the fly to the desired projection if needed. ArcBruTile makes it very easy to combine data with different projections.  
+ArcBruTile also solves the projections problem: all tiles are transformed on the fly to the desired projection if needed. ArcBruTile makes it very easy to combine data with different projections. 
 
+**Getting started for developers**
+
+Prerequisites: Visual Studio + ArcGIS Desktop 10.X is installed
+
+*   git clone https://github.com/ArcBruTile/ArcBruTile.git
+*   cd ArcBruTile\trunk\ArcBruTile
+*   Open ArcBruTile.sln in Visual Studio 2015
+*   Rebuild solution
+*   cd app\bin
+*   Right click on ArcBruTile -> Open with -> Select Esri Registration Assembly Utility -> Register with ArcGIS Desktop
+*   Open project properties of project ArcBruTile -> Debug -> Start action -> Start external program -> Select C:\Program Files (x86)\ArcGIS\Desktop10.3\bin\ArcMap.exe
+*   Press F5 and ArcMap will start in debug mode
+ 
 **Testimonials:**
 
 *   "Great tool, saves me having to set up a local tile server. " - [mrsleepy](http://arcbrutile.codeplex.com/WorkItem/View.aspx?WorkItemId=5226)
