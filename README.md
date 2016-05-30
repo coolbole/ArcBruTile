@@ -12,7 +12,7 @@ Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile
 
 **N****ews**
 
-30-05-2016: Added Nokia HERE maps: Streets, Satellite, Hybrid, Terrrain
+30-05-2016: Added Nokia HERE maps: Streets, Satellite, Hybrid, Terrain
 
 29-05-2016: Project moved from CodePlex to GitHub
 
