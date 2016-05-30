@@ -56,9 +56,14 @@ namespace BrutileArcGIS.lib
                         var idx = url.LastIndexOf('.');
                         url = url.Substring(0,idx);
                     }
-                    else 
+                    else if (config is BaiduConfig)
                     {
-                        url = ((BaiduConfig)config).Url;
+                        url = ((BaiduConfig) config).Url;
+                        url = url.Replace("?", "");
+                    }
+                    else
+                    {
+                        url = ((NokiaConfig) config).Url;
                         url = url.Replace("?", "");
                     }
                 }

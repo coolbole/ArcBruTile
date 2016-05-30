@@ -1,24 +1,27 @@
 ﻿using System.Runtime.InteropServices;
-using BrutileArcGIS.forms;
+using BrutileArcGIS.lib;
 using BrutileArcGIS.Lib;
+using BrutileArcGIS.Properties;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
+using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
 
 namespace BrutileArcGIS.commands
 {
-    [ProgId("AboutBruTileCommand")]
-    public sealed class AboutBruTileCommand : BaseCommand
+    [ProgId("AddNokiaSatelliteLayerCommand")]
+    public class AddNokiaSatelliteLayerCommand : BaseCommand
     {
         private IApplication _application;
 
-        public AboutBruTileCommand()
+        public AddNokiaSatelliteLayerCommand()
         {
             m_category = "BruTile";
-            m_caption = "&About ArcBruTile...";
-            m_message = "About BruTile...";
+            m_caption = "&Satellite";
+            m_message = "Add Nokia Here Satellite";
             m_toolTip = m_caption;
-            m_name = "AboutBruTileCommand";
+            m_name = "AddNokiaSatelliteLayerCommand";
+            m_bitmap = Resources.download;
         }
 
         public override void OnCreate(object hook)
@@ -28,7 +31,6 @@ namespace BrutileArcGIS.commands
 
             _application = hook as IApplication;
 
-            //Disable if it is not ArcMap
             if (hook is IMxApplication)
                 m_enabled = true;
             else
@@ -37,24 +39,21 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            /**
-            var nokiaConfig = new NokiaConfig("Basic");
+            var url =
+                "http://{s}.maps.nlp.nokia.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/256/png?app_id=xWVIueSv6JL0aJ5xqTxb&app_code=djPZyynKsbTjIUDOBcHZ2g";
+
+            var nokiaConfig = new NokiaConfig("Satellite", url);
+
             var layerType = EnumBruTileLayer.InvertedTMS;
             var mxdoc = (IMxDocument)_application.Document;
             var map = mxdoc.FocusMap;
 
             var brutileLayer = new BruTileLayer(_application, nokiaConfig, layerType)
             {
-                Name = "Nokia - Basic",
+                Name = "Nokia HERE - Satellite",
                 Visible = true
             };
             ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
-    */
-
-            var bruTileAboutBox = new BruTileAboutBox();
-            bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
         }
     }
 }
-
-

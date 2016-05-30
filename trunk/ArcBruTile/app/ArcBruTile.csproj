@@ -173,6 +173,10 @@
     <Compile Include="commands\AddNaverHybridLayerCommand.cs" />
     <Compile Include="commands\AddNaverSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddNaverStreetLayerCommand.cs" />
+    <Compile Include="commands\AddNokiaHybridLayerCommand.cs" />
+    <Compile Include="commands\AddNokiaSatelliteLayerCommand.cs" />
+    <Compile Include="commands\AddNokiaStreetLayerCommand.cs" />
+    <Compile Include="commands\AddNokiaTerrainLayerCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="commands\AddStravaLayerCommand.cs" />
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="lib\NaverTileSchema.cs" />
     <Compile Include="lib\DaumConfig.cs" />
     <Compile Include="lib\DaumTileSchema.cs" />
+    <Compile Include="lib\NokiaConfig.cs" />
     <Compile Include="lib\Requester.cs" />
     <Compile Include="lib\SimpleFileFetcher.cs" />
     <Compile Include="lib\TileCalculator.cs" />
@@ -222,6 +227,7 @@
     <Compile Include="MenuDefs\DaumMenuDef.cs" />
     <Compile Include="MenuDefs\NaverMenuDef.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
+    <Compile Include="MenuDefs\NokiaMenuDef.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="MenuDefs\StravaMenuDef.cs" />
     <Compile Include="MenuDefs\TiandituMenuDef.cs" />

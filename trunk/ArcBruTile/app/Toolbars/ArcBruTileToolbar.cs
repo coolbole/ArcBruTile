@@ -33,6 +33,7 @@ namespace BrutileArcGIS.Toolbars
             AddItem(typeof(MapBoxMenuDef));
             AddItem(typeof(CartoDBMenuDef));
             AddItem(typeof(MapQuestMenuDef));
+            AddItem(typeof(NokiaMenuDef));
             AddItem(typeof(StravaMenuDef));
         }
 
