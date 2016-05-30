@@ -42,51 +42,7 @@ Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile
 
 **Supported maps**
 
-Air Quality Index:  aqi, pm25, o3, no2, so2, co, asean-pm10. [https://aqicn.org](https://aqicn.org) 
-
-Baidu: Normal, Satellite, Streets [http://map.baidu.com/](http://map.baidu.com/  )
-
-CartoDB: dark, light, dark no labels, light no labels, dark only labels. [https://cartodb.com/](https://cartodb.com/)
-
-Daum: Streets, Hybrid and Satellite [http://map.daum.net/](http://map.daum.net/)
-
-GIS Cloud: Public maps from GIS Cloud [http://www.giscloud.com](http://www.giscloud.com)
-
-Humanitarian OpenStreetMap (HOT) [https://hotosm.org/](https://hotosm.org/)
-
-Klokan Technologies: Bright and Retro [http://www.klokantech.com/](http://www.klokantech.com/)
-
-MapBox: Streets, Light, Dark, Satellite, Streets - Satellite, Wheatpaste, Streets - basic, Comic, Outdoors, Run - bike - hike, Pencil, Pirates, Emerald and High - Contrast  [http://mapbox.com/maps/](http://mapbox.com/maps/)
-
-MapQuest: OpenAerialMap, OSM [http://www.mapquest.com/](http://www.mapquest.com/)
-
-Nationaal Georegister (PDOK): AAN, BGT (standaard, lijngericht, achtergrond en omtrekgericht), AHN2, AHN3, BAG, BRT (normaal, grijs, pastel), Kadastrale kaart, Top10 vector, Top50 vector, Top25 raster, Top50 raster and Top250 raster. [https://www.pdok.nl/](https://www.pdok.nl/)
-
-National Library of Scotland (NLS): Historical Maps of Great Britain 
-
-Naver: Streets, Satellite, Hybrid and Cadastral [http://map.naver.com/](http://map.naver.com/)
-
-OpenRailwayMap: Rail, Speed and Signals [http://www.openrailwaymap.org/](http://www.openrailwaymap.org/)
-
-OpenSeaMap [http://www.openseamap.org/](http://www.openseamap.org/)
-
-OpenStreetMap: Hike and Bike Map [http://hikebikemap.de/](http://hikebikemap.de/), Open Cycle Map [http://www.opencyclemap.org/](http://www.opencyclemap.org/),
-
-Hiking Trails, Landshade, Mapnik BW, Open Piste Maps, OSM English Labels, Transport
-
-OpenWeatherMap: Clouds, Clouds Classic, Snow, Precipitation, Rain, Wind, Temperature, Precipitation Forecast, Pressure, Clouds Forecast [http://openweathermap.org/](http://openweathermap.org/)
-
-OSM2Vectortiles: Comic, Light, Dark, Woodcut, Pirates and Wheatpaste [http://os](http://osm2vectortiles.org/maps)[m2vectortiles.org/maps](http://osm2vectortiles.org/maps)/
-
-Stamen: Terrain, Toner, Watercolor [http://maps.stamen.com](http://maps.stamen.com)
-
-Thunderforest: Landscape, OpenCycleMap, Outdoors, Spinal, Transport, Transport-dark. [http://www.thunderforest.com/](http://www.thunderforest.com/) 
-
-Tianditu: Satellite and world vector map [http://www.tianditu.cn](http://www.tianditu.cn)
-
-U.S. National Park Service: Park Tiles [http://www.nps.gov/npmap/park-tiles/](http://www.nps.gov/npmap/park-tiles/)
-
-VWorld: Satellite, street and hybrid [http://www.vworld.kr](http://www.vworld.kr)
+See [supported_maps.md](supported_maps.md)
 
 **Functionality**
 
@@ -97,10 +53,6 @@ VWorld: Satellite, street and hybrid [http://www.vworld.kr](http://www.vworld.kr
 *   MapTiler support (see [ArcBruTile and MapTiler](wikipage?title=ArcBruTile%20and%20MapTiler) for details).
 
 ArcBruTile is based on the generic tiling library [BruTile](http://brutile.codeplex.com). For other viewers based on BruTile library  see the [Mapsui](http://mapsui.codeplex.com) project.
-
-**Tutorial**
-
-<span style="font-size: 1em;">[Loading tiles in ESRI ArcGIS 9.3+ through ArcBruTile](http://tileserver.maptiler.com/#grandcanyon/arcgis9x.guide)</span>
 
  **Why ArcBruTile is developed:**
 
@@ -139,11 +91,11 @@ Want to add your maps or new functionality to ArcMap? [Contact us](https://www.c
 
 **Powered by:**  
 
-[![ArcGIS](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101931 "ArcGIS")](http://www.esri.com)[![BruTile](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101932 "BruTile")](http://brutile.codeplex.com)[![OpenStreetMap](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101933 "OpenStreetMap")](http://www.openstreetmap.org)[![Bing Maps](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101934 "Bing Maps")](http://maps.live.com)  ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4bE-xZhP6Efv3ixHu_Q-05i9HgIaRG0BI3NDtYyEAOkQ9jXFl6wT3CbU)![](http://images.spatiallyadjusted.com/GISCloud-Logo.gif)![](https://d21buns5ku92am.cloudfront.net/27712/images/90475-logos_full_cartodb_light-medium-1365655273.png)![](http://logok.org/wp-content/uploads/2014/10/Daum-communication-logo-880x660.png)![](http://www.bigtrends.com/wp-content/uploads/2015/10/baidu-bidu-logo-earnings-2015-stock-market-options-trading-technical-analysis-chart-etf-china-chinese-tech-stocks-active-investor.jpg)  
+[![ArcGIS](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101931 "ArcGIS")](http://www.esri.com)[![BruTile](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101932 "BruTile")](http://brutile.codeplex.com)[![OpenStreetMap](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101933 "OpenStreetMap")](http://www.openstreetmap.org)[![Bing Maps](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101934 "Bing Maps")](http://maps.live.com)  ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4bE-xZhP6Efv3ixHu_Q-05i9HgIaRG0BI3NDtYyEAOkQ9jXFl6wT3CbU)![](http://images.spatiallyadjusted.com/GISCloud-Logo.gif)![](https://d21buns5ku92am.cloudfront.net/27712/images/90475-logos_full_cartodb_light-medium-1365655273.png)![](https://upload.wikimedia.org/wikipedia/commons/e/ef/Daum_communication_logo.png)![](http://www.bigtrends.com/wp-content/uploads/2015/10/baidu-bidu-logo-earnings-2015-stock-market-options-trading-technical-analysis-chart-etf-china-chinese-tech-stocks-active-investor.jpg)  
 
 **Statistics:**  
 
-![](http://www.myworldmaps.net/map.ashx/6fad71fc-58da-44a4-8f3d-4eb5d05e57a7/small)
+![](http://www.myworldmaps.net/map.ashx/6fad71fc-58da-44a4-8f3d-4eb5d05e57a7/big)
 
 [![web
 counter](http://c.statcounter.com/10943089/0/32c9a51b/0/)](http://statcounter.com/p10943089/summary/?guest=1 "web counter")
