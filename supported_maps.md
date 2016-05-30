@@ -24,6 +24,8 @@ National Library of Scotland (NLS): Historical Maps of Great Britain 
 
 Naver: Streets, Satellite, Hybrid and Cadastral [http://map.naver.com/](http://map.naver.com/)
 
+Nokia: Streets, Satellite, Hybrid and Terrain [https://maps.here.com](https://maps.here.com)
+
 OpenRailwayMap: Rail, Speed and Signals [http://www.openrailwaymap.org/](http://www.openrailwaymap.org/)
 
 OpenSeaMap [http://www.openseamap.org/](http://www.openseamap.org/)
