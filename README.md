@@ -2,9 +2,9 @@
 
 ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [Baidu](http://map.baidu.com/), [Bing](http://www.bing.com/maps/), [CartoDB](https://cartodb.com/), [Daum](http://map.daum.net/), [GIS Cloud](http://www.giscloud.com), [Humanitarian OpenStreetMap (HOT)](https://hotosm.org/), [Klokan Technologies](http://www.klokantech.com/), [Mapbox](http://www.mapbox.com), [MapQues](http://www.mapquest.com/)t, [Nationaal Georegister](http://nationaalgeoregister.nl/) (PDOK), [National Library of Scotland](http://www.nls.uk/) (NLS), [Naver](http://map.naver.com/), [OpenStreetMap](http://www.openstreetmap.org/), [OpenRailwayMap](http://www.openrailwaymap.org/), [OpenWeatherMap](http://openweathermap.org/), [OpenSeaMap](http://www.openseamap.org/), [OSM2Vectortiles](http://osm2vectortiles.org/maps/), [Stamen](http://www.stamen.com), [Strava](http://www.strava.com/), [Thunderforest](http://www.thunderforest.com/), [Tianditu](http://www.tianditu.cn), [VWorld](http://www.vworld.kr) and others in ArcGIS Desktop 10.0/10.1/10.2/10.3/10.4.
 
-![Baidu](https://dl.dropboxusercontent.com/u/9984329/ArcBruTile/doc/baidu.png)
-
 Latest release: [ArcBruTile 0.7 Download](https://github.com/ArcBruTile/ArcBruTile/releases/tag/0.7)
+
+![Baidu](https://dl.dropboxusercontent.com/u/9984329/ArcBruTile/doc/baidu.png)
 
 <span style="font-size: 13.3333px;">**Slack**</span>
 
