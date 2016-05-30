@@ -4,6 +4,8 @@ ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [Baidu](h
 
 ![Baidu](https://dl.dropboxusercontent.com/u/9984329/ArcBruTile/doc/baidu.png)
 
+Latest release: [ArcBruTile 0.7 Download](https://github.com/ArcBruTile/ArcBruTile/releases/tag/0.7)
+
 <span style="font-size: 13.3333px;">**Slack**</span>
 
 Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile.slack.com](http://arcbrutile.slack.com)
