@@ -177,6 +177,8 @@
     <Compile Include="commands\AddNokiaSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddNokiaStreetLayerCommand.cs" />
     <Compile Include="commands\AddNokiaTerrainLayerCommand.cs" />
+    <Compile Include="commands\AddNokiaTrafficLayerCommand.cs" />
+    <Compile Include="commands\AddNokiaTransitLayerCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="commands\AddStravaLayerCommand.cs" />
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />

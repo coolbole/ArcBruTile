@@ -28,12 +28,21 @@ namespace BrutileArcGIS.MenuDefs
                     itemDef.ID = "AddNokiaTerrainLayerCommand";
                     itemDef.Group = false;
                     break;
+                case 4:
+                    itemDef.ID = "AddNokiaTrafficLayerCommand";
+                    itemDef.Group = false;
+                    break;
+                case 5:
+                    itemDef.ID = "AddNokiaTransitLayerCommand";
+                    itemDef.Group = false;
+                    break;
+
             }
         }
 
         public int ItemCount
         {
-            get { return 4; }
+            get { return 6; }
         }
 
         public string Name
