@@ -26,22 +26,6 @@ Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile
 . add CartoDB services (Darkmatter, Positron)  
 . add services from OpenWeatherMap, Thunderforest, OpenRailWayMap and National Library of Scotland (NLS)
 
-21-04-2016: Add Historical Maps of Great Britain from [National Library of Scotland](http://www.nls.uk/) (NLS). Use the 'Add TMS Service' option and choose NLS.
-
-15-02-2016: Add [OpenRailwayMap](http://www.openrailwaymap.org/): Rails, Speed and Signals.  
-
-14-02-2016: Add [Daum](http://map.daum.net/) maps (Korea): Streets, Hybrid and Satellite. Scheduled for next release ArcBruTile 0.7.
-
-14-2-2016: Added [CartoDB](https://cartodb.com/) maps: dark, light, dark no labels, light no labels, dark only labels. Use the 'Add TMS Service' option and choose CartoDB.
-
-14-2-2016: Added [Thunderforest](http://www.thunderforest.com/) maps:  Landscape, OpenCycleMap, Outdoors, Spinal, Transport, Transport-dark. Use the 'Add TMS Service' option and choose Thunderforest.
-
-13-2-2016: Added [Baidu](http://map.baidu.com/) maps (China): Normal, Streets, Satellite. Scheduled for next release ArcBruTile 0.7.
-
-12-2-2016: Added [Naver](http://map.naver.com/) maps (Korea): Streets, Satellite, Hybrid and Cadastral. Scheduled for next release ArcBruTile 0.7.
-
-11-2-2016: Added [OpenWeatherMap](http://openweathermap.org/) (Clouds, Clouds Classic, Snow, Precipitation, Rain, Wind, Temperature, Precipitation Forecast, Pressure, Clouds Forecast) and OpenSeaMap.  Use the 'Add TMS Service' option and choose OpenWeatherMap or OpenSeaMap
-
 **Supported maps**
 
 See [supported_maps.md](supported_maps.md)
@@ -70,7 +54,7 @@ Prerequisites: Visual Studio + ArcGIS Desktop 10.X is installed
 *   Open ArcBruTile.sln in Visual Studio 2015
 *   Rebuild solution
 *   cd app\bin
-*   Right click on ArcBruTile -> Open with -> Select Esri Registration Assembly Utility -> Register with ArcGIS Desktop
+*   Right click on ArcBruTile.dll -> Open with -> Select Esri Registration Assembly Utility -> Register with ArcGIS Desktop
 *   Open project properties of project ArcBruTile -> Debug -> Start action -> Start external program -> Select C:\Program Files (x86)\ArcGIS\Desktop10.3\bin\ArcMap.exe
 *   Press F5 and ArcMap will start in debug mode
  
