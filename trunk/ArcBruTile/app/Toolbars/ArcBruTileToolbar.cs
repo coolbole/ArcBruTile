@@ -35,6 +35,7 @@ namespace BrutileArcGIS.Toolbars
             AddItem(typeof(MapQuestMenuDef));
             AddItem(typeof(NokiaMenuDef));
             AddItem(typeof(StravaMenuDef));
+            AddItem(typeof(TomTomMenuDef));
         }
 
         public override string Caption

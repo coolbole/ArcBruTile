@@ -1,6 +1,6 @@
 **Project Description**  
 
-ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [Baidu](http://map.baidu.com/), [Bing](http://www.bing.com/maps/), [CartoDB](https://cartodb.com/), [Daum](http://map.daum.net/), [GIS Cloud](http://www.giscloud.com), [Humanitarian OpenStreetMap (HOT)](https://hotosm.org/), [Klokan Technologies](http://www.klokantech.com/), [Mapbox](http://www.mapbox.com), [MapQues](http://www.mapquest.com/)t, [Nationaal Georegister](http://nationaalgeoregister.nl/) (PDOK), [National Library of Scotland](http://www.nls.uk/) (NLS), [Nokia HERE](https://maps.here.com), [Naver](http://map.naver.com/), [OpenStreetMap](http://www.openstreetmap.org/), [OpenRailwayMap](http://www.openrailwaymap.org/), [OpenWeatherMap](http://openweathermap.org/), [OpenSeaMap](http://www.openseamap.org/), [OSM2Vectortiles](http://osm2vectortiles.org/maps/), [Stamen](http://www.stamen.com), [Strava](http://www.strava.com/), [Thunderforest](http://www.thunderforest.com/), [Tianditu](http://www.tianditu.cn), [VWorld](http://www.vworld.kr) and others in ArcGIS Desktop 10.0/10.1/10.2/10.3/10.4.
+ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [Baidu](http://map.baidu.com/), [Bing](http://www.bing.com/maps/), [CartoDB](https://cartodb.com/), [Daum](http://map.daum.net/), [GIS Cloud](http://www.giscloud.com), [Humanitarian OpenStreetMap (HOT)](https://hotosm.org/), [Klokan Technologies](http://www.klokantech.com/), [Mapbox](http://www.mapbox.com), [MapQues](http://www.mapquest.com/)t, [Nationaal Georegister](http://nationaalgeoregister.nl/) (PDOK), [National Library of Scotland](http://www.nls.uk/) (NLS), [Nokia HERE](https://maps.here.com), [Naver](http://map.naver.com/), [OpenStreetMap](http://www.openstreetmap.org/), [OpenRailwayMap](http://www.openrailwaymap.org/), [OpenWeatherMap](http://openweathermap.org/), [OpenSeaMap](http://www.openseamap.org/), [OSM2Vectortiles](http://osm2vectortiles.org/maps/), [Stamen](http://www.stamen.com), [Strava](http://www.strava.com/), [Thunderforest](http://www.thunderforest.com/), [Tianditu](http://www.tianditu.cn), [TomTom](http://www.tomtom.com), [VWorld](http://www.vworld.kr) and others in ArcGIS Desktop 10.0/10.1/10.2/10.3/10.4.
 
 Latest release: [ArcBruTile 0.7 Download](https://github.com/ArcBruTile/ArcBruTile/releases/tag/0.7)
 
@@ -11,6 +11,7 @@ Latest release: [ArcBruTile 0.7 Download](https://github.com/ArcBruTile/ArcBruTi
 Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile.slack.com](http://arcbrutile.slack.com)
 
 **N****ews**
+03-06-2016: Added TomTom day and night maps. Use 'Add Tms service -> TomTom' or as menu option in ArcBruTile 0.8 release
 
 30-05-2016: Added Nokia HERE maps: Streets, Satellite, Hybrid, Terrrain, Traffic, Transit
 
@@ -25,22 +26,6 @@ Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile
 . add toolbars for China (Baidu, Tianditu) and Korea (Daum, Naver, VWorld)  
 . add CartoDB services (Darkmatter, Positron)  
 . add services from OpenWeatherMap, Thunderforest, OpenRailWayMap and National Library of Scotland (NLS)
-
-21-04-2016: Add Historical Maps of Great Britain from [National Library of Scotland](http://www.nls.uk/) (NLS). Use the 'Add TMS Service' option and choose NLS.
-
-15-02-2016: Add [OpenRailwayMap](http://www.openrailwaymap.org/): Rails, Speed and Signals.  
-
-14-02-2016: Add [Daum](http://map.daum.net/) maps (Korea): Streets, Hybrid and Satellite. Scheduled for next release ArcBruTile 0.7.
-
-14-2-2016: Added [CartoDB](https://cartodb.com/) maps: dark, light, dark no labels, light no labels, dark only labels. Use the 'Add TMS Service' option and choose CartoDB.
-
-14-2-2016: Added [Thunderforest](http://www.thunderforest.com/) maps:  Landscape, OpenCycleMap, Outdoors, Spinal, Transport, Transport-dark. Use the 'Add TMS Service' option and choose Thunderforest.
-
-13-2-2016: Added [Baidu](http://map.baidu.com/) maps (China): Normal, Streets, Satellite. Scheduled for next release ArcBruTile 0.7.
-
-12-2-2016: Added [Naver](http://map.naver.com/) maps (Korea): Streets, Satellite, Hybrid and Cadastral. Scheduled for next release ArcBruTile 0.7.
-
-11-2-2016: Added [OpenWeatherMap](http://openweathermap.org/) (Clouds, Clouds Classic, Snow, Precipitation, Rain, Wind, Temperature, Precipitation Forecast, Pressure, Clouds Forecast) and OpenSeaMap.  Use the 'Add TMS Service' option and choose OpenWeatherMap or OpenSeaMap
 
 **Supported maps**
 

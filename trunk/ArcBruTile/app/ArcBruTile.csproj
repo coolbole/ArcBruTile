@@ -183,6 +183,7 @@
     <Compile Include="commands\AddStravaLayerCommand.cs" />
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddTiandituWorldLayerCommand.cs" />
+    <Compile Include="commands\AddTomTomLayerCommand.cs" />
     <Compile Include="commands\AddVectorTileLayerButton.cs" />
     <Compile Include="commands\AddVworldLayerCommand.cs" />
     <Compile Include="commands\DemoCustomLayer.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="MenuDefs\StravaMenuDef.cs" />
     <Compile Include="MenuDefs\TiandituMenuDef.cs" />
+    <Compile Include="MenuDefs\TomTomMenuDef.cs" />
     <Compile Include="MenuDefs\VworldMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
     <Compile Include="forms\BruTileAboutBox.cs">
