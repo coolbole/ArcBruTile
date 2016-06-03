@@ -55,7 +55,7 @@ Prerequisites: Visual Studio + ArcGIS Desktop 10.X is installed
 *   Open ArcBruTile.sln in Visual Studio 2015
 *   Rebuild solution
 *   cd app\bin
-*   Right click on ArcBruTile -> Open with -> Select Esri Registration Assembly Utility -> Register with ArcGIS Desktop
+*   Right click on ArcBruTile.dll -> Open with -> Select Esri Registration Assembly Utility -> Register with ArcGIS Desktop
 *   Open project properties of project ArcBruTile -> Debug -> Start action -> Start external program -> Select C:\Program Files (x86)\ArcGIS\Desktop10.3\bin\ArcMap.exe
 *   Press F5 and ArcMap will start in debug mode
  
@@ -91,7 +91,8 @@ Want to add your maps or new functionality to ArcMap? [Contact us](https://www.c
 
 **Powered by:**  
 
-[![ArcGIS](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101931 "ArcGIS")](http://www.esri.com)[![BruTile](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101932 "BruTile")](http://brutile.codeplex.com)[![OpenStreetMap](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101933 "OpenStreetMap")](http://www.openstreetmap.org)[![Bing Maps](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101934 "Bing Maps")](http://maps.live.com)  ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4bE-xZhP6Efv3ixHu_Q-05i9HgIaRG0BI3NDtYyEAOkQ9jXFl6wT3CbU)![](http://images.spatiallyadjusted.com/GISCloud-Logo.gif)![](https://d21buns5ku92am.cloudfront.net/27712/images/90475-logos_full_cartodb_light-medium-1365655273.png)![](https://upload.wikimedia.org/wikipedia/commons/e/ef/Daum_communication_logo.png)![](http://www.bigtrends.com/wp-content/uploads/2015/10/baidu-bidu-logo-earnings-2015-stock-market-options-trading-technical-analysis-chart-etf-china-chinese-tech-stocks-active-investor.jpg)  
+[![ArcGIS](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101931 "ArcGIS")](http://www.esri.com)[![BruTile](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101932 "BruTile")](http://brutile.codeplex.com)[![OpenStreetMap](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101933 "OpenStreetMap")](http://www.openstreetmap.org)[![Bing Maps](http://i3.codeplex.com/download?ProjectName=arcbrutile&DownloadId=101934 "Bing Maps")](http://maps.live.com)  ![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4bE-xZhP6Efv3ixHu_Q-05i9HgIaRG0BI3NDtYyEAOkQ9jXFl6wT3CbU)![](http://images.spatiallyadjusted.com/GISCloud-Logo.gif)![](https://d21buns5ku92am.cloudfront.net/27712/images/90475-logos_full_cartodb_light-medium-1365655273.png)![](https://upload.wikimedia.org/wikipedia/commons/e/ef/Daum_communication_logo.png)![](http://www.bigtrends.com/wp-content/uploads/2015/10/baidu-bidu-logo-earnings-2015-stock-market-options-trading-technical-analysis-chart-etf-china-chinese-tech-stocks-active-investor.jpg)
+[Nokia Here](https://upload.wikimedia.org/wikipedia/commons/f/f3/Logo_HERE.png)
 
 **Statistics:**  
 
