@@ -14,6 +14,8 @@ Humanitarian OpenStreetMap (HOT) [https://hotosm.org/](https://hotosm.org/)
 
 Klokan Technologies: Bright and Retro [http://www.klokantech.com/](http://www.klokantech.com/)
 
+Kosmosnimki: Streets [http://www.kosmosnimki.ru/](http://www.kosmosnimki.ru/)
+
 MapBox: Streets, Light, Dark, Satellite, Streets - Satellite, Wheatpaste, Streets - basic, Comic, Outdoors, Run - bike - hike, Pencil, Pirates, Emerald and High - Contrast  [http://mapbox.com/maps/](http://mapbox.com/maps/)
 
 MapQuest: OpenAerialMap, OSM [http://www.mapquest.com/](http://www.mapquest.com/)
