@@ -51,3 +51,5 @@ TomTom: Day and night [http://www.tomtom.com](http:/www.tomtom.com)
 U.S. National Park Service: Park Tiles [http://www.nps.gov/npmap/park-tiles/](http://www.nps.gov/npmap/park-tiles/)
 
 VWorld: Satellite, street and hybrid [http://www.vworld.kr](http://www.vworld.kr)
+
+Yandex: Satellite, Streets and Hybrid [Yandex](https://yandex.com/maps/)

@@ -1,8 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using BrutileArcGIS.forms;
+using BrutileArcGIS.lib;
 using BrutileArcGIS.Lib;
 using ESRI.ArcGIS.ADF.BaseClasses;
 using ESRI.ArcGIS.ArcMapUI;
+using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.Framework;
 
 namespace BrutileArcGIS.commands
@@ -37,20 +39,6 @@ namespace BrutileArcGIS.commands
 
         public override void OnClick()
         {
-            /**
-            var nokiaConfig = new NokiaConfig("Basic");
-            var layerType = EnumBruTileLayer.InvertedTMS;
-            var mxdoc = (IMxDocument)_application.Document;
-            var map = mxdoc.FocusMap;
-
-            var brutileLayer = new BruTileLayer(_application, nokiaConfig, layerType)
-            {
-                Name = "Nokia - Basic",
-                Visible = true
-            };
-            ((IMapLayers)map).InsertLayer(brutileLayer, true, 0);
-    */
-
             var bruTileAboutBox = new BruTileAboutBox();
             bruTileAboutBox.ShowDialog(new ArcMapWindow(_application));
         }

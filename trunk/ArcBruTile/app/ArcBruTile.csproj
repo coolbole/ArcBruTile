@@ -186,6 +186,9 @@
     <Compile Include="commands\AddTomTomLayerCommand.cs" />
     <Compile Include="commands\AddVectorTileLayerButton.cs" />
     <Compile Include="commands\AddVworldLayerCommand.cs" />
+    <Compile Include="commands\AddYandexHybridLayerCommand.cs" />
+    <Compile Include="commands\AddYandexSatelliteLayerCommand.cs" />
+    <Compile Include="commands\AddYandexStreetsLayerCommand.cs" />
     <Compile Include="commands\DemoCustomLayer.cs" />
     <Compile Include="forms\AddGisCloudForm.cs">
       <SubType>Form</SubType>
@@ -225,6 +228,7 @@
     <Compile Include="lib\SimpleFileFetcher.cs" />
     <Compile Include="lib\TileCalculator.cs" />
     <Compile Include="lib\WorldToScreen.cs" />
+    <Compile Include="lib\YandexConfig.cs" />
     <Compile Include="MenuDefs\BaiduMenuDef.cs" />
     <Compile Include="MenuDefs\CartoDBMenuDef.cs" />
     <Compile Include="MenuDefs\DaumMenuDef.cs" />
@@ -236,6 +240,7 @@
     <Compile Include="MenuDefs\TiandituMenuDef.cs" />
     <Compile Include="MenuDefs\TomTomMenuDef.cs" />
     <Compile Include="MenuDefs\VworldMenuDef.cs" />
+    <Compile Include="MenuDefs\YandexMenuDef.cs" />
     <Compile Include="Toolbars\ArcBruTileToolbar.cs" />
     <Compile Include="forms\BruTileAboutBox.cs">
       <SubType>Form</SubType>
