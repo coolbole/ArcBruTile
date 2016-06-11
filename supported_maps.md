@@ -14,6 +14,8 @@ GIS Cloud: Public maps from GIS Cloud [http://www.giscloud.com](http://www.gisc
 
 Humanitarian OpenStreetMap (HOT) [https://hotosm.org/](https://hotosm.org/)
 
+IsHowChina [http://www.ishowchina.com](http://www.ishowchina.com)
+
 Klokan Technologies: Bright and Retro [http://www.klokantech.com/](http://www.klokantech.com/)
 
 Kosmosnimki: Streets [http://www.kosmosnimki.ru/](http://www.kosmosnimki.ru/)
