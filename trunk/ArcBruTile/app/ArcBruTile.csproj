@@ -181,6 +181,7 @@
     <Compile Include="commands\AddNokiaTransitLayerCommand.cs" />
     <Compile Include="commands\AddPdokLayerCommand.cs" />
     <Compile Include="commands\AddStravaLayerCommand.cs" />
+    <Compile Include="commands\AddTaobaoLayerCommand.cs" />
     <Compile Include="commands\AddTiandituSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddTiandituWorldLayerCommand.cs" />
     <Compile Include="commands\AddTomTomLayerCommand.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="MenuDefs\NokiaMenuDef.cs" />
     <Compile Include="MenuDefs\PdokMenuDef.cs" />
     <Compile Include="MenuDefs\StravaMenuDef.cs" />
+    <Compile Include="MenuDefs\TaobaoMenuDef.cs" />
     <Compile Include="MenuDefs\TiandituMenuDef.cs" />
     <Compile Include="MenuDefs\TomTomMenuDef.cs" />
     <Compile Include="MenuDefs\VworldMenuDef.cs" />

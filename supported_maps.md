@@ -42,6 +42,8 @@ OSM2Vectortiles: Comic, Light, Dark, Woodcut, Pirates and Wheatpaste [http://o
 
 Stamen: Terrain, Toner, Watercolor [http://maps.stamen.com](http://maps.stamen.com)
 
+Taobao: [https://map.taobao.com/](https://map.taobao.com/)
+
 Thunderforest: Landscape, OpenCycleMap, Outdoors, Spinal, Transport, Transport-dark. [http://www.thunderforest.com/](http://www.thunderforest.com/) 
 
 Tianditu: Satellite and world vector map [http://www.tianditu.cn](http://www.tianditu.cn)
