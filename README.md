@@ -11,9 +11,10 @@ ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [AutoNavi
 Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile.slack.com](http://arcbrutile.slack.com)
 
 **News**
+
 12-06-2016: Added IsHowChina map. Use 'Add Tms service -> IsHowChina' or available as menu option in ArcBruTile 0.8 release 
 
-11-06-2016: Added Taobao, AutoNavi Satellite and IsHowChina map. Available in ArcBruTile 0.8 release.
+11-06-2016: Added Taobao and AutoNavi Satellite. Available in ArcBruTile 0.8 release.
 
 06-06-2016: Added Yandex maps (streets, satellite, hybrid). Available in ArcBruTile 0.8 release.
 
