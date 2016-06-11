@@ -170,6 +170,7 @@
     <Compile Include="commands\AddDaumSatelliteLayerCommand.cs" />
     <Compile Include="commands\AddDaumStreetLayerCommand.cs" />
     <Compile Include="commands\AddGisCloudMapCommand.cs" />
+    <Compile Include="commands\AddIsHowChinaLayerCommand.cs" />
     <Compile Include="commands\AddNaverCadastralLayerCommand.cs" />
     <Compile Include="commands\AddNaverHybridLayerCommand.cs" />
     <Compile Include="commands\AddNaverSatelliteLayerCommand.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="MenuDefs\BaiduMenuDef.cs" />
     <Compile Include="MenuDefs\CartoDBMenuDef.cs" />
     <Compile Include="MenuDefs\DaumMenuDef.cs" />
+    <Compile Include="MenuDefs\IsHowChinaMenuDef.cs" />
     <Compile Include="MenuDefs\NaverMenuDef.cs" />
     <Compile Include="MenuDefs\DutchMenu.cs" />
     <Compile Include="MenuDefs\NokiaMenuDef.cs" />

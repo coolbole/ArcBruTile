@@ -27,6 +27,7 @@ namespace BrutileArcGIS.Toolbars
                 AddItem(typeof(BaiduMenuDef));
                 AddItem(typeof(TiandituMenuDef));
                 AddItem(typeof(TaobaoMenuDef));
+                AddItem(typeof(IsHowChinaMenuDef));
 
             }
             catch (Exception ex)
