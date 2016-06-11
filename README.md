@@ -1,6 +1,6 @@
 **Project Description**  
 
-ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [Baidu](http://map.baidu.com/), [Bing](http://www.bing.com/maps/), [CartoDB](https://cartodb.com/), [Daum](http://map.daum.net/), [GIS Cloud](http://www.giscloud.com), [Humanitarian OpenStreetMap (HOT)](https://hotosm.org/), [Klokan Technologies](http://www.klokantech.com/), [Kosmosnimki](http://www.kosmosnimki.ru/), [Mapbox](http://www.mapbox.com), [MapQues](http://www.mapquest.com/)t, [Nationaal Georegister](http://nationaalgeoregister.nl/) (PDOK), [National Library of Scotland](http://www.nls.uk/) (NLS), [Nokia HERE](https://maps.here.com), [Naver](http://map.naver.com/), [OpenStreetMap](http://www.openstreetmap.org/), [OpenRailwayMap](http://www.openrailwaymap.org/), [OpenWeatherMap](http://openweathermap.org/), [OpenSeaMap](http://www.openseamap.org/), [OSM2Vectortiles](http://osm2vectortiles.org/maps/), [Stamen](http://www.stamen.com), [Strava](http://www.strava.com/), [Taobao](https://map.taobao.com/), [Thunderforest](http://www.thunderforest.com/), [Tianditu](http://www.tianditu.cn), [TomTom](http://www.tomtom.com), [VWorld](http://www.vworld.kr), [Yandex](https://yandex.com/maps/) and others in ArcGIS Desktop 10.0/10.1/10.2/10.3/10.4.
+ArcBruTile displays maps from [Air Quality Index](https://aqicn.org), [AutoNavi](http://www.autonavi.com/), [Baidu](http://map.baidu.com/), [Bing](http://www.bing.com/maps/), [CartoDB](https://cartodb.com/), [Daum](http://map.daum.net/), [GIS Cloud](http://www.giscloud.com), [Humanitarian OpenStreetMap (HOT)](https://hotosm.org/), [Klokan Technologies](http://www.klokantech.com/), [Kosmosnimki](http://www.kosmosnimki.ru/), [Mapbox](http://www.mapbox.com), [MapQues](http://www.mapquest.com/)t, [Nationaal Georegister](http://nationaalgeoregister.nl/) (PDOK), [National Library of Scotland](http://www.nls.uk/) (NLS), [Nokia HERE](https://maps.here.com), [Naver](http://map.naver.com/), [OpenStreetMap](http://www.openstreetmap.org/), [OpenRailwayMap](http://www.openrailwaymap.org/), [OpenWeatherMap](http://openweathermap.org/), [OpenSeaMap](http://www.openseamap.org/), [OSM2Vectortiles](http://osm2vectortiles.org/maps/), [Stamen](http://www.stamen.com), [Strava](http://www.strava.com/), [Taobao](https://map.taobao.com/), [Thunderforest](http://www.thunderforest.com/), [Tianditu](http://www.tianditu.cn), [TomTom](http://www.tomtom.com), [VWorld](http://www.vworld.kr), [Yandex](https://yandex.com/maps/) and others in ArcGIS Desktop 10.0/10.1/10.2/10.3/10.4.
 
 **Latest release: [ArcBruTile 0.7 Download](https://github.com/ArcBruTile/ArcBruTile/releases/tag/0.7)**
 
@@ -12,7 +12,7 @@ Get in contact with other ArcBruTile users/developers, go to [http://arcbrutile
 
 **News**
 
-11-06-2016: Added Taobao map. Available in ArcBruTile 0.8 release.
+11-06-2016: Added Taobao and AutoNavi Satellite map. Available in ArcBruTile 0.8 release.
 
 06-06-2016: Added Yandex maps (streets, satellite, hybrid). Available in ArcBruTile 0.8 release.
 

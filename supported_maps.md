@@ -2,6 +2,8 @@
 
 Air Quality Index:  aqi, pm25, o3, no2, so2, co, asean-pm10. [https://aqicn.org](https://aqicn.org) 
 
+AutoNavi: Satellite [http://www.autonavi.com/]
+
 Baidu: Normal, Satellite, Streets [http://map.baidu.com/](http://map.baidu.com/  )
 
 CartoDB: dark, light, dark no labels, light no labels, dark only labels. [https://cartodb.com/](https://cartodb.com/)
