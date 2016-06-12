@@ -44,7 +44,11 @@ OpenWeatherMap: Clouds, Clouds Classic, Snow, Precipitation, Rain, Wind, Tempera
 
 OSM2Vectortiles: Comic, Light, Dark, Woodcut, Pirates and Wheatpaste [http://os](http://osm2vectortiles.org/maps)[m2vectortiles.org/maps](http://osm2vectortiles.org/maps)/
 
+Sputnik: Streets [http://maps.sputnik.ru/](http://maps.sputnik.ru/)
+
 Stamen: Terrain, Toner, Watercolor [http://maps.stamen.com](http://maps.stamen.com)
+
+Strava running and cycling heatmap [http://www.strava.com](http://www.strava.com)
 
 Taobao: [https://map.taobao.com/](https://map.taobao.com/)
 
